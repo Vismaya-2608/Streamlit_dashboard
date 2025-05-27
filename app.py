@@ -307,7 +307,7 @@ elif sidebar_option == "Plots on Categorical Columns":
 ################
 
 # Define the file paths
-EXCEL_PATH = "All_model_output.xlsx"
+'''EXCEL_PATH = "All_model_output.xlsx"
 html_lr = "predicted_vs_actual_overall_linear.html"
 html_dt = "predicted_vs_actual_overall_decision_tree.html"
 html_xgb = "predicted_vs_actual_overall_XGB_regressor.html"
@@ -380,4 +380,4 @@ if sidebar_option  == "Model Output":
                         st.warning(f"XGBoost HTML not found at: {html_xgb}")
 
     else:
-        st.error(f"Excel file not found at: {EXCEL_PATH}")
+        st.error(f"Excel file not found at: {EXCEL_PATH}")'''
