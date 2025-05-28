@@ -91,7 +91,7 @@ if sidebar_option == "Data Preview":
         st.error(f"HTML chart file not found: {html_chart_path}")
 
     with tab2:
-        st.subheader("📊 Overview Metrics")
+         st.subheader("📊 Overview Metrics")
 
         # CSS for button-style metrics
         st.markdown("""
@@ -113,8 +113,11 @@ if sidebar_option == "Data Preview":
                 margin-bottom: 5px;
                 display: block;
             }
+            </style>
+        """, unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
+
         with col1:
             st.markdown("""
                 <div class="metric-button">
@@ -130,6 +133,7 @@ if sidebar_option == "Data Preview":
                     46
                 </div>
             """, unsafe_allow_html=True)
+
 
         st.subheader("📋 Data Summary for Original DF")
         summary_df = pd.read_excel(summary)
