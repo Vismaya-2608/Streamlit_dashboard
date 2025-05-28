@@ -77,8 +77,8 @@ if sidebar_option == "Data Preview":
         st.subheader("📋 Data Summary for Original DF")
         summary_df = pd.read_excel(summary)
         st.dataframe(summary_df)
-        if st.metric(label="Toatal records", value = 1424588)
-           st.metric(label="Total Columns", value = 46)
+        if st.metric(label="Toatal records", value = "1424588")
+           st.metric(label="Total Columns", value = "46")
 
 
     with tab3:
