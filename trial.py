@@ -59,11 +59,24 @@ st.sidebar.success("Area stats loaded.")
 
 # --- Sidebar Navigation ---
 sidebar_option = st.sidebar.radio("Choose View", [
+    "Data summary",
     "Data Preview",
     "Map Visualization",
     "Plots on Categorical Columns",
     "Model Output"
 ])
+#---View 0: Data Summary"
+if sidebar_option == "Data summary":
+    st.subheader("📊 Sample Dataset Preview")
+
+    sample_df = load_csv(sample_path)   # <-- load the sample file
+    st.dataframe(sample_df)             # optional: show the whole table
+
+    # Button to show basic shape
+    if st.button("Show Sample Dataset Info"):
+        st.success(f"Total Records: {sample_df.shape[0]}")
+        st.success(f"Total Columns: {sample_df.shape[1]}")
+
 
 # --- View 1: Data Preview ---
 if sidebar_option == "Data Preview":
