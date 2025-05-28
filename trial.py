@@ -74,50 +74,52 @@ if sidebar_option == "Data Preview":
         st.dataframe(sample_df)
 
     with tab2:
+        st.subheader("📊 Overview Metrics")
+
+        # CSS for button-style metrics
         st.markdown("""
-    <style>
-    .metric-button {
-        display: inline-block;
-        background-color: #4CAF50; /* Green background */
-        color: white;
-        padding: 15px 25px;
-        font-size: 18px;
-        border-radius: 10px;
-        margin: 10px;
-        text-align: center;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-    }
-    .metric-label {
-        font-weight: bold;
-        font-size: 14px;
-        margin-bottom: 5px;
-        display: block;
-    }
-    </style>
-""", unsafe_allow_html=True)
+            <style>
+            .metric-button {
+                display: inline-block;
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 25px;
+                font-size: 18px;
+                border-radius: 10px;
+                margin: 10px;
+                text-align: center;
+                box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            }
+            .metric-label {
+                font-weight: bold;
+                font-size: 14px;
+                margin-bottom: 5px;
+                display: block;
+            }
+            </style>
+        """, unsafe_allow_html=True)
 
-# Layout using columns
-col1, col2 = st.columns(2)
+        col1, col2 = st.columns(2)
 
-with col1:
-    st.markdown(
-        f"""
-        <div class="metric-button">
-            <span class="metric-label">Total Records</span>
-            1,424,588
-        </div>
-        """, unsafe_allow_html=True
-    )
+        with col1:
+            st.markdown("""
+                <div class="metric-button">
+                    <span class="metric-label">Total Records</span>
+                    1,424,588
+                </div>
+            """, unsafe_allow_html=True)
 
-with col2:
-    st.markdown(
-        f"""
-        <div class="metric-button" style="background-color:#2196F3;"> <!-- Blue background -->
-            <span class="metric-label">Total Columns</span>
-            46
-        </div>
-        """, unsafe_allow_html=True
-    )
+        with col2:
+            st.markdown("""
+                <div class="metric-button" style="background-color:#2196F3;">
+                    <span class="metric-label">Total Columns</span>
+                    46
+                </div>
+            """, unsafe_allow_html=True)
+
+        st.subheader("📋 Data Summary for Original DF")
+        summary_df = pd.read_excel(summary)
+        st.dataframe(summary_df)
 
         st.subheader("📋 Data Summary for Original DF")
         summary_df = pd.read_excel(summary)
