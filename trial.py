@@ -63,7 +63,6 @@ sidebar_option = st.sidebar.radio("Choose View", [
     "Data Preview",
     "Map Visualization",
     "Plots on Categorical Columns",
-    "Model Output"
 ])
 
 # --- View 1: Data Preview ---
@@ -114,10 +113,8 @@ if sidebar_option == "Data Preview":
                 margin-bottom: 5px;
                 display: block;
             }
-            </style>
-        """, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(3)
+        col1, col2 = st.columns(2)
 
         with col1:
             st.markdown("""
