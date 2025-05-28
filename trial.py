@@ -83,7 +83,7 @@ if sidebar_option == "Data Preview":
         fig = px.bar(df, x="Area", y="Value", title="Pareto Chart by Area")
         fig.write_html("pareto_chart_by_area.html") 
         with open("pareto_chart_by_area.html", "r") as f:
-        components.html(f.read(), height=600)
+            components.html(f.read(), height=600)
         html_chart_path = "pareto_chart_by_area.html"  # replace with your actual file name
 
     try:
