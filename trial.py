@@ -69,7 +69,7 @@ sidebar_option = st.sidebar.radio("Choose View", [
 if sidebar_option == "Data summary":
     st.subheader("📊 Sample Dataset Preview")
 
-    sample_df = load_csv(sample_path)   # <-- load the sample file
+    sample_df = load_csv("sample_df.csv")   # <-- load the sample file
     st.dataframe(sample_df)             # optional: show the whole table
 
     # Button to show basic shape
