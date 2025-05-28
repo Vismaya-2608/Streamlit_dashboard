@@ -68,6 +68,23 @@ sidebar_option = st.sidebar.radio("Choose View", [
 # --- View 1: Data Preview ---
 if sidebar_option == "Data Preview":
     tab1, tab2, tab3 = st.tabs(["Preview", "Summary", "Box Plots"])
+    elif sidebar_option == "Data Preview":
+    st.subheader("📊 Sample Dataset Preview")
+
+    # Load the sample dataset
+    sample_df = load_csv(sample)
+
+    # Display the DataFrame (optional)
+    st.dataframe(sample_df)
+
+    # Add a button to show total rows and columns
+        if st.button("Show Sample Dataset Info"):
+        total_rows = sample_df.shape[0]
+        total_cols = sample_df.shape[1]
+
+        st.success(f"Total Records: {total_rows}")
+        st.success(f"Total Columns: {total_cols}")
+
 
     with tab1:
         sample_df = pd.read_csv(sample)
