@@ -14,7 +14,7 @@ st.title("🔍 Dubai Real Estate Dashboard")
 
 
 # Sample DataFrame (you can replace this with your own dataset)
-df = pd.DataFrame({sample_df.csv})
+df = pd.DataFrame("sample_df.csv")
 
 st.title("Dataset Overview")
 
