@@ -136,13 +136,13 @@ if sidebar_option == "Data Preview":
 
 
 
-        st.subheader("📋 Data Summary for Original DF")
-        summary_df = pd.read_excel(summary)
-        st.dataframe(summary_df)
+         st.subheader("📋 Data Summary for Original DF")
+         summary_df = pd.read_excel(summary)
+         st.dataframe(summary_df)
 
-        st.subheader("📋 Data Summary for Original DF")
-        summary_df = pd.read_excel(summary)
-        st.dataframe(summary_df)
+         st.subheader("📋 Data Summary for Original DF")
+         summary_df = pd.read_excel(summary)
+         st.dataframe(summary_df)
 
 
 
