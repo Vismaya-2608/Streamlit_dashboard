@@ -99,7 +99,7 @@ if sidebar_option == "Data Preview":
             </style>
         """, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns(3)
 
         with col1:
             st.markdown("""
