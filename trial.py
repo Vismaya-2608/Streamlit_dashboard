@@ -97,42 +97,42 @@ if sidebar_option == "Data Preview":
          st.markdown("""
              <style>
              .metric-button {
-                display: inline-block;
-                background-color: #4CAF50;
-                color: white;
-                padding: 15px 25px;
-                font-size: 18px;
-                border-radius: 10px;
-                margin: 10px;
-                text-align: center;
-                box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            }
-            .metric-label {
-                font-weight: bold;
-                font-size: 14px;
-                margin-bottom: 5px;
-                display: block;
-            }
-            </style>
-        """, unsafe_allow_html=True)
+                 display: inline-block;
+                 background-color: #4CAF50;
+                 color: white;
+                 padding: 15px 25px;
+                 font-size: 18px;
+                 border-radius: 10px;
+                 margin: 10px;
+                 text-align: center;
+                 box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+             }
+             .metric-label {
+                 font-weight: bold;
+                 font-size: 14px;
+                 margin-bottom: 5px;
+                 display: block;
+             }
+             </style>
+         """, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
+         col1, col2 = st.columns(2)
 
-        with col1:
-            st.markdown("""
-                <div class="metric-button">
+         with col1:
+             st.markdown("""
+                 <div class="metric-button">
                     <span class="metric-label">Total Records</span>
-                    1,424,588
-                </div>
-            """, unsafe_allow_html=True)
+                     1,424,588
+                 </div>
+             """, unsafe_allow_html=True)
 
-        with col2:
-            st.markdown("""
-                <div class="metric-button" style="background-color:#2196F3;">
-                    <span class="metric-label">Total Columns</span>
-                    46
-                </div>
-            """, unsafe_allow_html=True)
+         with col2:
+             st.markdown("""
+                 <div class="metric-button" style="background-color:#2196F3;">
+                     <span class="metric-label">Total Columns</span>
+                     46
+                 </div>
+             """, unsafe_allow_html=True)
 
 
 
