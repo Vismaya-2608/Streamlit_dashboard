@@ -80,8 +80,11 @@ if sidebar_option == "Data Preview":
         sample_df = pd.read_csv(sample)
         st.subheader("📄 Original DF Preview")
         st.dataframe(sample_df)
-        
-    html_chart_path = "pareto_chart_by_area.html"  # replace with your actual file name
+        fig = px.bar(df, x="Area", y="Value", title="Pareto Chart by Area")
+        fig.write_html("pareto_chart_by_area.html") 
+        with open("pareto_chart_by_area.html", "r") as f:
+        components.html(f.read(), height=600)
+        html_chart_path = "pareto_chart_by_area.html"  # replace with your actual file name
 
     try:
         with open(html_chart_path, "r", encoding="utf-8") as f:
