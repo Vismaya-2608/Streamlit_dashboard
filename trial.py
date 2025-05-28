@@ -72,6 +72,15 @@ if sidebar_option == "Data Preview":
         sample_df = pd.read_csv(sample)
         st.subheader("📄 Original DF Preview")
         st.dataframe(sample_df)
+        
+    html_chart_path = "pareto_chart_by_area.html"  # replace with your actual file name
+
+    try:
+        with open(html_chart_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+            components.html(html_content, height=600, scrolling=True)
+    except FileNotFoundError:
+        st.error(f"HTML chart file not found: {html_chart_path}")
 
     with tab2:
         st.subheader("📊 Overview Metrics")
