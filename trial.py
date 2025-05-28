@@ -21,6 +21,7 @@ area_stats_path = "df_area_plot_stats.xlsx"
 cat_plot_path = "original_df_description_year.xlsx"
 summary = "data_summary.xlsx"
 sample = "sample_df.csv"
+html_chart_path = "pareto_chart_by_area.html" 
 
 # --- Load Data with Error Handling ---
 
@@ -68,6 +69,14 @@ sidebar_option = st.sidebar.radio("Choose View", [
 # --- View 1: Data Preview ---
 if sidebar_option == "Data Preview":
     tab1, tab2, tab3 = st.tabs(["Preview", "Summary", "Box Plots"])
+    
+    try:
+        with open(html_chart_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+            components.html(html_content, height=600, scrolling=True)
+    except FileNotFoundError:
+        st.error(f"HTML chart file not found: {html_chart_path}")
+        
     with tab1:
         sample_df = pd.read_csv(sample)
         st.subheader("📄 Original DF Preview")
