@@ -12,6 +12,21 @@ from plotly.subplots import make_subplots
 st.set_page_config(layout="wide")
 st.title("🔍 Dubai Real Estate Dashboard")
 
+
+# Sample DataFrame (you can replace this with your own dataset)
+df = pd.DataFrame({sample_df.csv})
+
+st.title("Dataset Overview")
+
+# Button to display total records and columns
+if st.button("Show Dataset Info"):
+    total_records = df.shape[0]
+    total_columns = df.shape[1]
+    
+    st.success(f"Total Records: {total_records}")
+    st.success(f"Total Columns: {total_columns}")
+
+
 # --- File Paths ---
 df_path = "target_df.csv"
 area_stats_path = "df_area_plot_stats.xlsx"
