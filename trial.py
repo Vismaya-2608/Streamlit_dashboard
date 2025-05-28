@@ -99,7 +99,7 @@ if sidebar_option == "Data Preview":
                     st.plotly_chart(fig2, use_container_width=True)
             else:
                 st.warning(f"Column `{col}` not found in both datasets.")
-            elif:
+            else:
                 sidebar_option == "Data Preview":
                 st.subheader("📊 Sample Dataset Preview")
                 # Load the sample dataset
