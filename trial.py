@@ -94,9 +94,9 @@ if sidebar_option == "Data Preview":
          st.subheader("📊 Overview Metrics")
 
         # CSS for button-style metrics
-        st.markdown("""
-            <style>
-            .metric-button {
+         st.markdown("""
+             <style>
+             .metric-button {
                 display: inline-block;
                 background-color: #4CAF50;
                 color: white;
@@ -133,6 +133,7 @@ if sidebar_option == "Data Preview":
                     46
                 </div>
             """, unsafe_allow_html=True)
+
 
 
         st.subheader("📋 Data Summary for Original DF")
