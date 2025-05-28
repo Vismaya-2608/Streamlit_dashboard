@@ -115,7 +115,6 @@ if sidebar_option == "Data Preview":
             }
 
         col1, col2 = st.columns(2)
-
         with col1:
             st.markdown("""
                 <div class="metric-button">
