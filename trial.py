@@ -67,30 +67,11 @@ sidebar_option = st.sidebar.radio("Choose View", [
 # --- View 1: Data Preview ---
 if sidebar_option == "Data Preview":
     tab1, tab2, tab3 = st.tabs(["Preview", "Summary", "Box Plots"])
-    
-    try:
-        with open(html_chart_path, "r", encoding="utf-8") as f:
-            html_content = f.read()
-            components.html(html_content, height=600, scrolling=True)
-    except FileNotFoundError:
-        st.error(f"HTML chart file not found: {html_chart_path}")
-        
     with tab1:
         sample_df = pd.read_csv(sample)
         st.subheader("📄 Original DF Preview")
         st.dataframe(sample_df)
-        fig = px.bar(df, x="Area", y="Value", title="Pareto Chart by Area")
-        fig.write_html("pareto_chart_by_area.html") 
-        with open("pareto_chart_by_area.html", "r") as f:
-            components.html(f.read(), height=600)
-        html_chart_path = "pareto_chart_by_area.html"  # replace with your actual file name
 
-    try:
-        with open(html_chart_path, "r", encoding="utf-8") as f:
-            html_content = f.read()
-            components.html(html_content, height=600, scrolling=True)
-    except FileNotFoundError:
-        st.error(f"HTML chart file not found: {html_chart_path}")
 
     with tab2:
          st.subheader("📊 Overview Metrics")
@@ -135,6 +116,36 @@ if sidebar_option == "Data Preview":
                      46
                  </div>
              """, unsafe_allow_html=True)
+         st.subheader("📋 Pereto Analysis")
+         try:
+             pereto_file = "pereto_analysis.xlsx"
+             html_pereto_df = ""
+             html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
+             pereto_analyis = pd.ExcelFile(pereto_file)
+             pereto_sheet_names = pereto_analyis.sheet_names
+
+         except FileNotFoundError:
+             st.error(f"File not found: {pereto_file}")
+             st.stop()
+
+         pereto_sheet = st.selectbox("Select data for Pereto_analysis", pereto_sheet_names)
+         pereto_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet)
+
+         if pereto_sheet == "Original_df":
+             st.dataframe(pereto_df)
+             st.markdown("## Pereto_analysis_original_df")
+             if os.path.exists(html_pereto_df):
+                 with open(html_pereto_df, "r", encoding="utf-8") as f:
+                     dt_html = f.read()
+                 components.html(dt_html, height=1500)
+
+         elif pereto_sheet == "Data_for_model_run":
+             st.dataframe(pereto_df)
+             st.markdown("## Pereto_analysis_after_model_run")
+             if os.path.exists(html_pereto_df_clean):
+                 with open(html_pereto_df_clean, "r", encoding="utf-8") as f:
+                     dt_html = f.read()
+                 components.html(dt_html, height=1500)
 
 
 
