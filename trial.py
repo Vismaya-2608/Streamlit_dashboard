@@ -21,7 +21,6 @@ area_stats_path = "df_area_plot_stats.xlsx"
 cat_plot_path = "original_df_description_year.xlsx"
 summary = "data_summary.xlsx"
 sample = "sample_df.csv"
-html_chart_path = "pareto_chart_by_area.html" 
 
 # --- Load Data with Error Handling ---
 
@@ -146,6 +145,38 @@ if sidebar_option == "Data Preview":
          st.subheader("📋 Data Summary for Original DF")
          summary_df = pd.read_excel(summary)
          st.dataframe(summary_df)
+         st.subheader("📋 Pereto Analysis")
+         try:
+            pereto_file = "pereto_analysis_file.xlsx"
+            html_pereto_df = "pareto_chart_by_area.html"
+            html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
+            pereto_analyis = pd.ExcelFile(pereto_file)
+            pereto_sheet_names = pereto_analyis.sheet_names
+
+         except FileNotFoundError:
+             st.error(f"File not found: {pereto_file}")
+             st.stop()
+
+         pereto_sheet = st.selectbox("Select data for Pereto_analysis", pereto_sheet_names)
+         pereto_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet)
+
+         if pereto_sheet == "Original_df":
+             st.dataframe(pereto_df)
+             st.markdown("## Pereto_analysis_original_df")
+             if os.path.exists(html_pereto_df):
+                 with open(html_pereto_df, "r", encoding="utf-8") as f:
+                     dt_html = f.read()
+                 components.html(dt_html, height=1500)
+
+         elif pereto_sheet == "Data_for_model_run":
+             st.dataframe(pereto_df)
+             st.markdown("## Pereto_analysis_after_model_run")
+             if os.path.exists(html_pereto_df_clean):
+                 with open(html_pereto_df_clean, "r", encoding="utf-8") as f:
+                     dt_html = f.read()
+                 components.html(dt_html, height=1500)
+
+        
 
 
 
