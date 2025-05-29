@@ -118,7 +118,7 @@ if sidebar_option == "Data Preview":
              """, unsafe_allow_html=True)
          st.subheader("📋 Pereto Analysis")
          try:
-             pereto_file = "pereto_analysis.xlsx"
+             pereto_file = "pareto_analysis.xlsx"
              html_pereto_df = "plots_for_streamlit/pareto_chart.html"
              #html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
              pereto_analyis = pd.ExcelFile(pereto_file)
