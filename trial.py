@@ -128,7 +128,7 @@ if sidebar_option == "Data Preview":
              st.error(f"File not found: {pereto_file}")
              st.stop()
 
-         '''pereto_sheet = st.selectbox("Select data for Pereto_analysis")'''
+        
          pereto_df = pd.read_excel(pereto_analyis)
 
          if pereto_sheet == "Original_df":
