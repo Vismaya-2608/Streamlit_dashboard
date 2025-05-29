@@ -119,17 +119,17 @@ if sidebar_option == "Data Preview":
          st.subheader("📋 Pereto Analysis")
          try:
              pereto_file = "pereto_analysis.xlsx"
-             html_pereto_df = ""
-             html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
+             html_pereto_df = "plots_for_streamlit/pareto_chart.html"
+             #html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
              pereto_analyis = pd.ExcelFile(pereto_file)
-             pereto_sheet_names = pereto_analyis.sheet_names
+             #pereto_sheet_names = pereto_analyis.sheet_names
 
          except FileNotFoundError:
              st.error(f"File not found: {pereto_file}")
              st.stop()
 
          pereto_sheet = st.selectbox("Select data for Pereto_analysis", pereto_sheet_names)
-         pereto_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet)
+         pereto_df = pd.read_excel(pereto_analyis)
 
          if pereto_sheet == "Original_df":
              st.dataframe(pereto_df)
@@ -139,58 +139,14 @@ if sidebar_option == "Data Preview":
                      dt_html = f.read()
                  components.html(dt_html, height=1500)
 
-         elif pereto_sheet == "Data_for_model_run":
+         '''elif pereto_sheet == "Data_for_model_run":
              st.dataframe(pereto_df)
              st.markdown("## Pereto_analysis_after_model_run")
              if os.path.exists(html_pereto_df_clean):
                  with open(html_pereto_df_clean, "r", encoding="utf-8") as f:
                      dt_html = f.read()
-                 components.html(dt_html, height=1500)
-
-
-
-         st.subheader("📋 Data Summary for Original DF")
-         summary_df = pd.read_excel(summary)
-         st.dataframe(summary_df)
-
-         st.subheader("📋 Data Summary for Original DF")
-         summary_df = pd.read_excel(summary)
-         st.dataframe(summary_df)
-         st.subheader("📋 Pereto Analysis")
-         try:
-            pereto_file = "pereto_analysis_file.xlsx"
-            html_pereto_df = "pareto_chart_by_area.html"
-            html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
-            pereto_analyis = pd.ExcelFile(pereto_file)
-            pereto_sheet_names = pereto_analyis.sheet_names
-
-         except FileNotFoundError:
-             st.error(f"File not found: {pereto_file}")
-             st.stop()
-
-         pereto_sheet = st.selectbox("Select data for Pereto_analysis", pereto_sheet_names)
-         pereto_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet)
-
-         if pereto_sheet == "Original_df":
-             st.dataframe(pereto_df)
-             st.markdown("## Pereto_analysis_original_df")
-             if os.path.exists(html_pereto_df):
-                 with open(html_pereto_df, "r", encoding="utf-8") as f:
-                     dt_html = f.read()
-                 components.html(dt_html, height=1500)
-
-         elif pereto_sheet == "Data_for_model_run":
-             st.dataframe(pereto_df)
-             st.markdown("## Pereto_analysis_after_model_run")
-             if os.path.exists(html_pereto_df_clean):
-                 with open(html_pereto_df_clean, "r", encoding="utf-8") as f:
-                     dt_html = f.read()
-                 components.html(dt_html, height=1500)
-
-        
-
-
-
+                 components.html(dt_html, height=1500)'''
+                 
     with tab3:
         st.subheader("📦 Box Plot Comparison: Original vs Cleaned Data")
         for col in ['procedure_area', 'meter_sale_price']:
