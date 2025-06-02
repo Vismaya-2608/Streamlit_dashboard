@@ -86,7 +86,7 @@ if sidebar_option == "Data Summary":
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
     st.subheader("📍Pareto Analysis")
-     try:
+    try:
             pereto_file = "pereto_analysis_file.xlsx"
             html_pereto_df = "pareto_analysis_plot.html"
             pereto_analyis = pd.ExcelFile(pereto_file)
