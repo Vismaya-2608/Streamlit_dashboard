@@ -124,133 +124,97 @@ elif sidebar_option == "Pareto Analysis":
             st.dataframe(pareto_summary, use_container_width=True)  
 
 # --- View 3: Univariate Analysis  ---
-elif sidebar_option == "Univariate Analysis":
-    st.subheader("📊 Box Plot and Mean Line Plot by Categorical Columns")
+if sidebar_option == "Univariate Analysis":
+
+    # Load Excel Sheets
     try:
+        cat_plot_path = "original_df_description_tables.xlsx"
         xls = pd.ExcelFile(cat_plot_path)
         sheet_names = xls.sheet_names
     except FileNotFoundError:
         st.error(f"File not found: {cat_plot_path}")
         st.stop()
 
-    sheet = st.selectbox("Select Sheet to Visualize", sheet_names)
-    df_plot = pd.read_excel(xls, sheet_name=sheet)
-    st.write(f"### Sheet: {sheet}")
-    st.dataframe(df_plot)
+    main_tabs = st.tabs([ "Categorical column wise","Outliers Columns"])
 
-    def plot_boxplot(df):
-        if 'instance_year' not in df.columns:
-            return None
-
-        group_col = df.columns[2] if len(df.columns) > 2 else None
-        required_cols = {'count', 'min', 'mean', '25%', '50%', '75%', 'max'}
-        if not required_cols.issubset(df.columns):
-            return None
-
-        # Aggregate statistics
-        if group_col and group_col in df.columns:
-            grouped = df.groupby(group_col).agg({
-                'count': 'sum',
-                'min': 'min',
-                'mean': 'mean',
-                '25%': 'mean',
-                '50%': 'mean',
-                '75%': 'mean',
-                'max': 'max'
-            }).reset_index()
+    with main_tabs[1]:
+        box_sale_img = "Raw Data_boxplot.png"
+        if os.path.exists(box_sale_img):
+            st.image(box_sale_img, use_container_width=True)
+             
         else:
-            grouped = pd.DataFrame([{
-                'count': df['count'].sum(),
-                'min': df['min'].min(),
-                'mean': df['mean'].mean(),
-                '25%': df['25%'].mean(),
-                '50%': df['50%'].mean(),
-                '75%': df['75%'].mean(),
-                'max': df['max'].max(),
-                group_col: 'Overall'
-            }])
+            st.warning("Image not found. Please generate the plot first.")
 
-        fig = go.Figure()
-        colors = px.colors.qualitative.Set2  # You can change palette here
-
-        for idx, (_, row) in enumerate(grouped.iterrows()):
-            q1 = row['25%']
-            q3 = row['75%']
-            iqr = q3 - q1
-            lower_fence = q1 - 1.5 * iqr
-            upper_fence = q3 + 1.5 * iqr
-            name = row[group_col] if group_col else 'Overall'
-
-            fig.add_trace(go.Box(
-                name=name,
-                y=[row['min'], q1, row['50%'], q3, row['max']],
-                boxpoints='outliers',
-                marker=dict(color=colors[idx % len(colors)]),
-                line=dict(color=colors[idx % len(colors)]),
-                q1=[q1],
-                median=[row['50%']],
-                q3=[q3],
-                lowerfence=[lower_fence],
-                upperfence=[upper_fence],
-                orientation='v'  # vertical (default)
-                ))
-
-        fig.update_layout(
-            title=f"Aggregated Box Plot by {group_col if group_col else 'Overall'}",
-            yaxis_title="Meter Sale Price",
-            xaxis_title=group_col if group_col else '',
-            boxmode='group'
-        )
-        return fig
-
-
-    # 📈 Mean Line Plot Function
-    def plot_mean_line(df):
-        if 'instance_year' not in df.columns or 'mean' not in df.columns:
-            return None
-
-        legend_col = df.columns[2] if len(df.columns) > 2 else None
-        fig = go.Figure()
-
-        if legend_col and legend_col in df.columns:
-            for name, group_df in df.groupby(legend_col):
-                fig.add_trace(go.Scatter(
-                    x=group_df['instance_year'],
-                    y=group_df['mean'],
-                    mode='lines+markers',
-                    name=str(name)
-                ))
+        box_sale_img = "Raw Data_boxplot_area.png"
+        if os.path.exists(box_sale_img):
+             st.image(box_sale_img, use_container_width=True)
         else:
-            fig.add_trace(go.Scatter(
-                x=df['instance_year'],
-                y=df['mean'],
-                mode='lines+markers',
-                name='Mean'
-            ))
+            st.warning("Image not found. Please generate the plot first.")
 
-        fig.update_layout(
-            title=f'Mean (Meter Sale Price) Over Years by {legend_col if legend_col else "N/A"}',
-            xaxis_title='Instance Year',
-            yaxis_title='Mean (Meter Sale Price)',
-            hovermode='x unified'
-        )
-        return fig
+    with main_tabs[0]:
+        # Select sheet before tabs
+        selected_sheet = st.selectbox("Select categorical column", sheet_names)
+        df = pd.read_excel(xls, sheet_name=selected_sheet)
+        col1 = df.columns[0]  # Category column
 
-    # 🎯 Layout with Plots
-    col1, col2 = st.columns(2)
+        tab1, tab2 = st.tabs(["📋 Summary Table", "📈 Plots"])
 
-    with col1:
-        st.subheader("📦 Aggregated Box Plot")
-        box_fig = plot_boxplot(df_plot)
-        if box_fig:
-            st.plotly_chart(box_fig, use_container_width=True)
-        else:
-            st.info("Box plot not available due to missing columns or data.")
+        with tab1:
+            st.dataframe(df, use_container_width=True)
 
-    with col2:
-        st.subheader("📈 Mean Line Plot")
-        line_fig = plot_mean_line(df_plot)
-        if line_fig:
-            st.plotly_chart(line_fig, use_container_width=True)
-        else:
-            st.info("Mean line plot not available due to missing columns or data.")
+        with tab2:
+            colA, colB = st.columns(2)
+
+            # Box plot per category using summary stats columns
+            def plot_boxplot_per_category(df, cat_col):
+                required_cols = {'min', '25%', '50%', '75%', 'max'}
+                if not required_cols.issubset(df.columns):
+                    return None
+
+                fig = go.Figure()
+
+                for _, row in df.iterrows():
+                    category = row[cat_col]
+                    q1 = row['25%']
+                    median = row['50%']
+                    q3 = row['75%']
+                    min_val = row['min']
+                    max_val = row['max']
+                    iqr = q3 - q1
+                    lower_fence = max(min_val, q1 - 1.5 * iqr)
+                    upper_fence = min(max_val, q3 + 1.5 * iqr)
+
+                    fig.add_trace(go.Box(
+                        name=str(category),
+                        q1=[q1],
+                        median=[median],
+                        q3=[q3],
+                        lowerfence=[lower_fence],
+                        upperfence=[upper_fence],
+                        boxpoints=False
+                    ))
+
+                fig.update_layout(
+                    title=f"Box Plot by {cat_col}",
+                    yaxis_title="Meter Sale Price",
+                    boxmode='group',
+                    xaxis_title=cat_col
+                )
+                return fig
+
+            with colA:
+                st.markdown("### 📦 Box Plot by Category")
+                fig_box = plot_boxplot_per_category(df, col1)
+                if fig_box:
+                    st.plotly_chart(fig_box, use_container_width=True)
+                else:
+                    st.warning("Required columns ('min', '25%', '50%', '75%', 'max') not found.")
+
+            with colB:
+                st.markdown("### 📊 Bar Plot (nRecords)")
+                if "nRecords" in df.columns:
+                    fig_bar = px.bar(df, x=col1, y="nRecords", title=f"nRecords by {col1}", color=col1)
+                    st.plotly_chart(fig_bar, use_container_width=True)
+                else:
+                    st.warning("'nRecords' column not found.")
+
