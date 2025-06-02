@@ -95,6 +95,14 @@ elif sidebar_option == "Pareto Analysis":
              st.error(f"File not found: {pereto_file}")
              st.stop()
     all_sheets_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet_names)
+    
+     # Extract specific sheets
+    pareto_summary = all_sheets_df["Pereto_Analysis_by_area_name"]
+    ABC_summary = all_sheets_df["ABC_Area_name"]
+
+    tab1, tab2 = st.tabs(["ABC Summary", "Pareto Analysis Table"])
+    
+
    
 
 # --- View 3: Plots on Categorical Columns ---
