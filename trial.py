@@ -1,4 +1,3 @@
-
 import streamlit as st
 import streamlit.components.v1 as components
 import os
@@ -84,10 +83,10 @@ if sidebar_option == "Data Summary":
         summary_df = summary_df.drop(columns = ["S.no", "Level"])
         st.dataframe(summary_df)
 
-# --- View 2: Map Visualization ---
-elif sidebar_option == "Map Visualization":
-    st.subheader("📍 Dubai Area-wise Avg. Meter Sale Price and Transaction Count")
-    required_cols = {'area_lat', 'area_lon', 'Transaction Count', 'Average Meter Sale Price', 'area_name_en'}
+# --- View 2: Pareto Analysis ---
+elif sidebar_option == "Pareto Analysis":
+    st.subheader("📍Pareto Analysis")
+    tab1, tab2 = st.tabs(["ABC summary", "Pareto Analysis Table"])
 
     if required_cols.issubset(df_area_plot_stats.columns):
         fig = px.scatter_mapbox(
