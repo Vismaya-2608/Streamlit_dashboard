@@ -112,12 +112,12 @@ elif sidebar_option == "Pareto Analysis":
             st.error("Pareto analysis HTML file not found.")
             
             # ABC Summary Table
-            st.markdown("### 📋 ABC Summary Table")
-            if 'nRecords' in ABC_summary.columns:
-                    ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                ABC_summary.index = range(1, len(ABC_summary) + 1)
-                st.dataframe(ABC_summary, use_container_width=True)
-            else:
+        st.markdown("### 📋 ABC Summary Table")
+        #if 'nRecords' in ABC_summary.columns:
+        ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+        ABC_summary.index = range(1, len(ABC_summary) + 1)
+        st.dataframe(ABC_summary, use_container_width=True)
+        else:
                 st.warning("ABC Summary data is empty or not loaded.")
         with tab2:
             st.markdown("### Pareto Analysis by Area_name_en")
