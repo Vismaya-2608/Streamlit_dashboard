@@ -10,10 +10,7 @@ from plotly.subplots import make_subplots
 
 # --- Page Config ---
 st.set_page_config(layout="wide")
-st.title("🔍 Dubai Real Estate Dashboard")
-
-
-
+st.sidebar.title("🔍 FlipOse-RE-Analytics")
 
 # --- File Paths ---
 df_path = "target_df.csv"
@@ -40,181 +37,52 @@ def load_excel(file_path):
 
 # --- Load Main Dataset ---
 df = load_csv(df_path)
-st.sidebar.success("Main data loaded.")
-
-# --- Remove Outliers ---
-def remove_outliers(df, col):
-    q1, q3 = df[col].quantile([0.25, 0.75])
-    iqr = q3 - q1
-    return df[(df[col] >= q1 - 1.5 * iqr) & (df[col] <= q3 + 1.5 * iqr)]
-
-df_clean = df.copy()
-for col in ['meter_sale_price', 'procedure_area']:
-    if col in df_clean.columns:
-        df_clean = remove_outliers(df_clean, col)
+st.sidebar.success("All data loaded, 🔍 Explore the Dash Board")
 
 # --- Load Area Stats ---
 df_area_plot_stats = load_excel(area_stats_path)
-st.sidebar.success("Area stats loaded.")
 
 # --- Sidebar Navigation ---
 sidebar_option = st.sidebar.radio("Choose View", [
-    "Data Preview",
-    "Map Visualization",
-    "Plots on Categorical Columns",
+    "Data Summary",
+    "Pareto Analysis",
+    "Univariate Analysis",
+    "Bivariate Analysis,
+    "Geo graphical Analysis",
+    "Price Prediction Model"
 ])
 
-# --- View 1: Data Preview ---
-if sidebar_option == "Data Preview":
-    tab1, tab2, tab3 = st.tabs(["Preview", "Summary", "Box Plots"])
+# --- View 1: Data Summary ---
+if sidebar_option == "Data Summary":
+    st.subheader("📄 Transactions Data")
+    tab1, tab2 = st.tabs(["Data Preview", "Summary"])
     with tab1:
         sample_df = pd.read_csv(sample)
-        st.subheader("📄 Original DF Preview")
+        st.markdown("--> Repeated columns i.e Arabic and Id columns are dropped from Data")
+        sample_df  = sample_df.drop(sample_df.columns[0], axis=1)
         st.dataframe(sample_df)
 
 
     with tab2:
-         st.subheader("📊 Overview Metrics")
-
-        # CSS for button-style metrics
-         st.markdown("""
-             <style>
-             .metric-button {
-                 display: inline-block;
-                 background-color: #4CAF50;
-                 color: white;
-                 padding: 15px 25px;
-                 font-size: 18px;
-                 border-radius: 10px;
-                 margin: 10px;
-                 text-align: center;
-                 box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-             }
-             .metric-label {
-                 font-weight: bold;
-                 font-size: 14px;
-                 margin-bottom: 5px;
-                 display: block;
-             }
-             </style>
-         """, unsafe_allow_html=True)
-
-         col1, col2 = st.columns(2)
-
-         with col1:
-             st.markdown("""
-                 <div class="metric-button">
-                    <span class="metric-label">Total Records</span>
-                     1,424,588
-                 </div>
-             """, unsafe_allow_html=True)
-
-         with col2:
-             st.markdown("""
-                 <div class="metric-button" style="background-color:#2196F3;">
-                     <span class="metric-label">Total Columns</span>
-                     46
-                 </div>
-             """, unsafe_allow_html=True)
-         st.subheader("📋 Pereto Analysis")
-         try:
-             pereto_file = "pareto_analysis.xlsx"
-             html_pereto_df = "plots_for_streamlit/pareto_chart.html"
-             #html_pereto_df_clean = "pareto_analysis_plot_after_model_run.html"
-             pereto_analyis = pd.ExcelFile(pereto_file)
-             #pereto_sheet_names = pereto_analyis.sheet_names
-
-         except FileNotFoundError:
-             st.error(f"File not found: {pereto_file}")
-             st.stop()
-
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric(label="Number of Columns", values = 46)
+        with col2:
+            st.metric(label="Total records", values = "1,424,588")
+        with col3:
+            st.metric(label="Start Date(Instance_date)", value="1966-01-18")
+        with col4:
+            st.metric(label="End Date(Instance_date)", value="2025-04-03")
         
-         pereto_df = pd.read_excel(pereto_analyis)
+        summary_df = pd.read_excel(summary)
+        # Format all numeric columns with commas
+        for col in summary_df.select_dtypes(include='number').columns:
+            summary_df[col] = summary_df[col].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
 
-         if pereto_sheet == "Original_df":
-             st.dataframe(pereto_df)
-             st.markdown("## Pereto_analysis_original_df")
-             if os.path.exists(html_pereto_df):
-                 with open(html_pereto_df, "r", encoding="utf-8") as f:
-                     dt_html = f.read()
-                 components.html(dt_html, height=1500)
-
-         '''elif pereto_sheet == "Data_for_model_run":
-             st.dataframe(pereto_df)
-             st.markdown("## Pereto_analysis_after_model_run")
-             if os.path.exists(html_pereto_df_clean):
-                 with open(html_pereto_df_clean, "r", encoding="utf-8") as f:
-                     dt_html = f.read()
-                 components.html(dt_html, height=1500)'''
-                 
-    with tab3:
-        st.subheader("📦 Box Plot Comparison: Original vs Cleaned Data")
-        for col in ['procedure_area', 'meter_sale_price']:
-            if col in df.columns and col in df_clean.columns:
-                st.markdown(f"### 🔍 `{col}`")
-                col1, col2 = st.columns(2)
-
-                with col1:
-                    st.markdown("**Original**")
-                    fig1 = go.Figure(go.Box(y=df[col], name='Original', boxmean='sd', marker_color='royalblue'))
-                    fig1.update_layout(yaxis_title=col)
-                    st.plotly_chart(fig1, use_container_width=True)
-
-                with col2:
-                    st.markdown("**Cleaned**")
-                    fig2 = go.Figure(go.Box(y=df_clean[col], name='Cleaned', boxmean='sd', marker_color='seagreen'))
-                    fig2.update_layout(yaxis_title=col)
-                    st.plotly_chart(fig2, use_container_width=True)
-            else:
-                st.warning(f"Column `{col}` not found in both datasets.")
-
-    if 'instance_year' in df.columns and 'meter_sale_price' in df.columns:
-        st.markdown("### 📊 Avg Meter Sale Price & Distribution by Instance Year (Original Data)")
-
-        # Group data
-        agg_data = df.groupby('instance_year')['meter_sale_price'].agg(['mean', 'count']).reset_index()
-
-        # Create subplot with secondary y-axis
-        fig_combo = make_subplots(specs=[[{"secondary_y": True}]])
-
-        # Add line plot for average price
-        fig_combo.add_trace(
-            go.Scatter(
-            x=agg_data['instance_year'],
-            y=agg_data['mean'],
-            name="Avg Meter Sale Price",
-            mode="lines+markers",
-            line=dict(color='darkorange')
-            ),
-            secondary_y=False,
-        )
-
-        # Add bar plot for count (distribution)
-        fig_combo.add_trace(
-            go.Bar(
-            x=agg_data['instance_year'],
-            y=agg_data['count'],
-            name="Count",
-            marker_color='lightskyblue',
-            opacity=0.6
-            ),
-            secondary_y=True,
-        )
-
-        # Set axis titles
-        fig_combo.update_layout(
-            xaxis_title="Instance Year",
-            title="Avg Meter Sale Price and Count per Year",
-            legend=dict(x=0.5, y=1.1, orientation='h', xanchor='center'),
-        )
-
-        fig_combo.update_yaxes(title_text="Avg Meter Sale Price", secondary_y=False)
-        fig_combo.update_yaxes(title_text="Count", secondary_y=True)
-
-        #    Display plot
-        st.plotly_chart(fig_combo, use_container_width=True)
-
-
+        summary_df.index = range(1, len(summary_df) + 1)
+        summary_df.rename(columns={'No_of_units': 'Num_of_Unique_values'}, inplace=True)
+        summary_df = summary_df.drop(columns = ["S.no", "Level"])
+        st.dataframe(summary_df)
 
 # --- View 2: Map Visualization ---
 elif sidebar_option == "Map Visualization":
