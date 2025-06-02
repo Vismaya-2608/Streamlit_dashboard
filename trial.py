@@ -113,7 +113,6 @@ elif sidebar_option == "Pareto Analysis":
             
             # ABC Summary Table
         st.markdown("### 📋 ABC Summary Table")
-        #if 'nRecords' in ABC_summary.columns:
         ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
         ABC_summary.index = range(1, len(ABC_summary) + 1)
         st.dataframe(ABC_summary, use_container_width=True)
@@ -122,16 +121,10 @@ elif sidebar_option == "Pareto Analysis":
             st.markdown("### Pareto Analysis by Area_name_en")
             pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
             pareto_summary.index = range(1, len(pareto_summary) + 1)
-            st.dataframe(pareto_summary, use_container_width=True)
+            st.dataframe(pareto_summary, use_container_width=True)  
 
-
-
-
-
-   
-
-# --- View 3: Plots on Categorical Columns ---
-elif sidebar_option == "Plots on Categorical Columns":
+# --- View 3: Univariate Analysis  ---
+elif sidebar_option == "Univariate Analysis":
     st.subheader("📊 Box Plot and Mean Line Plot by Categorical Columns")
     try:
         xls = pd.ExcelFile(cat_plot_path)
