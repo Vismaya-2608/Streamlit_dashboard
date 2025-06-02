@@ -100,7 +100,6 @@ elif sidebar_option == "Pareto Analysis":
 # --- View 3: Plots on Categorical Columns ---
 elif sidebar_option == "Plots on Categorical Columns":
     st.subheader("📊 Box Plot and Mean Line Plot by Categorical Columns")
-
     try:
         xls = pd.ExcelFile(cat_plot_path)
         sheet_names = xls.sheet_names
