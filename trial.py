@@ -73,7 +73,7 @@ if sidebar_option == "Data Summary":
         with col4:
             st.metric(label="End Date(Instance_date)", value="2025-04-03")
         
-        summary_df = pd.read_excel("summary")
+        summary_df = pd.read_excel(summary)
         # Format all numeric columns with commas
         for col in summary_df.select_dtypes(include='number').columns:
             summary_df[col] = summary_df[col].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
