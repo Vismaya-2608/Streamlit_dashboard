@@ -80,7 +80,7 @@ if sidebar_option == "Data Summary":
 
         summary_df.index = range(1, len(summary_df) + 1)
         summary_df.rename(columns={'No_of_units': 'Num_of_Unique_values'}, inplace=True)
-        #summary_df = summary_df.drop(columns = ["S.no", "Level"])
+        summary_df = summary_df.drop(columns = ["Unnamed: 0"])
         st.dataframe(summary_df)
 
 # --- View 2: Pareto Analysis ---
