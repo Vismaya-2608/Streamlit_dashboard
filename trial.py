@@ -113,8 +113,7 @@ elif sidebar_option == "Pareto Analysis":
             
             # ABC Summary Table
             st.markdown("### 📋 ABC Summary Table")
-            if ABC_summary is not None and not ABC_summary.empty:
-                if 'nRecords' in ABC_summary.columns:
+            if 'nRecords' in ABC_summary.columns:
                     ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
                 ABC_summary.index = range(1, len(ABC_summary) + 1)
                 st.dataframe(ABC_summary, use_container_width=True)
