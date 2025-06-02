@@ -86,25 +86,16 @@ if sidebar_option == "Data Summary":
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
     st.subheader("📍Pareto Analysis")
-    tab1, tab2 = st.tabs(["ABC summary", "Pareto Analysis Table"])
-
-    if required_cols.issubset(df_area_plot_stats.columns):
-        fig = px.scatter_mapbox(
-            df_area_plot_stats,
-            lat='area_lat',
-            lon='area_lon',
-            size='Transaction Count',
-            color='Average Meter Sale Price',
-            hover_name='area_name_en',
-            hover_data={'Transaction Count': True, 'Average Meter Sale Price': ':.2f'},
-            color_continuous_scale='Viridis',
-            size_max=30,
-            zoom=9
-        )
-        fig.update_layout(mapbox_style='open-street-map', margin={"r": 0, "t": 40, "l": 0, "b": 0})
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("Required columns not found in area stats file.")
+     try:
+            pereto_file = "pereto_analysis_file.xlsx"
+            html_pereto_df = "pareto_analysis_plot.html"
+            pereto_analyis = pd.ExcelFile(pereto_file)
+            pereto_sheet_names = pereto_analyis.sheet_names
+    except  FileNotFoundError:
+             st.error(f"File not found: {pereto_file}")
+             st.stop()
+    all_sheets_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet_names)
+   
 
 # --- View 3: Plots on Categorical Columns ---
 elif sidebar_option == "Plots on Categorical Columns":
