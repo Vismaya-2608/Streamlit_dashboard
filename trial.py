@@ -117,7 +117,7 @@ elif sidebar_option == "Pareto Analysis":
         if os.path.exists(html_pereto_df):
             with open(html_pereto_df, "r", encoding="utf-8") as f:
                 dt_html = f.read()
-            components.html(dt_html,width=1000,scrolling=True)
+            components.html(dt_html,width=10000,height=10000,scrolling=True)
         else:
             st.error("Pareto analysis HTML file not found.")
 
