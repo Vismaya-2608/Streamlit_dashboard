@@ -269,10 +269,18 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    
-    cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
-                "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name","instance_year"]
-    cat = st.selectbox("nRecords and Avg_Meter_Sale_Price(Dirham) by:", cat_cols)
+
+    st.header("Bivariate Analysis: nRecords and Avg_Meter_Sale_Price (Dirham)")
+
+    # Step 1: Dropdown selector at the top
+    cat_cols = [
+        "transaction_group", "property_type", "property_sub_type", "property_usage", 
+        "landmark", "metro_station", "mall", "room_type", "registration_type", 
+        "procedure_name", "instance_year"
+    ]
+    cat = st.selectbox("Select categorical column for analysis:", cat_cols)
+
+    # Step 2: Define HTML plot file map
     plot_map = {
         "transaction_group":  "meter_sale_price&trans_group_en_plot.html",
         "property_type":  "meter_sale_price&property_type_en_plot.html",
@@ -282,78 +290,77 @@ if sidebar_option == "Bivariate Analysis":
         "landmark": "meter_sale_price&nearest_landmark_en_plot.html",
         "mall": "meter_sale_price&nearest_mall_en_plot.html",
         "room_type": "meter_sale_price&rooms_en_plot.html",
-        "registration_type" : "meter_sale_price&reg_type_en_plot.html",
-        "procedure_name" : "meter_sale_price&procedure_name_en_plot.html",
-        "instance_year" : "average_meter_sale_price_comparison_data_model.html"
-        }
-    col1,col2 = st.columns(2)
+        "registration_type": "meter_sale_price&reg_type_en_plot.html",
+        "procedure_name": "meter_sale_price&procedure_name_en_plot.html",
+        "instance_year": "average_meter_sale_price_comparison_data_model.html"
+    }
+
+    # Step 3: Read the Excel for box plot data
+    try:
+        cat_plot_path = "original_df_description_tables.xlsx"
+        xls = pd.ExcelFile(cat_plot_path)
+        sheet_names = xls.sheet_names
+        selected_sheet = sheet_names[cat_cols.index(cat)]  # Optional: auto match sheet to cat
+        df = pd.read_excel(xls, sheet_name=selected_sheet)
+    except FileNotFoundError:
+        st.error(f"Excel file not found: {cat_plot_path}")
+        st.stop()
+    except Exception as e:
+        st.error(f"Error loading Excel sheet: {e}")
+        st.stop()
+
+    # Step 4: Display two columns
+    col1, col2 = st.columns(2)
+
     with col1:
-    
         plot_file = plot_map[cat]
-        year_plot = plot_map["instance_year"]  # Use the correct map reference
-
-    # Display category-wise plot
-    if os.path.exists(plot_file):
-        with open(plot_file, "r", encoding="utf-8") as f:
-            components.html(f.read(), height=400, scrolling=True)
-    else:
-        st.warning(f"{plot_file} not found.")
-
-    # Display year-wise plot (only when 'instance_year' is selected)
-    if cat == "instance_year":
-        if os.path.exists(year_plot):
-            with open(year_plot, "r", encoding="utf-8") as f:
-                html_content = f.read()
-                components.html(html_content, height=400, scrolling=True)
+        if os.path.exists(plot_file):
+            with open(plot_file, "r", encoding="utf-8") as f:
+                components.html(f.read(), height=400, scrolling=True)
         else:
-            st.warning("Year-wise plot file not found.")
+            st.warning(f"{plot_file} not found.")
 
     with col2:
-        try:
-            cat_plot_path = "original_df_description_tables.xlsx"
-            xls = pd.ExcelFile(cat_plot_path)
-            sheet_names = xls.sheet_names
-        except FileNotFoundError:
-            st.error(f"File not found: {cat_plot_path}")
-            st.stop()
-        selected_sheet = st.selectbox("Select categorical column", sheet_names)
-        df = pd.read_excel(xls, sheet_name=selected_sheet)
-        col1 = df.columns[0]  # Category column
         def plot_boxplot_per_category(df, cat_col):
-                required_cols = {'min', '25%', '50%', '75%', 'max'}
-                if not required_cols.issubset(df.columns):
-                    return None
+            required_cols = {'min', '25%', '50%', '75%', 'max'}
+            if not required_cols.issubset(df.columns):
+                st.warning("DataFrame missing required quantile columns.")
+                return None
 
-                fig = go.Figure()
+            fig = go.Figure()
+            for _, row in df.iterrows():
+                category = row[cat_col]
+                q1 = row['25%']
+                median = row['50%']
+                q3 = row['75%']
+                min_val = row['min']
+                max_val = row['max']
+                iqr = q3 - q1
+                lower_fence = max(min_val, q1 - 1.5 * iqr)
+                upper_fence = min(max_val, q3 + 1.5 * iqr)
 
-                for _, row in df.iterrows():
-                    category = row[cat_col]
-                    q1 = row['25%']
-                    median = row['50%']
-                    q3 = row['75%']
-                    min_val = row['min']
-                    max_val = row['max']
-                    iqr = q3 - q1
-                    lower_fence = max(min_val, q1 - 1.5 * iqr)
-                    upper_fence = min(max_val, q3 + 1.5 * iqr)
+                fig.add_trace(go.Box(
+                    name=str(category),
+                    q1=[q1],
+                    median=[median],
+                    q3=[q3],
+                    lowerfence=[lower_fence],
+                    upperfence=[upper_fence],
+                    boxpoints=False
+                ))
 
-                    fig.add_trace(go.Box(
-                        name=str(category),
-                        q1=[q1],
-                        median=[median],
-                        q3=[q3],
-                        lowerfence=[lower_fence],
-                        upperfence=[upper_fence],
-                        boxpoints=False
-                    ))
+            fig.update_layout(
+                title=f"Box Plot by {cat_col}",
+                yaxis_title="Meter Sale Price",
+                boxmode='group',
+                xaxis_title=cat_col
+            )
+            return fig
 
-                fig.update_layout(
-                    title=f"Box Plot by {cat_col}",
-                    yaxis_title="Meter Sale Price",
-                    boxmode='group',
-                    xaxis_title=cat_col
-                )
-                return fig
+        box_plot = plot_boxplot_per_category(df, df.columns[0])
+        if box_plot:
+            st.plotly_chart(box_plot, use_container_width=True)
+
 
     
 
