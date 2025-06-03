@@ -125,7 +125,7 @@ elif sidebar_option == "Pareto Analysis":
 
     with tab3:
         col1,col2 = st.columns(2)
-        with col1:
+        with col2:
             df = ABC_summary
             # Create figure with secondary y-axis
             fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -167,7 +167,7 @@ elif sidebar_option == "Pareto Analysis":
             # Show the plot in Streamlit
             st.plotly_chart(fig)
 
-        with col2:
+        with col1:
             # ABC Summary Table
             st.markdown("### 📋 ABC Summary Table")
             ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
