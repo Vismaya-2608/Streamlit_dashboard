@@ -288,22 +288,26 @@ if sidebar_option == "Bivariate Analysis":
         }
     
     # Display only one plot
+# Define file paths
 plot_file = plot_map[cat]
+instance_year = "average_meter_sale_price_comparison_data_model.html"
+year_plot = instance_year  # or point it to a different path if needed
 
-# Display the category-wise plot if the file exists
+# Category-wise plot
 if os.path.exists(plot_file):
     with open(plot_file, "r", encoding="utf-8") as f:
         components.html(f.read(), height=400, scrolling=True)
 else:
     st.warning(f"{plot_file} not found.")
 
-# Display the year-wise plot if the file exists
+# Year-wise plot
 if os.path.exists(instance_year):
     with open(year_plot, "r", encoding="utf-8") as f:
         html_content = f.read()
         components.html(html_content, height=400, scrolling=True)
 else:
     st.warning("Year-wise plot file not found.")
+
  
             
             
