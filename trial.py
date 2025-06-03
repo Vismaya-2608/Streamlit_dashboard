@@ -269,10 +269,10 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    st.markdown("### 📋nRecords and Avg_Meter_Sale_Price(Dirham) by")
+    
     cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
                 "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name"]
-    cat = st.selectbox("Select a categorical column:", cat_cols)
+    cat = st.selectbox("nRecords and Avg_Meter_Sale_Price(Dirham) by:", cat_cols)
     plot_map = {
         "transaction_group":  "meter_sale_price&trans_group_en_plot.html",
         "property_type":  "meter_sale_price&property_type_en_plot.html",
