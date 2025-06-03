@@ -294,7 +294,7 @@ if sidebar_option == "Bivariate Analysis":
             components.html(f.read(), height=400, scrolling=True)
     else:
         st.warning(f"{plot_file} not found.")
-    if os.path.exists(year_plot):
+    if os.path.exists(instance_year):
         with open(year_plot, "r", encoding="utf-8") as f:
             html_content = f.read()
             components.html(html_content, height=400, scrolling=True)
