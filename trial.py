@@ -271,7 +271,7 @@ if sidebar_option == "Univariate Analysis":
 if sidebar_option == "Bivariate Analysis":
     
     cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
-                "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name"]
+                "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name","instance_year"]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price(Dirham) by:", cat_cols)
     plot_map = {
         "transaction_group":  "meter_sale_price&trans_group_en_plot.html",
