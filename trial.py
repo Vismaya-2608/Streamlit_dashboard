@@ -103,10 +103,10 @@ elif sidebar_option == "Pareto Analysis":
     tab1, tab2, tab3= st.tabs(["Table", "Chart","ABC summary"])
     with tab1:
         st.markdown("### 📊 Pareto Table")
-         st.markdown("### Pareto Analysis by Area_name_en")
-         pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-         pareto_summary.index = range(1, len(pareto_summary) + 1)
-         st.dataframe(pareto_summary, use_container_width=True)  
+        st.markdown("### Pareto Analysis by Area_name_en")
+        pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+        pareto_summary.index = range(1, len(pareto_summary) + 1)
+        st.dataframe(pareto_summary, use_container_width=True)  
 
     with tab2:
         if os.path.exists(html_pereto_df):
