@@ -283,7 +283,7 @@ if sidebar_option == "Bivariate Analysis":
         "mall": "meter_sale_price&nearest_mall_en_plot.html",
         "room_type": "meter_sale_price&rooms_en_plot.html",
         "registration_type" : "meter_sale_price&reg_type_en_plot.html",
-        "procedure_name" : "meter_sale_price&procedure_name_en_plot.html"
+        "procedure_name" : "meter_sale_price&procedure_name_en_plot.html",
         "instance_year" : "average_meter_sale_price_comparison_data_model.html"
         }
     
