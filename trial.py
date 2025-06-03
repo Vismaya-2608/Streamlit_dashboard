@@ -291,7 +291,7 @@ if sidebar_option == "Bivariate Analysis":
 # Define file path
 
 # Category-wise plot
-if os.path.exists(plot_file):
+if os.path.exists(plot_map):
     with open(plot_file, "r", encoding="utf-8") as f:
         components.html(f.read(), height=400, scrolling=True)
 else:
