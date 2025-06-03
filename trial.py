@@ -108,6 +108,7 @@ elif sidebar_option == "Pareto Analysis":
         pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
         pareto_summary['Cumulative_%'] = pareto_summary['Cumulative_%'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         pareto_summary['Percentage(%)'] = pareto_summary['Percentage(%)'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+        pareto_summary['Cum%_Areas'] = pareto_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         pareto_summary.index = range(1, len(pareto_summary) + 1)
         st.dataframe(pareto_summary, use_container_width=True)
         
