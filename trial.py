@@ -85,7 +85,7 @@ if sidebar_option == "Data Summary":
 
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
-    st.subheader("📍Pareto Analysis by area_name")
+    
     try:
             pereto_file = "pereto_analysis_file.xlsx"
             html_pereto_df = "pareto_analysis_plot.html"
@@ -102,15 +102,12 @@ elif sidebar_option == "Pareto Analysis":
 
     tab1, tab2, tab3= st.tabs(["Table", "Chart","ABC summary"])
     with tab1:
-        st.markdown("### 📊 Pareto Table")
+        
         st.markdown("### Pareto Analysis by Area_name_en")
         pareto_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
         pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-        for col in ['Cumulative_%', 'Percentage(%)', 'Cum%_Areas']:
-            if col in pareto_summary.columns:
-        pareto_summary[col] = pareto_summary[col].apply(
-            lambda x: f"{x:.2f}%" if pd.notnull(x) else x
-        )
+        pareto_summary['Cumulative_%'] = pareto_summary['Cumulative_%'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+        pareto_summary['Percentage(%)'] = pareto_summary['Percentage(%)'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         pareto_summary.index = range(1, len(pareto_summary) + 1)
         st.dataframe(pareto_summary, use_container_width=True)
         
