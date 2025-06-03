@@ -269,10 +269,7 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    
-
     # Year Wise Analysis
-    with tab1:
         if st.button("Show Data Preparation Details"):
             st.markdown("""
             ### Data Preparation Details:
@@ -282,6 +279,25 @@ if sidebar_option == "Bivariate Analysis":
                 - From outliers-removed data, we have considered data from the year **2020**.
                     - For the model, we have used data with property type **"Units"**.
             """)
+            st.markdown("### 📋nRecords and Avg_Meter_Sale_Price(Dirham) by")
+            cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
+                "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name"]
+            cat = st.selectbox("Select a categorical column:", cat_cols)
+            
+            plot_map = {
+                "transaction_group":  "meter_sale_price&trans_group_en_plot.html",
+                "property_type":  "meter_sale_price&property_type_en_plot.html",
+                "property_sub_type": "meter_sale_price&property_sub_type_en_plot.html",
+                "property_usage": "meter_sale_price&property_usage_en_plot.html",
+                "metro_station": "meter_sale_price&nearest_metro_en_plot.html",
+                "landmark": "meter_sale_price&nearest_landmark_en_plot.html",
+                "mall": "meter_sale_price&nearest_mall_en_plot.html",
+                "room_type": "meter_sale_price&rooms_en_plot.html",
+                "registration_type" : "meter_sale_price&reg_type_en_plot.html",
+                "procedure_name" : "meter_sale_price&procedure_name_en_plot.html"
+                }
+            
+            
 
         year_plot = "average_meter_sale_price_comparison_data_model.html"
         if os.path.exists(year_plot):
@@ -291,30 +307,4 @@ if sidebar_option == "Bivariate Analysis":
         else:
             st.warning("Year-wise plot file not found.")
 
-    # Categorical Columns Analysis
-    with tab2:
-        cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
-                "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name"]
-        cat = st.selectbox("Select a categorical column:", cat_cols)
-
-        plot_map = {
-            "transaction_group":  "meter_sale_price&trans_group_en_plot.html",
-            "property_type":  "meter_sale_price&property_type_en_plot.html",
-            "property_sub_type": "meter_sale_price&property_sub_type_en_plot.html",
-            "property_usage": "meter_sale_price&property_usage_en_plot.html",
-            "metro_station": "meter_sale_price&nearest_metro_en_plot.html",
-            "landmark": "meter_sale_price&nearest_landmark_en_plot.html",
-            "mall": "meter_sale_price&nearest_mall_en_plot.html",
-            "room_type": "meter_sale_price&rooms_en_plot.html",
-            "registration_type" : "meter_sale_price&reg_type_en_plot.html",
-            "procedure_name" : "meter_sale_price&procedure_name_en_plot.html"
-            }
-
-        # Display only one plot
-        plot_file = plot_map[cat]
-        if os.path.exists(plot_file):
-            with open(plot_file, "r", encoding="utf-8") as f:
-                components.html(f.read(), height=400, scrolling=True)
-        else:
-            st.warning(f"{plot_file} not found.")
-
+   
