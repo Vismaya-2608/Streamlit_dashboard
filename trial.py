@@ -286,6 +286,9 @@ if sidebar_option == "Bivariate Analysis":
         "procedure_name" : "meter_sale_price&procedure_name_en_plot.html",
         "instance_year" : "average_meter_sale_price_comparison_data_model.html"
         }
+    col1,col2 = st.columns(2)
+    with col1:
+    
     plot_file = plot_map[cat]
     year_plot = plot_map["instance_year"]  # Use the correct map reference
 
@@ -304,6 +307,53 @@ if sidebar_option == "Bivariate Analysis":
                 components.html(html_content, height=400, scrolling=True)
         else:
             st.warning("Year-wise plot file not found.")
+
+    with col2:
+        try:
+            cat_plot_path = "original_df_description_tables.xlsx"
+            xls = pd.ExcelFile(cat_plot_path)
+            sheet_names = xls.sheet_names
+        except FileNotFoundError:
+            st.error(f"File not found: {cat_plot_path}")
+            st.stop()
+        selected_sheet = st.selectbox("Select categorical column", sheet_names)
+        df = pd.read_excel(xls, sheet_name=selected_sheet)
+        col1 = df.columns[0]  # Category column
+        def plot_boxplot_per_category(df, cat_col):
+                required_cols = {'min', '25%', '50%', '75%', 'max'}
+                if not required_cols.issubset(df.columns):
+                    return None
+
+                fig = go.Figure()
+
+                for _, row in df.iterrows():
+                    category = row[cat_col]
+                    q1 = row['25%']
+                    median = row['50%']
+                    q3 = row['75%']
+                    min_val = row['min']
+                    max_val = row['max']
+                    iqr = q3 - q1
+                    lower_fence = max(min_val, q1 - 1.5 * iqr)
+                    upper_fence = min(max_val, q3 + 1.5 * iqr)
+
+                    fig.add_trace(go.Box(
+                        name=str(category),
+                        q1=[q1],
+                        median=[median],
+                        q3=[q3],
+                        lowerfence=[lower_fence],
+                        upperfence=[upper_fence],
+                        boxpoints=False
+                    ))
+
+                fig.update_layout(
+                    title=f"Box Plot by {cat_col}",
+                    yaxis_title="Meter Sale Price",
+                    boxmode='group',
+                    xaxis_title=cat_col
+                )
+                return fig
 
     
 
