@@ -85,7 +85,7 @@ if sidebar_option == "Data Summary":
 
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
-    st.subheader("📍Pareto Analysis")
+    st.subheader("📍Pareto Analysis by area_name")
     try:
             pereto_file = "pereto_analysis_file.xlsx"
             html_pereto_df = "pareto_analysis_plot.html"
@@ -100,16 +100,23 @@ elif sidebar_option == "Pareto Analysis":
     pareto_summary = all_sheets_df["Pereto_Analysis_by_area_name"]
     ABC_summary = all_sheets_df["ABC_Area_name"]
 
-    tab1, tab2 = st.tabs(["ABC Summary", "Pareto Analysis Table"])
+    tab1, tab2, tab3= st.tabs(["Table", "Chart","ABC summary"])
     with tab1:
-        st.markdown("### 📊 Pareto Analysis Plot")
-    
+        st.markdown("### 📊 Pareto Table")
+         st.markdown("### Pareto Analysis by Area_name_en")
+         pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+         pareto_summary.index = range(1, len(pareto_summary) + 1)
+         st.dataframe(pareto_summary, use_container_width=True)  
+
+    with tab2:
         if os.path.exists(html_pereto_df):
             with open(html_pereto_df, "r", encoding="utf-8") as f:
                 dt_html = f.read()
             components.html(dt_html, height=500, width=3500, scrolling=False)
         else:
             st.error("Pareto analysis HTML file not found.")
+
+    with tab3:
             
             # ABC Summary Table
         st.markdown("### 📋 ABC Summary Table")
@@ -117,12 +124,6 @@ elif sidebar_option == "Pareto Analysis":
         ABC_summary.index = range(1, len(ABC_summary) + 1)
         st.dataframe(ABC_summary, use_container_width=True)
         
-        with tab2:
-            st.markdown("### Pareto Analysis by Area_name_en")
-            pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-            pareto_summary.index = range(1, len(pareto_summary) + 1)
-            st.dataframe(pareto_summary, use_container_width=True)  
-
 # --- View 3: Univariate Analysis  ---
 if sidebar_option == "Univariate Analysis":
 
