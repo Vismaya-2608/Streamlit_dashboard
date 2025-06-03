@@ -274,24 +274,24 @@ if sidebar_option == "Bivariate Analysis":
 
     # Step 1: Dropdown selector at the top
     cat_cols = [
-        "transaction_group", "property_type", "property_sub_type", "property_usage", 
-        "landmark", "metro_station", "mall", "room_type", "registration_type", 
-        "procedure_name", "instance_year"
+        "trans_group_en", "property_type_en", "property_sub_type_en", "property_usage_en", 
+        "nearest_landmark_en", "nearest_metro_en", "nearest_mall_en", "room_en", "reg_type_en", 
+        "procedure_name_en", "instance_year"
     ]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
 
     # Step 2: Define HTML plot file map
     plot_map = {
-        "transaction_group":  "meter_sale_price&trans_group_en_plot.html",
-        "property_type":  "meter_sale_price&property_type_en_plot.html",
-        "property_sub_type": "meter_sale_price&property_sub_type_en_plot.html",
-        "property_usage": "meter_sale_price&property_usage_en_plot.html",
-        "metro_station": "meter_sale_price&nearest_metro_en_plot.html",
-        "landmark": "meter_sale_price&nearest_landmark_en_plot.html",
+        "trans_group_en":  "meter_sale_price&trans_group_en_plot.html",
+        "property_type_en":  "meter_sale_price&property_type_en_plot.html",
+        "property_sub_type_en": "meter_sale_price&property_sub_type_en_plot.html",
+        "property_usage_en": "meter_sale_price&property_usage_en_plot.html",
+        "nearest_metro_en": "meter_sale_price&nearest_metro_en_plot.html",
+        "nearest_landmark_en": "meter_sale_price&nearest_landmark_en_plot.html",
         "mall": "meter_sale_price&nearest_mall_en_plot.html",
-        "room_type": "meter_sale_price&rooms_en_plot.html",
-        "registration_type": "meter_sale_price&reg_type_en_plot.html",
-        "procedure_name": "meter_sale_price&procedure_name_en_plot.html",
+        "room_en": "meter_sale_price&rooms_en_plot.html",
+        "reg_type_en": "meter_sale_price&reg_type_en_plot.html",
+        "procedure_name_en": "meter_sale_price&procedure_name_en_plot.html",
         "instance_year": "average_meter_sale_price_comparison_data_model.html"
     }
 
