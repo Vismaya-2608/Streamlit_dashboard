@@ -284,7 +284,7 @@ if sidebar_option == "Bivariate Analysis":
         "room_type": "meter_sale_price&rooms_en_plot.html",
         "registration_type" : "meter_sale_price&reg_type_en_plot.html",
         "procedure_name" : "meter_sale_price&procedure_name_en_plot.html"
-        "instance_year":"average_meter_sale_price_comparison_data_model.html"
+        "instance_year" : "average_meter_sale_price_comparison_data_model.html"
         }
     
     # Display only one plot
@@ -294,6 +294,12 @@ if sidebar_option == "Bivariate Analysis":
             components.html(f.read(), height=400, scrolling=True)
     else:
         st.warning(f"{plot_file} not found.")
+    if os.path.exists(year_plot):
+        with open(year_plot, "r", encoding="utf-8") as f:
+            html_content = f.read()
+            components.html(html_content, height=400, scrolling=True)
+    else:
+        st.warning("Year-wise plot file not found.")
             
             
 
