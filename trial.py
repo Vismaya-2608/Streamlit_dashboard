@@ -270,7 +270,7 @@ if sidebar_option == "Univariate Analysis":
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
 
-    st.header("Bivariate Analysis: nRecords and Avg_Meter_Sale_Price (Dirham)")
+    
 
     # Step 1: Dropdown selector at the top
     cat_cols = [
@@ -278,7 +278,7 @@ if sidebar_option == "Bivariate Analysis":
         "landmark", "metro_station", "mall", "room_type", "registration_type", 
         "procedure_name", "instance_year"
     ]
-    cat = st.selectbox("Select categorical column for analysis:", cat_cols)
+    cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
 
     # Step 2: Define HTML plot file map
     plot_map = {
