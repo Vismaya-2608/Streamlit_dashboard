@@ -269,7 +269,7 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    tab1, tab2 = st.tabs(["Year Wise", "Categorical Columns"])
+    
 
     # Year Wise Analysis
     with tab1:
