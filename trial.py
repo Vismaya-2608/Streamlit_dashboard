@@ -269,7 +269,8 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    
+    colA, colB = st.columns(2)
+    with colA:
     cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
                 "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name","instance_year"]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price(Dirham) by:", cat_cols)
@@ -286,24 +287,28 @@ if sidebar_option == "Bivariate Analysis":
         "procedure_name" : "meter_sale_price&procedure_name_en_plot.html",
         "instance_year" : "average_meter_sale_price_comparison_data_model.html"
         }
+    plot_file = plot_map[cat]
+    year_plot = plot_map["instance_year"]  # Use the correct map reference
+
+    # Display category-wise plot
+    if os.path.exists(plot_file):
+        with open(plot_file, "r", encoding="utf-8") as f:
+            components.html(f.read(), height=400, scrolling=True)
+    else:
+        st.warning(f"{plot_file} not found.")
+
+    # Display year-wise plot (only when 'instance_year' is selected)
+    if cat == "instance_year":
+        if os.path.exists(year_plot):
+            with open(year_plot, "r", encoding="utf-8") as f:
+                html_content = f.read()
+                components.html(html_content, height=400, scrolling=True)
+        else:
+            st.warning("Year-wise plot file not found.")
+
     
-    # Display only one plot
-# Define file path
 
-# Category-wise plot
-if os.path.exists(plot_map):
-    with open(plot_file, "r", encoding="utf-8") as f:
-        components.html(f.read(), height=400, scrolling=True)
-else:
-    st.warning(f"{plot_file} not found.")
-
-# Year-wise plot
-if os.path.exists(instance_year):
-    with open(year_plot, "r", encoding="utf-8") as f:
-        html_content = f.read()
-        components.html(html_content, height=400, scrolling=True)
-else:
-    st.warning("Year-wise plot file not found.")
+    
 
  
             
