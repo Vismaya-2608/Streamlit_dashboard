@@ -289,8 +289,8 @@ if sidebar_option == "Bivariate Analysis":
     col1,col2 = st.columns(2)
     with col1:
     
-    plot_file = plot_map[cat]
-    year_plot = plot_map["instance_year"]  # Use the correct map reference
+        plot_file = plot_map[cat]
+        year_plot = plot_map["instance_year"]  # Use the correct map reference
 
     # Display category-wise plot
     if os.path.exists(plot_file):
