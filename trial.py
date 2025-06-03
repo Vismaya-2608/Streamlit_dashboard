@@ -288,10 +288,7 @@ if sidebar_option == "Bivariate Analysis":
         }
     
     # Display only one plot
-# Define file paths
-plot_file = plot_map[cat]
-instance_year = "average_meter_sale_price_comparison_data_model.html"
-year_plot = instance_year  # or point it to a different path if needed
+# Define file path
 
 # Category-wise plot
 if os.path.exists(plot_file):
