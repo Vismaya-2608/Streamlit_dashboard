@@ -285,6 +285,13 @@ if sidebar_option == "Bivariate Analysis":
         "registration_type" : "meter_sale_price&reg_type_en_plot.html",
         "procedure_name" : "meter_sale_price&procedure_name_en_plot.html"
         }
+    # Display only one plot
+    plot_file = plot_map[cat]
+    if os.path.exists(plot_file):
+        with open(plot_file, "r", encoding="utf-8") as f:
+            components.html(f.read(), height=400, scrolling=True)
+    else:
+        st.warning(f"{plot_file} not found.")
             
             
 
