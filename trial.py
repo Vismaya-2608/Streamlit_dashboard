@@ -269,8 +269,7 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    colA, colB = st.columns(2)
-    with colA:
+    
     cat_cols = ["transaction_group", "property_type", "property_sub_type", "property_usage", 
                 "landmark", "metro_station", "mall", "room_type","registration_type","procedure_name","instance_year"]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price(Dirham) by:", cat_cols)
