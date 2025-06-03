@@ -186,23 +186,21 @@ if sidebar_option == "Univariate Analysis":
         st.error(f"File not found: {cat_plot_path}")
         st.stop()
 
-    main_tabs = st.tabs([ "Categorical column wise","Outliers Columns"])
-
-    with main_tabs[1]:
-        box_sale_img = "Raw Data_boxplot.png"
-        if os.path.exists(box_sale_img):
-            st.image(box_sale_img, use_container_width=True)
-             
-        else:
-            st.warning("Image not found. Please generate the plot first.")
-
-        box_sale_img = "Raw Data_boxplot_area.png"
-        if os.path.exists(box_sale_img):
-             st.image(box_sale_img, use_container_width=True)
-        else:
-            st.warning("Image not found. Please generate the plot first.")
+    main_tabs = st.tabs([ "Dimension","Metrix"])
 
     with main_tabs[0]:
+        # Select sheet before tabs
+        selected_sheet = st.selectbox("Select categorical column", sheet_names)
+        df = pd.read_excel(xls, sheet_name=selected_sheet)
+        col1 = df.columns[0]  # Category column
+        st.markdown("### 📊 Bar Plot (nRecords)")
+        if "nRecords" in df.columns:
+            fig_bar = px.bar(df, x=col1, y="nRecords", title=f"nRecords by {col1}", color=col1)
+            st.plotly_chart(fig_bar, use_container_width=True)
+        else:
+            st.warning("'nRecords' column not found.")
+
+    with main_tabs[1]:
         # Select sheet before tabs
         selected_sheet = st.selectbox("Select categorical column", sheet_names)
         df = pd.read_excel(xls, sheet_name=selected_sheet)
