@@ -288,12 +288,4 @@ if sidebar_option == "Bivariate Analysis":
             
             
 
-        '''year_plot = "average_meter_sale_price_comparison_data_model.html"
-        if os.path.exists(year_plot):
-            with open(year_plot, "r", encoding="utf-8") as f:
-                html_content = f.read()
-                components.html(html_content, height=400, scrolling=True)
-        else:
-            st.warning("Year-wise plot file not found.")'''
-
-   
+        
