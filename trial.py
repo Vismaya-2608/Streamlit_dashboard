@@ -288,7 +288,7 @@ if sidebar_option == "Bivariate Analysis":
         "property_usage_en": "meter_sale_price&property_usage_en_plot.html",
         "nearest_metro_en": "meter_sale_price&nearest_metro_en_plot.html",
         "nearest_landmark_en": "meter_sale_price&nearest_landmark_en_plot.html",
-        "mall": "meter_sale_price&nearest_mall_en_plot.html",
+        "nearest_mall_en": "meter_sale_price&nearest_mall_en_plot.html",
         "room_en": "meter_sale_price&rooms_en_plot.html",
         "reg_type_en": "meter_sale_price&reg_type_en_plot.html",
         "procedure_name_en": "meter_sale_price&procedure_name_en_plot.html",
