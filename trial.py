@@ -155,15 +155,17 @@ elif sidebar_option == "Pareto Analysis":
 
         # Axis settings
         fig.update_xaxes(title_text='area_name_en')
-        fig.update_yaxes(title_text='nRecords (log scale)', type='log', secondary_y=False)
 
+        # Manually set linear y-axis for better visibility of all bars
+        fig.update_yaxes(
+            title_text='nRecords',
+            tickvals=np.arange(0, 100001, 20000),
+            range=[0, 100000],  # Adjust max range based on your data
+            secondary_y=False
+        )
         fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
 
-        # Set fixed ticks for y1-axis
-        y1_ticks = np.arange(0, 100001, 20000)
-        fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
-
-        # Breakdown vertical lines at specified areas
+        # Add breakdown lines at specified areas
         wadi_safa_index = df2_sorted[df2_sorted['area_name_en'] == 'Wadi Al Safa 5'].index
         al_hebiah_index = df2_sorted[df2_sorted['area_name_en'] == 'Al Hebiah Third'].index
 
