@@ -202,7 +202,7 @@ elif sidebar_option == "Pareto Analysis":
             fig.update_yaxes(title_text='Cumulative Percentage', secondary_y=True)
 
             fig.update_layout(
-                title_text='ABC Analysis Summary',
+                title_text='ABC chart',
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
                 hovermode='x unified'
             )
@@ -210,7 +210,7 @@ elif sidebar_option == "Pareto Analysis":
             st.plotly_chart(fig)
 
         with col1:
-            st.markdown("Table")
+            st.markdown("ABC Table")
             ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
             ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
             ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
