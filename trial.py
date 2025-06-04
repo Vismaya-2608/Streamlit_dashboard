@@ -215,7 +215,7 @@ elif sidebar_option == "Pareto Analysis":
             ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
             ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
             ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-            ABC_summary['%Records'] = ABC_summary['%Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+            #ABC_summary['%Records'] = ABC_summary['%Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
             ABC_summary['Cum%_Records'] = ABC_summary['Cum%_Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
             ABC_summary['Cum%_Areas'] = ABC_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
             ABC_summary.index = range(1, len(ABC_summary) + 1)
