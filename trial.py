@@ -116,80 +116,78 @@ elif sidebar_option == "Pareto Analysis":
         st.subheader("Pareto Analysis by Area")
 
         excel_file_path = "pereto_analysis_only.xlsx"
-    
+
         if os.path.exists(excel_file_path):
             df2 = pd.read_excel(excel_file_path)
 
-            # Sort dataframe by nRecords in descending order
-            df2_sorted = df2.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
+            # Validate 'nRecords' column
+            if 'nRecords' in df2.columns and pd.api.types.is_numeric_dtype(df2['nRecords']):
+            
+                # Sort and calculate cumulative values
+                df2_sorted = df2.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
+                df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
+                df2_sorted['Cumulative_%'] = (df2_sorted['Cumulative_nRecords'] / df2_sorted['nRecords'].sum()) * 100
 
-            # Calculate cumulative values
-            df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
-            df2_sorted['Cumulative_%'] = (df2_sorted['Cumulative_nRecords'] / df2_sorted['nRecords'].sum()) * 100
+                # Create plot
+                fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-            # Create figure with secondary y-axis
-            fig = make_subplots(specs=[[{"secondary_y": True}]])
+                # Bar chart
+                fig.add_trace(
+                    go.Bar(
+                        name='nRecords',
+                        x=df2_sorted['area_name_en'],
+                        y=df2_sorted['nRecords'],
+                        marker_color='blue',
+                        hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'
+                    ),
+                    secondary_y=False
+                )
 
-            # Add bar chart for nRecords
-            fig.add_trace(
-                go.Bar(
-                    name='nRecords',
-                    x=df2_sorted['area_name_en'],
-                    y=df2_sorted['nRecords'],
-                    marker_color='blue',
-                    hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'
-                ),
-                secondary_y=False
-            )
+                # Line chart
+                fig.add_trace(
+                    go.Scatter(
+                        name='Cumulative_%',
+                        x=df2_sorted['area_name_en'],
+                        y=df2_sorted['Cumulative_%'],
+                        mode='lines',
+                        marker_color='red',
+                        hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'
+                    ),
+                    secondary_y=True
+                )
 
-            # Add line chart for Cumulative %
-            fig.add_trace(
-                go.Scatter(
-                    name='Cumulative_%',
-                    x=df2_sorted['area_name_en'],
-                    y=df2_sorted['Cumulative_%'],
-                    mode='lines',
-                    marker_color='red',
-                    hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'
-                ),
-                secondary_y=True
-            )
+                # Set axis labels
+                fig.update_xaxes(title_text='area_name_en')
+                fig.update_yaxes(title_text='nRecords', secondary_y=False)
+                fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
 
-            # Axis titles
-            fig.update_xaxes(title_text='area_name_en')
-            fig.update_yaxes(title_text='nRecords', secondary_y=False)
-            fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
+                # Safe tick calculation
+                y1_max = df2_sorted['nRecords'].max()
+                tick_step = max(int(y1_max * 0.1), 1)  # Avoid step of 0
+                y1_ticks = np.arange(0, y1_max * 1.1, tick_step)
+                fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
 
-            # Customize y-axis ticks
-            y1_max = df2_sorted['nRecords'].max()
-            y1_ticks = np.arange(0, y1_max * 1.1, 20000)
-            fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
+                # Highlight specific areas
+                for area, color in [('Wadi Al Safa 5', 'green'), ('Al Hebiah Third', 'purple')]:
+                    index = df2_sorted[df2_sorted['area_name_en'] == area].index
+                    if not index.empty:
+                        fig.add_vline(x=index[0], line_dash="dash", line_color=color)
 
-            # Add vertical lines
-            wadi_safa_index = df2_sorted[df2_sorted['area_name_en'] == 'Wadi Al Safa 5'].index
-            al_hebiah_index = df2_sorted[df2_sorted['area_name_en'] == 'Al Hebiah Third'].index
+                # Final layout
+                fig.update_layout(
+                    title_text='Pareto Analysis by Area',
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                    hovermode='x unified',
+                    height=800,
+                    barmode='group'
+                )
 
-            if not wadi_safa_index.empty:
-                fig.add_vline(x=wadi_safa_index[0], line_dash="dash", line_color="green")
-
-            if not al_hebiah_index.empty:
-                fig.add_vline(x=al_hebiah_index[0], line_dash="dash", line_color="purple")
-
-            # Layout update
-            fig.update_layout(
-                title_text='Pareto Analysis by Area',
-                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-                hovermode='x unified',
-                height=800,
-                barmode='group'
-            )
-
-            # Display the Plotly chart in Streamlit
-            st.plotly_chart(fig, use_container_width=True)
-
+                # Show chart
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.error("'nRecords' column is missing or contains non-numeric values in the Excel file.")
         else:
             st.error(f"Excel file not found at: {excel_file_path}")
-            
          
         
         
