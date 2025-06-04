@@ -237,10 +237,10 @@ if sidebar_option == "Univariate Analysis":
 
     with main_tabs[0]:
         # Select sheet before tabs
-        selected_sheet = st.selectbox("Select categorical column", sheet_names)
+        selected_sheet = st.selectbox("Distribution of nRecords by", sheet_names)
         df = pd.read_excel(xls, sheet_name=selected_sheet)
         col1 = df.columns[0]  # Category column
-        st.markdown("### 📊 Bar Plot (nRecords)")
+        #st.markdown("### 📊 Bar Plot (nRecords)")
         if "nRecords" in df.columns:
             fig_bar = px.bar(df, x=col1, y="nRecords", title=f"nRecords by {col1}", color=col1)
             st.plotly_chart(fig_bar, use_container_width=True)
