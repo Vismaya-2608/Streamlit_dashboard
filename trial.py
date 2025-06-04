@@ -115,7 +115,7 @@ elif sidebar_option == "Pareto Analysis":
         st.dataframe(pareto_summary, use_container_width=True)
 
     with tab2:
-        st.markdown("### 📊 Pareto Chart")
+        '''st.markdown("### 📊 Pareto Chart")
         df = all_sheets_df["Pereto_Analysis_by_area_name"]
 
         # Ensure sorting
@@ -166,7 +166,7 @@ elif sidebar_option == "Pareto Analysis":
             barmode='group'
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)'''
 
     with tab3:
         col1, col2 = st.columns(2)
