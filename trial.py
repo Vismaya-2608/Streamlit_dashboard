@@ -275,7 +275,7 @@ if sidebar_option == "Bivariate Analysis":
     # Step 1: Dropdown selector at the top
     cat_cols = [
         "trans_group_en", "property_type_en", "property_sub_type_en", "property_usage_en", 
-        "nearest_landmark_en", "nearest_metro_en", "nearest_mall_en", "room_en", "reg_type_en", 
+        "nearest_metro_en","nearest_landmark_en","nearest_mall_en", "room_en", "reg_type_en", 
         "procedure_name_en", "instance_year"
     ]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
