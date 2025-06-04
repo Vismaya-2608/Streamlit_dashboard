@@ -281,36 +281,39 @@ if sidebar_option == "Univariate Analysis":
             st.plotly_chart(fig_bar, use_container_width=True)
         else:
             st.warning("'nRecords' column not found.")
-
     with main_tabs[1]:
-        cat_cols = [
-            "meter_sale_price", "procedure_area"
-        ]
-        cat = st.selectbox(select the column:", cat_cols)
+        # Dropdown for selecting the category column
+        cat_cols = ["meter_sale_price", "procedure_area"]
+        cat = st.selectbox("Select the column:", cat_cols)
+
+        # Mapping of column to corresponding boxplot HTML file
         plot_box = {
-            "meter_sale_price": 
-            "procedure_area":
-            
+            "meter_sale_price": "meter_sale_price_iqr_boxplot.html",
+            "procedure_area": "procedure_area_iqr_boxplot.html"
+        }
+
+        # Create three columns
         col1, col2, col3 = st.columns(3)
-        # Column 1: Table
+
         with col1:
             st.markdown("### Table")
-            st.write("You can place your table here.")
-            # Column 2: Barchart
+            # You can add table code here later
+
         with col2:
             st.markdown("### Barchart")
-            st.write("You can display your bar chart here.")
-            # Column 3: Boxplot (Display two HTML files)
+            # You can add bar chart code here later
+
         with col3:
             st.markdown("### Boxplot")
-            # Read and display the first HTML file
-            with open("boxplot1.html", "r") as f1:
-                html_data1 = f1.read()
-                components.html(html_data1, height=300, width=350, scrolling=True)
-                # Read and display the second HTML file
-            with open("boxplot2.html", "r") as f2:
-                html_data2 = f2.read()
-                components.html(html_data2, height=300, width=350, scrolling=True)
+            # Load and display the selected HTML file
+            selected_file = plot_box.get(cat)
+            if selected_file:
+                try:
+                    with open(selected_file, "r") as file:
+                        html_content = file.read()
+                        components.html(html_content, height=350, width=400, scrolling=True)
+                except FileNotFoundError:
+                    st.error(f"File not found: {selected_file}")
         
                     
 # --- View 3: Bivariate Analysis  ---
