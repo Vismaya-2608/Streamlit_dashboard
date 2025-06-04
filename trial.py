@@ -116,59 +116,52 @@ elif sidebar_option == "Pareto Analysis":
         st.dataframe(pareto_summary, use_container_width=True)
 
     with tab2:
-        '''st.markdown("### 📊 Pareto Chart")
+        st.markdown("### 📊 Pareto Chart")
         excel_file_path = "pereto_analysis_only.xlsx"
-        df3 = pd.read_excel(excel_file_path)
+        df2 = pd.read_excel(excel_file_path)
         # Ensure sorting
-        df_sorted = df.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
-        df_sorted['Cumulative_nRecords'] = df_sorted['nRecords'].cumsum()
-        df_sorted['Cumulative_%'] = (df_sorted['Cumulative_nRecords'] / df_sorted['nRecords'].sum()) * 100
-
-        # Create figure
+        df2_sorted = df2.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
+        # Calculate cumulative value
+        df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
+        df2_sorted['Cumulative_%'] = (df2_sorted['Cumulative_nRecords'] / df2_sorted['nRecords'].sum()) * 100
+        # Create figure with secondary y-axis
         fig = make_subplots(specs=[[{"secondary_y": True}]])
-
+        # Add bar for nRecords
         fig.add_trace(
-            go.Bar(name='nRecords', x=df_sorted['area_name_en'], y=df_sorted['nRecords'], marker_color='blue',
-                   hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'),
-            secondary_y=False,
+        go.Bar(name='nRecords', x=df2_sorted['area_name_en'], y=df2_sorted['nRecords'], marker_color='blue',
+        hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'),
+        secondary_y=False,
         )
-
+        # Add line for Cumulative %
         fig.add_trace(
-            go.Scatter(name='Cumulative_%', x=df_sorted['area_name_en'], y=df_sorted['Cumulative_%'], mode='lines',
-                       marker_color='red',
-                       hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'),
-            secondary_y=True,
+        go.Scatter(name='Cumulative_%', x=df2_sorted['area_name_en'], y=df2_sorted['Cumulative_%'], mode='lines', marker_color='red',
+        hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'),
+        secondary_y=True,
         )
-
+        # Axis settings
         fig.update_xaxes(title_text='area_name_en')
         fig.update_yaxes(title_text='nRecords', secondary_y=False)
         fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
-
-        # Tick safety
-        y1_max = df_sorted['nRecords'].max()
-        if pd.notna(y1_max) and y1_max > 0:
-            tick_step = max(int(y1_max * 0.1), 1)
-            y1_ticks = np.arange(0, y1_max * 1.1, tick_step)
-            fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
-        else:
-            st.warning("Could not calculate y-axis ticks due to invalid nRecords.")
-
-        # Vertical lines
-        for area, color in [('Wadi Al Safa 5', 'green'), ('Al Hebiah Third', 'purple')]:
-            idx = df_sorted[df_sorted['area_name_en'] == area].index
-            if not idx.empty:
-                fig.add_vline(x=idx[0], line_dash="dash", line_color=color)
-
-        fig.update_layout(
-            title_text='Pareto Analysis by Area',
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-            hovermode='x unified',
-            height=800,
-            barmode='group'
-        )
-
-        st.plotly_chart(fig, use_container_width=True)'''
-
+        # Set fixed ticks for y1-axis
+        y1_ticks = np.arange(0, 100001, 20000)
+        fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
+        # Breakdown vertical lines at specified areas
+        wadi_safa_index = df2_sorted[df2_sorted['area_name_en'] == 'Wadi Al Safa 5'].index
+        al_hebiah_index = df2_sorted[df2_sorted['area_name_en'] == 'Al Hebiah Third'].index
+        if not wadi_safa_index.empty:
+            fig.add_vline(x=wadi_safa_index[0], line_dash="dash", line_color="green", annotation_text="Wadi Al Safa 5 (40%)", annotation_position="top")
+            if not al_hebiah_index.empty:
+                fig.add_vline(x=al_hebiah_index[0], line_dash="dash", line_color="purple", annotation_text="Al Hebiah Third (70%)", annotation_position="top")
+                # Layout settings
+    fig.update_layout(
+        title_text='Pareto Analysis by Area',
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        hovermode='x unified',
+        height=800,
+        barmode='group'
+    )
+    # Display chart in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
     with tab3:
         col1, col2 = st.columns(2)
 
