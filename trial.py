@@ -177,9 +177,8 @@ elif sidebar_option == "Pareto Analysis":
 
        # Display the plot in Streamlit
        st.plotly_chart(fig, use_container_width=True)
-
-   else:
-       st.info("Please upload an Excel file to generate the Pareto chart.")
+    else:
+          st.info("Please upload an Excel file to generate the Pareto chart.")
  
         
      
