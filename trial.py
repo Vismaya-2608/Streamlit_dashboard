@@ -113,78 +113,78 @@ elif sidebar_option == "Pareto Analysis":
         st.dataframe(pareto_summary, use_container_width=True)
         
 
-   with tab2:
-       st.subheader("Pareto Analysis")
+    with tab2:
+        st.subheader("Pareto Analysis")
 
-       # Define the file path
-       excel_file_path = "pereto_analysis_only.xlsx"  # Update the path as needed
+        # Define the file path
+        excel_file_path = "pereto_analysis_only.xlsx"  # Update the path as needed
 
-       if os.path.exists(excel_file_path):
-           # Read the Excel file into DataFrame
-           df2 = pd.read_excel(excel_file_path)
+        if os.path.exists(excel_file_path):
+            # Read the Excel file into DataFrame
+            df2 = pd.read_excel(excel_file_path)
 
-           # ✅ Ensure required columns are present
-           required_columns = {'area_name_en', 'nRecords'}
-           if required_columns.issubset(df2.columns):
+            # ✅ Ensure required columns are present
+            required_columns = {'area_name_en', 'nRecords'}
+            if required_columns.issubset(df2.columns):
 
-               # Sort and calculate cumulative columns
-               df2_sorted = df2.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
-               df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
-               df2_sorted['Cumulative_%'] = (df2_sorted['Cumulative_nRecords'] / df2_sorted['nRecords'].sum()) * 100
+                # Sort and calculate cumulative columns
+                df2_sorted = df2.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
+                df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
+                df2_sorted['Cumulative_%'] = (df2_sorted['Cumulative_nRecords'] / df2_sorted['nRecords'].sum()) * 100
 
-               # Create figure with secondary y-axis
-               fig = make_subplots(specs=[[{"secondary_y": True}]])
+                # Create figure with secondary y-axis
+                fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-               # Add bar trace for nRecords
-               fig.add_trace(
-                   go.Bar(name='nRecords', x=df2_sorted['area_name_en'], y=df2_sorted['nRecords'], marker_color='blue',
-                          hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'),
-                   secondary_y=False,
-               )
+                # Add bar trace for nRecords
+                fig.add_trace(
+                    go.Bar(name='nRecords', x=df2_sorted['area_name_en'], y=df2_sorted['nRecords'], marker_color='blue',
+                           hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'),
+                    secondary_y=False,
+                )
 
-               # Add line trace for Cumulative %
-               fig.add_trace(
-                   go.Scatter(name='Cumulative_%', x=df2_sorted['area_name_en'], y=df2_sorted['Cumulative_%'],
-                              mode='lines+markers', marker_color='red',
-                              hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'),
-                   secondary_y=True,
-               )
+                # Add line trace for Cumulative %
+                fig.add_trace(
+                    go.Scatter(name='Cumulative_%', x=df2_sorted['area_name_en'], y=df2_sorted['Cumulative_%'],
+                               mode='lines+markers', marker_color='red',
+                               hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'),
+                    secondary_y=True,
+                )
 
-               # Configure axes
-               fig.update_xaxes(title_text='Area Name', tickangle=45)
-               fig.update_yaxes(title_text='nRecords', secondary_y=False)
-               fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
+                # Configure axes
+                fig.update_xaxes(title_text='Area Name', tickangle=45)
+                fig.update_yaxes(title_text='nRecords', secondary_y=False)
+                fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
 
-               # Set y1 ticks: 0, 20k, ..., 100k
-               y1_max = max(100000, df2_sorted['nRecords'].max())
-               y1_ticks = np.arange(0, y1_max + 20000, 20000)
-               fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
+                # Set y1 ticks: 0, 20k, ..., 100k
+                y1_max = max(100000, df2_sorted['nRecords'].max())
+                y1_ticks = np.arange(0, y1_max + 20000, 20000)
+                fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
 
-               # Add vertical lines for specific area names
-               def add_vline_by_name(df, name, color):
-                   if name in df['area_name_en'].values:
-                       idx = df[df['area_name_en'] == name].index[0]
-                       fig.add_vline(x=idx, line_dash="dash", line_color=color,
-                                     annotation_position="top")
+                # Add vertical lines for specific area names
+                def add_vline_by_name(df, name, color):
+                    if name in df['area_name_en'].values:
+                        idx = df[df['area_name_en'] == name].index[0]
+                        fig.add_vline(x=idx, line_dash="dash", line_color=color,
+                                      annotation_position="top")
 
-            add_vline_by_name(df2_sorted, 'Wadi Al Safa 5', 'green')
-            add_vline_by_name(df2_sorted, 'Al Hebiah Third', 'purple')
+             add_vline_by_name(df2_sorted, 'Wadi Al Safa 5', 'green')
+             add_vline_by_name(df2_sorted, 'Al Hebiah Third', 'purple')
 
-               # Update layout
-               fig.update_layout(
-                   title='Pareto Analysis by Area',
-                   height=800,
-                   hovermode='x unified',
-                   legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-               )
+                # Update layout
+                fig.update_layout(
+                    title='Pareto Analysis by Area',
+                    height=800,
+                    hovermode='x unified',
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                )
 
-            # ✅ Show the chart only
-               st.plotly_chart(fig, use_container_width=True)
+                # ✅ Show the chart only
+                st.plotly_chart(fig, use_container_width=True)
 
-           else:
-               st.error("Excel file must contain 'area_name_en' and 'nRecords' columns.")
-       else:
-           st.error("Excel file not found at specified path.")
+            else:
+                st.error("Excel file must contain 'area_name_en' and 'nRecords' columns.")
+        else:
+            st.error("Excel file not found at specified path.")
         
      
 
