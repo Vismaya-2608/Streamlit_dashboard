@@ -283,71 +283,35 @@ if sidebar_option == "Univariate Analysis":
             st.warning("'nRecords' column not found.")
 
     with main_tabs[1]:
-        # Select sheet before tabs
-        selected_sheet = st.selectbox("Select categorical column", sheet_names)
-        df = pd.read_excel(xls, sheet_name=selected_sheet)
-        col1 = df.columns[0]  # Category column
-
-        tab1, tab2 = st.tabs(["📋 Summary Table", "📈 Plots"])
-
-        with tab1:
-            st.dataframe(df, use_container_width=True)
-
-        with tab2:
-            colA, colB = st.columns(2)
-
-            # Box plot per category using summary stats columns
-            def plot_boxplot_per_category(df, cat_col):
-                required_cols = {'min', '25%', '50%', '75%', 'max'}
-                if not required_cols.issubset(df.columns):
-                    return None
-
-                fig = go.Figure()
-
-                for _, row in df.iterrows():
-                    category = row[cat_col]
-                    q1 = row['25%']
-                    median = row['50%']
-                    q3 = row['75%']
-                    min_val = row['min']
-                    max_val = row['max']
-                    iqr = q3 - q1
-                    lower_fence = max(min_val, q1 - 1.5 * iqr)
-                    upper_fence = min(max_val, q3 + 1.5 * iqr)
-
-                    fig.add_trace(go.Box(
-                        name=str(category),
-                        q1=[q1],
-                        median=[median],
-                        q3=[q3],
-                        lowerfence=[lower_fence],
-                        upperfence=[upper_fence],
-                        boxpoints=False
-                    ))
-
-                fig.update_layout(
-                    title=f"Box Plot by {cat_col}",
-                    yaxis_title="Meter Sale Price",
-                    boxmode='group',
-                    xaxis_title=cat_col
-                )
-                return fig
-
-            with colA:
-                st.markdown("### 📦 Box Plot by Category")
-                fig_box = plot_boxplot_per_category(df, col1)
-                if fig_box:
-                    st.plotly_chart(fig_box, use_container_width=True)
-                else:
-                    st.warning("Required columns ('min', '25%', '50%', '75%', 'max') not found.")
-
-            with colB:
-                st.markdown("### 📊 Bar Plot (nRecords)")
-                if "nRecords" in df.columns:
-                    fig_bar = px.bar(df, x=col1, y="nRecords", title=f"nRecords by {col1}", color=col1)
-                    st.plotly_chart(fig_bar, use_container_width=True)
-                else:
-                    st.warning("'nRecords' column not found.")
+        cat_cols = [
+            "meter_sale_price", "procedure_area"
+        ]
+        cat = st.selectbox(select the column:", cat_cols)
+        plot_box = {
+            "meter_sale_price": 
+            "procedure_area":
+            
+        col1, col2, col3 = st.columns(3)
+        # Column 1: Table
+        with col1:
+            st.markdown("### Table")
+            st.write("You can place your table here.")
+            # Column 2: Barchart
+        with col2:
+            st.markdown("### Barchart")
+            st.write("You can display your bar chart here.")
+            # Column 3: Boxplot (Display two HTML files)
+        with col3:
+            st.markdown("### Boxplot")
+            # Read and display the first HTML file
+            with open("boxplot1.html", "r") as f1:
+                html_data1 = f1.read()
+                components.html(html_data1, height=300, width=350, scrolling=True)
+                # Read and display the second HTML file
+            with open("boxplot2.html", "r") as f2:
+                html_data2 = f2.read()
+                components.html(html_data2, height=300, width=350, scrolling=True)
+        
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
