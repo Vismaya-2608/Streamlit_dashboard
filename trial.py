@@ -155,7 +155,8 @@ elif sidebar_option == "Pareto Analysis":
 
         # Axis settings
         fig.update_xaxes(title_text='area_name_en')
-        fig.update_yaxes(title_text='nRecords', secondary_y=False)
+        fig.update_yaxes(title_text='nRecords (log scale)', type='log', secondary_y=False)
+
         fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
 
         # Set fixed ticks for y1-axis
