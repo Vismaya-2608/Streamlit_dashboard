@@ -409,6 +409,142 @@ if sidebar_option == "Bivariate Analysis":
         if box_plot:
             st.plotly_chart(box_plot, use_container_width=True)
 
+# --- View 1: Price Prediction Model ---
+# Define file paths
+EXCEL_PATH = "All_model_output.xlsx"
+model_perfomance =  "Model_performance.xlsx"
+html_lr = "predicted_vs_actual_linear.html"
+html_dt = "predicted_vs_actual_decision_tree.html"
+html_xgb = "predicted_vs_actual_XGB_regressor.html"
+html_comparision = "model_performance_comparison.html"
+
+# Load Excel file with caching
+@st.cache_data
+def load_excel(path):
+    xls = pd.ExcelFile(path)
+    sheets = xls.sheet_names
+    data = {sheet: xls.parse(sheet) for sheet in sheets}
+    return data
+
+
+# === Sidebar Selection ===
+if sidebar_option == "Price Prediction Model":
+
+    # === Top-Level Tabs ===
+    if st.sidebar.button("Show Data Preparation Details"):
+        st.markdown("""
+            - Data used for model is based on the following:
+                - Outliers removed using `meter_sale_price` and `procedure_area` columns.
+                - From outliers-removed data, we have considered data from the year **2020**.
+                    - For the model, we have used data with property type **"Units"**.
+            - We had a large number of independent variables in the dataset.
+            - To identify the most relevant predictors, we applied a **stepwise regression model**.
+            - This method helped us select the best combination of input variables for modeling.
+            - Using these selected variables, we built the final model and obtained the results.
+            """)
+    main_tabs = st.tabs(["📈 Model Performance Tables","📉 Prediction Model Visuals"])
+    
+    # === Tab 1: Prediction Model Visuals ===
+    with main_tabs[1]:
+        if os.path.exists(model_perfomance):
+            xl = pd.ExcelFile(model_perfomance)
+            sheet_names = xl.sheet_names
+
+        if len(sheet_names) >= 2:
+            second_sheet_name = sheet_names[1]  # Index 1 = second sheet
+            df = xl.parse(sheet_name=second_sheet_name)
+            df = df.round(2)
+            if 'nRecords' in df.columns:
+                df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+            df.index = range(1, len(df) + 1)
+
+            st.subheader(f"📊 {second_sheet_name}")
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.warning("The Excel file has less than 2 sheets.")
+            
+        st.subheader("🔍 Overall Comparison Report")
+        if os.path.exists(html_comparision):
+            with open(html_comparision, "r", encoding="utf-8") as f:
+                components.html(f.read(), height=300, scrolling=True)
+        else:
+            st.warning(f"Comparison HTML not found at: {html_comparision}")
+
+        st.subheader("📊 Logistic Regression")
+        st.markdown("###Equation : Predicted_price = 0.40134 * Actual_price + 8966.97")
+        if os.path.exists(html_lr):
+            with open(html_lr, "r", encoding="utf-8") as f:
+                components.html(f.read(), height=400, scrolling=True)
+        else:
+            st.warning(f"Logistic Regression HTML not found at: {html_lr}")
+
+        st.subheader("🌳 Decision Tree")
+        st.markdown("###Equation : Predicted_price = 0.465166 * Actual_price + 7993.22")
+        if os.path.exists(html_dt):
+            with open(html_dt, "r", encoding="utf-8") as f:
+                components.html(f.read(), height=400, scrolling=True)
+        else:
+            st.warning(f"Decision Tree HTML not found at: {html_dt}")
+
+        st.subheader("🚀 XGBoost")
+        st.markdown("###Equation : Predicted_price = 0.463650 * Actual_price + 8055.86")
+        if os.path.exists(html_xgb):
+            with open(html_xgb, "r", encoding="utf-8") as f:
+                components.html(f.read(), height=400, scrolling=True)
+        else:
+            st.warning(f"XGBoost HTML not found at: {html_xgb}")
+
+    # === Tab 3: Area & Sector Sheets ===
+    with main_tabs[0]:
+        if os.path.exists(EXCEL_PATH):
+            sheet_data_main = load_excel(EXCEL_PATH)
+            
+        Over_all, area_tab,sector_tab = st.tabs(["Over All","Area wise","Sector wise"])
+        with Over_all:
+            st.subheader("📍 Prediction Models Over All")
+            if os.path.exists(model_perfomance):
+                sheet_data = load_excel(model_perfomance)
+                perf_tabs = st.tabs(list(sheet_data.keys()))
+                for tab, (sheet_name, df) in zip(perf_tabs, sheet_data.items()):
+                    with tab:
+                        df = df.round(2)
+                        if 'nRecords' in df.columns:
+                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+                        df.index = range(1, len(df) + 1)
+                        st.dataframe(df, use_container_width=True)
+            else:
+                st.error(f"Model performance file not found at: {model_perfomance}")
+        with area_tab:
+            area_sheets = {name: df for name, df in sheet_data_main.items() if "area" in name.lower()}
+            
+            # Subtabs for Area
+            if area_sheets:
+                st.subheader("📍 Prediction Model by Area")
+                area_tabs = st.tabs(list(area_sheets.keys()))
+                for tab, (sheet_name, df) in zip(area_tabs, area_sheets.items()):
+                    with tab:
+                        df = df.round(2)
+                        if 'nRecords' in df.columns:
+                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+                        df.index = range(1, len(df) + 1)
+                        st.dataframe(df, use_container_width=True)    
+        with sector_tab:
+            sector_sheets = {name: df for name, df in sheet_data_main.items() if "sector" in name.lower()}
+            # Subtabs for Sector
+            if sector_sheets:
+                st.subheader("🏗️ Prediction Model by Sector")
+                sector_tabs = st.tabs(list(sector_sheets.keys()))
+                for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
+                    with tab:
+                        df = df.round(2)
+                        if 'nRecords' in df.columns:
+                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+                        df.index = range(1, len(df) + 1)
+                        st.dataframe(df, use_container_width=True)
+            else:
+                st.error(f"Excel file not found at: {EXCEL_PATH}")
+    
+
 
     
 
