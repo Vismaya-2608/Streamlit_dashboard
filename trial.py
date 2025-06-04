@@ -297,11 +297,11 @@ if sidebar_option == "Univariate Analysis":
         sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
 
         with sub_tabs[0]:  # Table
-            #st.markdown("### Table")
+            st.markdown("### Table")
             # Add your table code here
 
         with sub_tabs[1]:  # Barchart
-            #st.markdown("### Barchart")
+            st.markdown("### Barchart")
             # Add your bar chart code here
 
         with sub_tabs[2]:  # Boxplot
