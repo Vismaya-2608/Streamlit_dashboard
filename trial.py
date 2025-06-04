@@ -85,88 +85,141 @@ if sidebar_option == "Data Summary":
 
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
-    
+
     try:
-            pereto_file = "pereto_analysis_file.xlsx"
-            html_pereto_df = "pareto_analysis_plot.html"
-            pereto_analyis = pd.ExcelFile(pereto_file)
-            pereto_sheet_names = pereto_analyis.sheet_names
-    except  FileNotFoundError:
-             st.error(f"File not found: {pereto_file}")
-             st.stop()
+        pereto_file = "pereto_analysis_file.xlsx"
+        pereto_analyis = pd.ExcelFile(pereto_file)
+        pereto_sheet_names = pereto_analyis.sheet_names
+    except FileNotFoundError:
+        st.error(f"File not found: {pereto_file}")
+        st.stop()
+
+    # Read all sheets
     all_sheets_df = pd.read_excel(pereto_analyis, sheet_name=pereto_sheet_names)
-    
-     # Extract specific sheets
+
+    # Extract specific sheets
     pareto_summary = all_sheets_df["Pereto_Analysis_by_area_name"]
     ABC_summary = all_sheets_df["ABC_Area_name"]
 
-    tab1, tab2, tab3= st.tabs(["Table", "Chart","ABC summary"])
+    # Create tabs
+    tab1, tab2, tab3 = st.tabs(["Table", "Chart", "ABC summary"])
+
     with tab1:
-        
         st.markdown("### Pareto Analysis by Area_name_en")
         pareto_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
-        pareto_summary['nRecords'] =  pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+        pareto_summary['nRecords'] = pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
         pareto_summary['Cumulative_%'] = pareto_summary['Cumulative_%'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         pareto_summary['Percentage(%)'] = pareto_summary['Percentage(%)'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         pareto_summary['Cum%_Areas'] = pareto_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         pareto_summary.index = range(1, len(pareto_summary) + 1)
         st.dataframe(pareto_summary, use_container_width=True)
-        
+
     with tab2:
-        
-     
+        st.markdown("### 📊 Pareto Chart")
+        df = all_sheets_df["Pereto_Analysis_by_area_name"]
 
+        # Ensure sorting
+        df_sorted = df.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
+        df_sorted['Cumulative_nRecords'] = df_sorted['nRecords'].cumsum()
+        df_sorted['Cumulative_%'] = (df_sorted['Cumulative_nRecords'] / df_sorted['nRecords'].sum()) * 100
 
+        # Create figure
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+        fig.add_trace(
+            go.Bar(name='nRecords', x=df_sorted['area_name_en'], y=df_sorted['nRecords'], marker_color='blue',
+                   hovertemplate='<b>%{x}</b><br>nRecords: %{y}<extra></extra>'),
+            secondary_y=False,
+        )
+
+        fig.add_trace(
+            go.Scatter(name='Cumulative_%', x=df_sorted['area_name_en'], y=df_sorted['Cumulative_%'], mode='lines',
+                       marker_color='red',
+                       hovertemplate='<b>%{x}</b><br>Cumulative %: %{y:.2f}%<extra></extra>'),
+            secondary_y=True,
+        )
+
+        fig.update_xaxes(title_text='area_name_en')
+        fig.update_yaxes(title_text='nRecords', secondary_y=False)
+        fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
+
+        # Tick safety
+        y1_max = df_sorted['nRecords'].max()
+        if pd.notna(y1_max) and y1_max > 0:
+            tick_step = max(int(y1_max * 0.1), 1)
+            y1_ticks = np.arange(0, y1_max * 1.1, tick_step)
+            fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
+        else:
+            st.warning("Could not calculate y-axis ticks due to invalid nRecords.")
+
+        # Vertical lines
+        for area, color in [('Wadi Al Safa 5', 'green'), ('Al Hebiah Third', 'purple')]:
+            idx = df_sorted[df_sorted['area_name_en'] == area].index
+            if not idx.empty:
+                fig.add_vline(x=idx[0], line_dash="dash", line_color=color)
+
+        fig.update_layout(
+            title_text='Pareto Analysis by Area',
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            hovermode='x unified',
+            height=800,
+            barmode='group'
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
     with tab3:
-        col1,col2 = st.columns(2)
+        col1, col2 = st.columns(2)
+
         with col2:
             df = ABC_summary
-            # Create figure with secondary y-axis
             fig = make_subplots(specs=[[{"secondary_y": True}]])
-            # Add bar charts for %Area and %Recordes
+
             fig.add_trace(
                 go.Bar(name='%Area', x=df['Group_name'], y=df['%Area'], marker_color='skyblue',
                        hovertemplate='<b>%{x}</b><br>%Area: %{y:.2f}%<extra></extra>'),
-                secondary_y=False,)
+                secondary_y=False)
+
             fig.add_trace(
                 go.Bar(name='%Records', x=df['Group_name'], y=df['%Records '], marker_color='lightcoral',
                        hovertemplate='<b>%{x}</b><br>%Records: %{y:.2f}%<extra></extra>'),
-                secondary_y=False,)
-            # Add line charts for cumulative percentages
+                secondary_y=False)
+
             fig.add_trace(
-                go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_records'], mode='lines+markers', marker_color='green',
+                go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_records'], mode='lines+markers',
+                           marker_color='green',
                            hovertemplate='<b>%{x}</b><br>Cum% Records: %{y:.2f}%<extra></extra>'),
-                secondary_y=True,)
+                secondary_y=True)
+
             fig.add_trace(
-                go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_areas'], mode='lines+markers', marker_color='darkorange',
+                go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_areas'], mode='lines+markers',
+                           marker_color='darkorange',
                            hovertemplate='<b>%{x}</b><br>Cum% Areas: %{y:.2f}%<extra></extra>'),
-                secondary_y=True,)
-            # Set x-axis title
+                secondary_y=True)
+
             fig.update_xaxes(title_text='Group_name')
-            # Set y-axes titles
             fig.update_yaxes(title_text='Counts (%Area, %Records)', secondary_y=False)
             fig.update_yaxes(title_text='Cumulative Percentage', secondary_y=True)
-            # Add title and legend
+
             fig.update_layout(
                 title_text='ABC Analysis Summary',
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-                hovermode='x unified')
-            # Show the plot in Streamlit
+                hovermode='x unified'
+            )
+
             st.plotly_chart(fig)
 
-            with col1:
-                # ABC Summary Table
-                st.markdown("### 📋 ABC Summary Table")
-                ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
-                ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
-                ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-                ABC_summary['%Records'] = ABC_summary['%Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-                ABC_summary['Cum%_Records'] = ABC_summary['Cum%_Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-                ABC_summary['Cum%_Areas'] = ABC_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-                ABC_summary.index = range(1, len(ABC_summary) + 1)
-                st.dataframe(ABC_summary, use_container_width=True)
+        with col1:
+            st.markdown("### 📋 ABC Summary Table")
+            ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
+            ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
+            ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+            ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+            ABC_summary['%Records'] = ABC_summary['%Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+            ABC_summary['Cum%_Records'] = ABC_summary['Cum%_Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+            ABC_summary['Cum%_Areas'] = ABC_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+            ABC_summary.index = range(1, len(ABC_summary) + 1)
+            st.dataframe(ABC_summary, use_container_width=True)
         
 # --- View 3: Univariate Analysis  ---
 if sidebar_option == "Univariate Analysis":
