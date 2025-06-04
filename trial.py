@@ -119,48 +119,41 @@ elif sidebar_option == "Pareto Analysis":
 
 
     with tab3:
-         col1,col2 = st.columns(2)
-             with col2:
-                 df = ABC_summary
-                 # Create figure with secondary y-axis
-                fig = make_subplots(specs=[[{"secondary_y": True}]])
-
-                # Add bar charts for %Area and %Records
-                fig.add_trace(
-                    go.Bar(name='%Area', x=df['Group_name'], y=df['%Area'], marker_color='skyblue',
-                    hovertemplate='<b>%{x}</b><br>%Area: %{y:.2f}%<extra></extra>'),
-                    secondary_y=False,)
-                fig.add_trace(
-                    go.Bar(name='%Records', x=df['Group_name'], y=df['%Records '], marker_color='lightcoral',
+        col1,col2 = st.columns(2)
+        with col2:
+            df = ABC_summary
+            # Create figure with secondary y-axis
+            fig = make_subplots(specs=[[{"secondary_y": True}]])
+            # Add bar charts for %Area and %Recordes
+            fig.add_trace(
+                go.Bar(name='%Area', x=df['Group_name'], y=df['%Area'], marker_color='skyblue',
+                       hovertemplate='<b>%{x}</b><br>%Area: %{y:.2f}%<extra></extra>'),
+                secondary_y=False,)
+            fig.add_trace(
+                go.Bar(name='%Records', x=df['Group_name'], y=df['%Records '], marker_color='lightcoral',
                        hovertemplate='<b>%{x}</b><br>%Records: %{y:.2f}%<extra></extra>'),
-                       secondary_y=False,)
-
-                # Add line charts for cumulative percentages
-                fig.add_trace(
-                    go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_records'], mode='lines+markers', marker_color='green',
-                       hovertemplate='<b>%{x}</b><br>Cum% Records: %{y:.2f}%<extra></extra>'),
-                       secondary_y=True,)
-
-                fig.add_trace(
-                    go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_areas'], mode='lines+markers', marker_color='darkorange',
-                        hovertemplate='<b>%{x}</b><br>Cum% Areas: %{y:.2f}%<extra></extra>'),
-                       secondary_y=True,)
-
-                # Set x-axis title
-                fig.update_xaxes(title_text='Group_name')
-
-                # Set y-axes titles
-                fig.update_yaxes(title_text='Counts (%Area, %Records)', secondary_y=False)
-                fig.update_yaxes(title_text='Cumulative Percentage', secondary_y=True)
-
-                # Add title and legend
-                fig.update_layout(
-                    title_text='ABC Analysis Summary',
-                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-                    hovermode='x unified')
-
-                # Show the plot in Streamlit
-                st.plotly_chart(fig)
+                secondary_y=False,)
+            # Add line charts for cumulative percentages
+            fig.add_trace(
+                go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_records'], mode='lines+markers', marker_color='green',
+                           hovertemplate='<b>%{x}</b><br>Cum% Records: %{y:.2f}%<extra></extra>'),
+                secondary_y=True,)
+            fig.add_trace(
+                go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_areas'], mode='lines+markers', marker_color='darkorange',
+                           hovertemplate='<b>%{x}</b><br>Cum% Areas: %{y:.2f}%<extra></extra>'),
+                secondary_y=True,)
+            # Set x-axis title
+            fig.update_xaxes(title_text='Group_name')
+            # Set y-axes titles
+            fig.update_yaxes(title_text='Counts (%Area, %Records)', secondary_y=False)
+            fig.update_yaxes(title_text='Cumulative Percentage', secondary_y=True)
+            # Add title and legend
+            fig.update_layout(
+                title_text='ABC Analysis Summary',
+                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                hovermode='x unified')
+            # Show the plot in Streamlit
+            st.plotly_chart(fig)
 
             with col1:
                 # ABC Summary Table
