@@ -114,12 +114,15 @@ elif sidebar_option == "Pareto Analysis":
         
 
     with tab2:
-        if os.path.exists(html_pereto_df):
-            with open(html_pereto_df, "r", encoding="utf-8") as f:
-                dt_html = f.read()
-            components.html(dt_html,width=10000,height=10000,scrolling=True)
-        else:
-            st.error("Pareto analysis HTML file not found.")
+        
+        excel_file_path = "your_pareto_data.xlsx"  # Update with actual file path
+        # Check if file exist
+       if os.path.exists(excel_file_path):
+    
+       df = pd.read_excel(excel_file_path)
+
+    # Show the data if needed
+       st.dataframe(df)
 
 
 
