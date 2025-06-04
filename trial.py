@@ -120,6 +120,9 @@ elif sidebar_option == "Pareto Analysis":
         excel_file_path = "pereto_analysis_only.xlsx"
         df2 = pd.read_excel(excel_file_path)
 
+        # Remove any row where area_name_en is 'Total' (case-insensitive)
+        df2 = df2[~df2['area_name_en'].str.strip().str.lower().eq('total')]
+
         # Sort and calculate cumulative values
         df2_sorted = df2.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
         df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
@@ -156,11 +159,11 @@ elif sidebar_option == "Pareto Analysis":
         # Axis settings
         fig.update_xaxes(title_text='area_name_en')
 
-        # Manually set linear y-axis for better visibility of all bars
+        # Set fixed linear y-axis for better scaling
         fig.update_yaxes(
             title_text='nRecords',
             tickvals=np.arange(0, 100001, 20000),
-            range=[0, 100000],  # Adjust max range based on your data
+            range=[0, 100000],
             secondary_y=False
         )
         fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
@@ -174,8 +177,8 @@ elif sidebar_option == "Pareto Analysis":
                 x=wadi_safa_index[0],
                 line_dash="dash",
                 line_color="green",
-                annotation_text="Wadi Al Safa 5 (40%)",
-                annotation_position="top"
+                #annotation_text="Wadi Al Safa 5 (40%)",
+                #annotation_position="top"
             )
 
         if not al_hebiah_index.empty:
@@ -183,8 +186,8 @@ elif sidebar_option == "Pareto Analysis":
                 x=al_hebiah_index[0],
                 line_dash="dash",
                 line_color="purple",
-                annotation_text="Al Hebiah Third (70%)",
-                annotation_position="top"
+                #annotation_text="Al Hebiah Third (70%)",
+                #annotation_position="top"
             )
 
         # Layout settings
@@ -198,6 +201,7 @@ elif sidebar_option == "Pareto Analysis":
 
         # Display chart in Streamlit
         st.plotly_chart(fig, use_container_width=True)
+
 
     with tab3:
         col1, col2 = st.columns(2)
