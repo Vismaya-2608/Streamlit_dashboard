@@ -119,10 +119,10 @@ elif sidebar_option == "Pareto Analysis":
 
 
     with tab3:
-        col1,col2 = st.columns(2)
-            with col2:
-                df = ABC_summary
-                # Create figure with secondary y-axis
+         col1,col2 = st.columns(2)
+             with col2:
+                 df = ABC_summary
+                 # Create figure with secondary y-axis
                 fig = make_subplots(specs=[[{"secondary_y": True}]])
 
                 # Add bar charts for %Area and %Records
