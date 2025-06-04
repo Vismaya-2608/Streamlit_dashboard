@@ -117,7 +117,7 @@ elif sidebar_option == "Pareto Analysis":
         excel_file_path = "pereto_analysis_only.xlsx" 
         
 
-    if os.path.exists(excel_file_path)
+    if os.path.exists(excel_file_path):
        # Read the Excel file into DataFrame
        df2 = pd.read_excel(excel_file_path)
        st.dataframe(df2)
