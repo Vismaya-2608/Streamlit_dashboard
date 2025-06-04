@@ -113,14 +113,14 @@ elif sidebar_option == "Pareto Analysis":
         st.dataframe(pareto_summary, use_container_width=True)
         
     with tab2:
-        st.subheader("Pareto Analysis by Area")
+        st.subheader("Pareto Analysis by Area_name_en")
 
         excel_file_path = "pereto_analysis_only.xlsx"
 
         if os.path.exists(excel_file_path):
             df2 = pd.read_excel(excel_file_path)
 
-            # Validate 'nRecords' column
+            # Check for required column and numeric data
             if 'nRecords' in df2.columns and pd.api.types.is_numeric_dtype(df2['nRecords']):
             
                 # Sort and calculate cumulative values
@@ -128,10 +128,10 @@ elif sidebar_option == "Pareto Analysis":
                 df2_sorted['Cumulative_nRecords'] = df2_sorted['nRecords'].cumsum()
                 df2_sorted['Cumulative_%'] = (df2_sorted['Cumulative_nRecords'] / df2_sorted['nRecords'].sum()) * 100
 
-                # Create plot
+                # Create figure with secondary y-axis
                 fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-                # Bar chart
+                # Bar chart for nRecords
                 fig.add_trace(
                     go.Bar(
                         name='nRecords',
@@ -143,7 +143,7 @@ elif sidebar_option == "Pareto Analysis":
                     secondary_y=False
                 )
 
-                # Line chart
+                # Line chart for Cumulative %
                 fig.add_trace(
                     go.Scatter(
                         name='Cumulative_%',
@@ -156,24 +156,28 @@ elif sidebar_option == "Pareto Analysis":
                     secondary_y=True
                 )
 
-                # Set axis labels
+                # Axis labels
                 fig.update_xaxes(title_text='area_name_en')
                 fig.update_yaxes(title_text='nRecords', secondary_y=False)
                 fig.update_yaxes(title_text='Cumulative %', secondary_y=True)
 
                 # Safe tick calculation
                 y1_max = df2_sorted['nRecords'].max()
-                tick_step = max(int(y1_max * 0.1), 1)  # Avoid step of 0
-                y1_ticks = np.arange(0, y1_max * 1.1, tick_step)
-                fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
 
-                # Highlight specific areas
+                if pd.notna(y1_max) and y1_max > 0:
+                    tick_step = max(int(y1_max * 0.1), 1)
+                    y1_ticks = np.arange(0, y1_max * 1.1, tick_step)
+                    fig.update_yaxes(tickvals=y1_ticks, secondary_y=False)
+                else:
+                    st.warning("Could not calculate y-axis ticks because 'nRecords' column may be empty or invalid.")
+
+                # Vertical lines for key areas
                 for area, color in [('Wadi Al Safa 5', 'green'), ('Al Hebiah Third', 'purple')]:
                     index = df2_sorted[df2_sorted['area_name_en'] == area].index
                     if not index.empty:
                         fig.add_vline(x=index[0], line_dash="dash", line_color=color)
 
-                # Final layout
+                # Final layout updates
                 fig.update_layout(
                     title_text='Pareto Analysis by Area',
                     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -182,14 +186,13 @@ elif sidebar_option == "Pareto Analysis":
                     barmode='group'
                 )
 
-                # Show chart
+                # Display chart in Streamlit
                 st.plotly_chart(fig, use_container_width=True)
+
             else:
                 st.error("'nRecords' column is missing or contains non-numeric values in the Excel file.")
         else:
             st.error(f"Excel file not found at: {excel_file_path}")
-         
-        
         
      
 
