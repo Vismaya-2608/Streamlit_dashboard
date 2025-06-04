@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import numpy as np
 
 
 # --- Page Config ---
@@ -116,8 +117,8 @@ elif sidebar_option == "Pareto Analysis":
 
     with tab2:
         '''st.markdown("### 📊 Pareto Chart")
-        df = all_sheets_df["Pereto_Analysis_by_area_name"]
-
+        excel_file_path = "pereto_analysis_only.xlsx"
+        df3 = pd.read_excel(excel_file_path)
         # Ensure sorting
         df_sorted = df.sort_values(by='nRecords', ascending=False).reset_index(drop=True)
         df_sorted['Cumulative_nRecords'] = df_sorted['nRecords'].cumsum()
