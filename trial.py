@@ -210,7 +210,7 @@ elif sidebar_option == "Pareto Analysis":
             st.plotly_chart(fig)
 
         with col1:
-            st.markdown("### 📋 ABC Summary Table")
+            st.markdown("Table")
             ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
             ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
             ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
