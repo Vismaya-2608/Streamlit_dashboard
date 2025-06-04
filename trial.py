@@ -86,6 +86,7 @@ if sidebar_option == "Data Summary":
 
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
+    st.markdown("### Pareto Analysis by Area_name_en")
 
     try:
         pereto_file = "pereto_analysis_file.xlsx"
@@ -106,7 +107,7 @@ elif sidebar_option == "Pareto Analysis":
     tab1, tab2, tab3 = st.tabs(["Table", "Chart", "ABC summary"])
 
     with tab1:
-        st.markdown("### Pareto Analysis by Area_name_en")
+        #st.markdown("### Pareto Analysis by Area_name_en")
         pareto_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
         pareto_summary['nRecords'] = pareto_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
         pareto_summary['Cumulative_%'] = pareto_summary['Cumulative_%'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
@@ -296,15 +297,15 @@ if sidebar_option == "Univariate Analysis":
         sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
 
         with sub_tabs[0]:  # Table
-            st.markdown("### Table")
+            #st.markdown("### Table")
             # Add your table code here
 
         with sub_tabs[1]:  # Barchart
-            st.markdown("### Barchart")
+            #st.markdown("### Barchart")
             # Add your bar chart code here
 
         with sub_tabs[2]:  # Boxplot
-            st.markdown("### Boxplot")
+            #st.markdown("### Boxplot")
             selected_file = plot_box.get(cat)
             if selected_file:
                 try:
