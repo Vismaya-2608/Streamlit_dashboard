@@ -292,29 +292,27 @@ if sidebar_option == "Univariate Analysis":
             "procedure_area": "procedure_area_iqr_boxplot.html"
         }
 
-        # Create three columns
-        col1, col2, col3 = st.columns(3)
+        # Create sub-tabs under the selected category
+        sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
 
-        with col1:
+        with sub_tabs[0]:  # Table
             st.markdown("### Table")
-            # You can add table code here later
+            # Add your table code here
 
-        with col2:
+        with sub_tabs[1]:  # Barchart
             st.markdown("### Barchart")
-            # You can add bar chart code here later
+            # Add your bar chart code here
 
-        with col3:
+        with sub_tabs[2]:  # Boxplot
             st.markdown("### Boxplot")
-            # Load and display the selected HTML file
             selected_file = plot_box.get(cat)
             if selected_file:
                 try:
                     with open(selected_file, "r") as file:
                         html_content = file.read()
-                        components.html(html_content, height=350, width=400, scrolling=True)
+                        components.html(html_content, height=500, width=800, scrolling=True)
                 except FileNotFoundError:
                     st.error(f"File not found: {selected_file}")
-        
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
