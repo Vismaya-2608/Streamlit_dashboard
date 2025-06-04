@@ -114,12 +114,12 @@ elif sidebar_option == "Pareto Analysis":
         
 
     with tab2:
-        uploaded_file = st.file_uploader("pereto_analysis_only.xlsx", type=["xlsx"])
+        excel_file_path = "pereto_analysis_only.xlsx" 
+        
 
-    if uploaded_file:
+    if os.path.exists(excel_file_path)
        # Read the Excel file into DataFrame
-       df2 = pd.read_excel(uploaded_file)
-       st.subheader("Uploaded Data")
+       df2 = pd.read_excel(excel_file_path)
        st.dataframe(df2)
 
        # Ensure dataframe is sorted by nRecords in descending order
