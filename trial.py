@@ -167,8 +167,8 @@ elif sidebar_option == "Pareto Analysis":
                         fig.add_vline(x=idx, line_dash="dash", line_color=color,
                                       annotation_position="top")
 
-             add_vline_by_name(df2_sorted, 'Wadi Al Safa 5', 'green')
-             add_vline_by_name(df2_sorted, 'Al Hebiah Third', 'purple')
+                add_vline_by_name(df2_sorted, 'Wadi Al Safa 5', 'green')
+                add_vline_by_name(df2_sorted, 'Al Hebiah Third', 'purple')
 
                 # Update layout
                 fig.update_layout(
