@@ -290,7 +290,7 @@ if sidebar_option == "Univariate Analysis":
         # Mapping of column to corresponding boxplot HTML file
         plot_box = {
             "meter_sale_price": "meter_sale_price_with_boxplot.html",
-            "procedure_area": "procedure_area_boxplot.html"
+            "procedure_area": "procedure_area_with_boxplot.html"
         }
 
         # Create sub-tabs under the selected category
