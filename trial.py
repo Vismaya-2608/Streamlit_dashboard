@@ -48,7 +48,7 @@ sidebar_option = st.sidebar.radio("Choose View", [
     "Pareto Analysis",
     "Univariate Analysis",
     "Bivariate Analysis",
-    "Geo graphical Analysis",
+    "Geo Graphical Analysis",
     "Price Prediction Model"
 ])
 
