@@ -269,7 +269,7 @@ if sidebar_option == "Univariate Analysis":
         st.error(f"File not found: {cat_plot_path}")
         st.stop()
 
-    main_tabs = st.tabs([ "Dimension","Metrix"])
+    main_tabs = st.tabs([ "Dimension","Metrics"])
 
     with main_tabs[0]:
         # Select sheet before tabs
@@ -285,7 +285,7 @@ if sidebar_option == "Univariate Analysis":
     with main_tabs[1]:
         # Dropdown for selecting the category column
         cat_cols = ["meter_sale_price", "procedure_area"]
-        cat = st.selectbox("Select the column:", cat_cols)
+        cat = st.selectbox("Select the metrics column:", cat_cols)
 
         # Create sub-tabs under the selected category
         sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
