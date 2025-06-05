@@ -411,7 +411,7 @@ if sidebar_option == "Bivariate Analysis":
 
 # --- View 1: Price Prediction Model ---
 # Define file paths
-EXCEL_PATH = "All_model_output (1).xlsx"
+EXCEL_PATH = "All_model_output.xlsx"
 model_perfomance =  "Model_performance.xlsx"
 html_lr = "predicted_vs_actual_linear.html"
 html_dt = "predicted_vs_actual_decision_tree.html"
