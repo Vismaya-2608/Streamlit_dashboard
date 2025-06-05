@@ -515,7 +515,7 @@ if sidebar_option == "Price Prediction Model":
             else:
                 st.error(f"Model performance file not found at: {model_perfomance}")
         with area_tab:
-            area_sheets = {name: df for name, df in sheet_data_main.items() if "area" in name.lower()}
+            #area_sheets = {name: df for name, df in sheet_data_main.items() if "area" in name.lower()}
             
             # Subtabs for Area
             if area_sheets:
