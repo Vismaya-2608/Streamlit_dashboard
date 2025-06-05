@@ -296,6 +296,10 @@ if sidebar_option == "Univariate Analysis":
             "meter_sale_price": "meter_sale_price_table_final.xlsx",
             "procedure_area": "procedure_area_table_final.xlsx"
         }
+        plot_bar = {
+            "meter_sale_price":
+            "procedure_area":
+            
 
         # Create sub-tabs under the selected category
         sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
