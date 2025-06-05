@@ -287,45 +287,74 @@ if sidebar_option == "Univariate Analysis":
         cat_cols = ["meter_sale_price", "procedure_area"]
         cat = st.selectbox("Select the column:", cat_cols)
 
-        # Mapping of column to corresponding boxplot HTML file
-        plot_box = {
-            "meter_sale_price": "meter_sale_price_with_boxplot.html",
-            "procedure_area": "procedure_area_with_boxplot.html"
-        }
-        table_files = {
-            "meter_sale_price": "meter_sale_price_table_final.xlsx",
-            "procedure_area": "procedure_area_table_final.xlsx"
-        }
-        plot_bar = {
-            "meter_sale_price":
-            "procedure_area":
-            
-
         # Create sub-tabs under the selected category
         sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
 
-        with sub_tabs[0]:  # Table
+        # 1️⃣ TABLE TAB
+        with sub_tabs[0]:  
+            # Mapping for table Excel files (inside tab for clarity)
+            table_files = {
+                "meter_sale_price": "meter_sale_price_table_final.xlsx",
+                "procedure_area": "procedure_area_table_final.xlsx"
+            }
+
             selected_table = table_files.get(cat)
-        if selected_table:
-            try:
-                df = pd.read_excel(selected_table)
-                st.dataframe(df, use_container_width=True)
-            except FileNotFoundError:
-                st.error(f"File not found: {selected_table}")
+            if selected_table:
+                try:
+                    df = pd.read_excel(selected_table)
+                    st.markdown(f"### Table for `{cat}`")
+                    st.dataframe(df, use_container_width=True)
+                except FileNotFoundError:
+                    st.error(f"File not found: {selected_table}")
+                except Exception as e:
+                    st.error(f"Error reading table data: {e}")
 
-        with sub_tabs[1]:  # Barchart
-            st.markdown("### Barchart")
-            # Add your bar chart code here
+        # 2️⃣ BARCHART TAB
+        with sub_tabs[1]:
+            # Mapping for bar chart Excel files (inside tab for clarity)
+            plot_bar = {
+                "meter_sale_price": "bin_meter_sale_price.xlsx",
+                "procedure_area": "bin_procedure_area.xlsx"
+            }
 
-        with sub_tabs[2]:  # Boxplot
+            selected_bar = plot_bar.get(cat)
+            if selected_bar:
+                try:
+                    df_bar = pd.read_excel(selected_bar)
+                    st.markdown(f"### Barchart for `{cat}`")
+                    fig = px.bar(
+                        df_bar,
+                        x="Bin_Range",
+                        y="nRecords",
+                        labels={"Bin_Range": "Bin Range", "nRecords": "Number of Records"},
+                        title=f"Distribution of {cat.replace('_', ' ').title()}",
+                        text_auto=True
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                except FileNotFoundError:
+                    st.error(f"File not found: {selected_bar}")
+                except Exception as e:
+                    st.error(f"Error creating bar chart: {e}")
+
+    
+        with sub_tabs[2]:
+            # Mapping for boxplot HTML files (inside tab for clarity)
+            plot_box = {
+                "meter_sale_price": "meter_sale_price_with_boxplot.html",
+                "procedure_area": "procedure_area_with_boxplot.html"
+            }
+
             selected_file = plot_box.get(cat)
             if selected_file:
                 try:
                     with open(selected_file, "r") as file:
                         html_content = file.read()
+                        st.markdown(f"### Boxplot for `{cat}`")
                         components.html(html_content, height=500, width=800, scrolling=True)
                 except FileNotFoundError:
                     st.error(f"File not found: {selected_file}")
+                except Exception as e:
+                    st.error(f"Error loading boxplot HTML: {e}")
         
                     
 # --- View 3: Bivariate Analysis  ---
