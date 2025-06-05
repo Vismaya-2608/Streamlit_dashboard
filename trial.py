@@ -328,8 +328,17 @@ if sidebar_option == "Univariate Analysis":
                         y="nRecords",
                         labels={"Bin_Range": "Bin Range", "nRecords": "Number of Records"},
                         title=f"Distribution of {cat.replace('_', ' ').title()}",
-                        text_auto=True
-                    )
+                        text_auto=True)
+                    # Add black border and control bar width
+                    fig.update_traces(marker_line_color='black', marker_line_width=1)
+
+                    # Optional: customize layout
+                    fig.update_layout(
+                        xaxis_title="Bin Range",
+                        yaxis_title="Number of Records",
+                        bargap=0,  # Adjust space between bars
+                        height=500
+                        )
                     st.plotly_chart(fig, use_container_width=True)
                 except FileNotFoundError:
                     st.error(f"File not found: {selected_bar}")
