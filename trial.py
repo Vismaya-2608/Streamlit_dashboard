@@ -292,20 +292,28 @@ if sidebar_option == "Univariate Analysis":
             "meter_sale_price": "meter_sale_price_with_boxplot.html",
             "procedure_area": "procedure_area_with_boxplot.html"
         }
+        table_files = {
+            "meter_sale_price": "meter_sale_price_table_final.xlsx",
+            "procedure_area": "procedure_area_table_final.xlsx"
+        }
 
         # Create sub-tabs under the selected category
         sub_tabs = st.tabs(["Table", "Barchart", "Boxplot"])
 
         with sub_tabs[0]:  # Table
-            st.markdown("### Table")
-            # Add your table code here
+            selected_table = table_files.get(cat)
+        if selected_table:
+            try:
+                df = pd.read_excel(selected_table)
+                st.dataframe(df, use_container_width=True)
+            except FileNotFoundError:
+                st.error(f"File not found: {selected_table}")
 
         with sub_tabs[1]:  # Barchart
             st.markdown("### Barchart")
             # Add your bar chart code here
 
         with sub_tabs[2]:  # Boxplot
-            #st.markdown("### Boxplot")
             selected_file = plot_box.get(cat)
             if selected_file:
                 try:
@@ -314,6 +322,7 @@ if sidebar_option == "Univariate Analysis":
                         components.html(html_content, height=500, width=800, scrolling=True)
                 except FileNotFoundError:
                     st.error(f"File not found: {selected_file}")
+        
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
