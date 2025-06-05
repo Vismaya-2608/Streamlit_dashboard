@@ -302,7 +302,7 @@ if sidebar_option == "Univariate Analysis":
             if selected_table:
                 try:
                     df = pd.read_excel(selected_table)
-                    st.markdown(f"### Table for `{cat}`")
+                    #st.markdown(f"### Table for `{cat}`")
                     st.dataframe(df, use_container_width=True)
                 except FileNotFoundError:
                     st.error(f"File not found: {selected_table}")
@@ -321,7 +321,7 @@ if sidebar_option == "Univariate Analysis":
             if selected_bar:
                 try:
                     df_bar = pd.read_excel(selected_bar)
-                    st.markdown(f"### Barchart for `{cat}`")
+                    #st.markdown(f"### Barchart for `{cat}`")
                     fig = px.bar(
                         df_bar,
                         x="Bin_Range",
@@ -358,7 +358,7 @@ if sidebar_option == "Univariate Analysis":
                 try:
                     with open(selected_file, "r") as file:
                         html_content = file.read()
-                        st.markdown(f"### Boxplot for `{cat}`")
+                        #st.markdown(f"### Boxplot for `{cat}`")
                         components.html(html_content, height=500, width=800, scrolling=True)
                 except FileNotFoundError:
                     st.error(f"File not found: {selected_file}")
