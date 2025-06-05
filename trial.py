@@ -598,82 +598,14 @@ if sidebar_option == "Price Prediction Model":
 # --- View 6: Geo Graphical Analysis ---
 if sidebar_option == "Geo Graphical Analysis":
     st.subheader("Dubai Area-wise Bubble Map")
+    
     df_excel = pd.read_excel("new_tdf.xlsx")
     units_excel = pd.read_excel("units_20.xlsx")
-    # Create first bubble map 
-    Count_tab, Avg_tab = st.tabs(["nRecords","Average Meter sale price"])
-    with Count_tab:
-        figs = px.scatter_mapbox(
-            df_excel,
-            lat='area_lat',
-            lon='area_lon',
-            size='Average Meter Sale Price',
-            color='Transaction Count',
-            hover_name='area_name_en',
-            hover_data={
-                'Transaction Count': True,
-                'Average Meter Sale Price': ':.2f',
-                'area_lat': False,
-                'area_lon': False
-            },
-            color_continuous_scale='Viridis',
-            size_max=30,
-            zoom=9,
-            title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
-        )
+    outlier_excel = pd.read_excel("outliers.xlsx")  # Replace with your actual outlier dataset
 
-        for trace in figs.data:
-            trace.name = "Raw data"
-            trace.legendgroup = "Raw data"
-            trace.showlegend = True
-    
-        # Create second bubble map
-        fig2 = px.scatter_mapbox(
-            units_excel,
-            lat='area_lat',
-            lon='area_lon',
-            size='Average Meter Sale Price',
-            color='Transaction Count',
-            hover_name='area_name_en',
-            hover_data={
-                'Transaction Count': True,
-                'Average Meter Sale Price': ':.2f',
-                'area_lat': False,
-                'area_lon': False
-            },
-            color_continuous_scale='Viridis',
-            size_max=30,
-            opacity=0.6,
-            zoom=9,
-            title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
-        )
+    # Create the single tab
+    with st.tab("Average Meter Sale Price"):
 
-        for trace in fig2.data:
-            trace.name = "Data >= 2020"
-            trace.legendgroup = "Data >= 2020"
-            trace.showlegend = True
-
-        # Combine the two maps
-        for trace in fig2.data:
-            figs.add_trace(trace)
-
-        figs.update_layout(
-            mapbox_style='open-street-map',
-            margin={"r": 0, "t": 40, "l": 0, "b": 0},
-            legend=dict(
-                x=0.01,
-                y=0.99,
-                bgcolor='rgba(255,255,255,0.8)',
-                bordercolor='black',
-                borderwidth=1
-            )
-        )
-
-        # Display the map
-        st.plotly_chart(figs, use_container_width=True)
-
-    
-    with Avg_tab:
         figs = px.scatter_mapbox(
             df_excel,
             lat='area_lat',
@@ -697,8 +629,8 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.name = "Raw data"
             trace.legendgroup = "Raw data"
             trace.showlegend = True
-    
-        # Create second bubble map
+
+        # Add filtered data (e.g., >= 2020)
         fig2 = px.scatter_mapbox(
             units_excel,
             lat='area_lat',
@@ -715,17 +647,39 @@ if sidebar_option == "Geo Graphical Analysis":
             color_continuous_scale='Viridis',
             size_max=30,
             opacity=0.6,
-            zoom=9,
-            title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
+            zoom=9
         )
 
         for trace in fig2.data:
             trace.name = "Data >= 2020"
             trace.legendgroup = "Data >= 2020"
             trace.showlegend = True
+            figs.add_trace(trace)
 
-        # Combine the two maps
-        for trace in fig2.data:
+        # Add outlier data
+        fig3 = px.scatter_mapbox(
+            outlier_excel,
+            lat='area_lat',
+            lon='area_lon',
+            size='Transaction Count',
+            color='Average Meter Sale Price',
+            hover_name='area_name_en',
+            hover_data={
+                'Transaction Count': True,
+                'Average Meter Sale Price': ':.2f',
+                'area_lat': False,
+                'area_lon': False
+            },
+            color_continuous_scale='Reds',
+            size_max=30,
+            opacity=0.4,
+            zoom=9
+        )
+
+        for trace in fig3.data:
+            trace.name = "Outlier data"
+            trace.legendgroup = "Outlier data"
+            trace.showlegend = True
             figs.add_trace(trace)
 
         figs.update_layout(
@@ -740,9 +694,7 @@ if sidebar_option == "Geo Graphical Analysis":
             )
         )
 
-        # Display the map
         st.plotly_chart(figs, use_container_width=True)
-
 
 
     
