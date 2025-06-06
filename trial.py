@@ -448,10 +448,10 @@ if sidebar_option == "Bivariate Analysis":
 
             return fig
             
-            file1 = "description_raw.xlsx"
-            file2 = "description_units20.xlsx"
+        file1 = "description_raw.xlsx"
+        file2 = "description_units20.xlsx"
 
-            if file1 and file2:
+        if file1 and file2:
                 raw_excel = pd.read_excel(file1, sheet_name=None)
                 model_excel = pd.read_excel(file2, sheet_name=None)
 
@@ -468,7 +468,7 @@ if sidebar_option == "Bivariate Analysis":
                             st.plotly_chart(fig, use_container_width=True)
                         else:
                             st.warning(f"⚠️ Sheet '{selected_sheet}' has no columns to plot.")
-            else:
+        else:
                 st.info("Upload both Excel files to continue.")
 
 
