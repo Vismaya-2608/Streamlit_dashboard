@@ -598,11 +598,10 @@ if sidebar_option == "Price Prediction Model":
 # --- View 6: Geo Graphical Analysis ---
 if sidebar_option == "Geo Graphical Analysis":
     st.subheader("Dubai Area-wise Bubble Map")
-    sub_tabs = st.tabs(["Average Meter Sale Price"])
     
     df_excel = pd.read_excel("new_tdf.xlsx")
     units_excel = pd.read_excel("units_20.xlsx")
-    outlier_excel = pd.read_excel("outliers.xlsx")  # Replace with your actual outlier dataset
+    outlier_excel = pd.read_excel("outliers.xlsx")# Replace with your actual outlier dataset
 
     # Create the single tab
     with st.tab("Average Meter Sale Price"):
@@ -624,12 +623,14 @@ if sidebar_option == "Geo Graphical Analysis":
             zoom=9,
             title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
         )
+
         for trace in figs.data:
             trace.name = "Raw data"
             trace.legendgroup = "Raw data"
             trace.showlegend = True
-            # Add filtered data (e.g., >= 2020)
-            fig2 = px.scatter_mapbox(
+
+        # Add filtered data (e.g., >= 2020)
+        fig2 = px.scatter_mapbox(
             units_excel,
             lat='area_lat',
             lon='area_lon',
