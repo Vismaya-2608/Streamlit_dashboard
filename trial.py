@@ -607,7 +607,7 @@ if sidebar_option == "Geo Graphical Analysis":
     tab1, = st.tabs(["Average Meter Sale Price"])
 
     with tab1:
-        # Initial base layer (Raw Data)
+        # Base Layer: Raw Data
         figs = px.scatter_mapbox(
             df_excel,
             lat='area_lat',
@@ -632,7 +632,7 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.legendgroup = "Raw data"
             trace.showlegend = True
 
-        # Filtered Data (>= 2020)
+        # Second Layer: Data >= 2020
         fig2 = px.scatter_mapbox(
             units_excel,
             lat='area_lat',
@@ -658,40 +658,65 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.showlegend = True
             figs.add_trace(trace)
 
-        # Outlier Data Layer — With Checks
-        required_cols = ['area_lat', 'area_lon', 'Transaction Count', 'Average Meter Sale Price']
+        # Third Layer: Outlier Data — with Full Debug Checks
+        required_cols = ['area_lat', 'area_lon', 'Transaction Count', 'Average Meter Sale Price', 'area_name_en']
         missing_cols = [col for col in required_cols if col not in outlier_excel.columns]
-        if missing_cols:
-            st.error(f"Missing columns in Outlier Data: {missing_cols}")
-        else:
-            outlier_excel = outlier_excel.dropna(subset=['area_lat', 'area_lon'])
-            if outlier_excel.empty:
-                st.warning("Outlier data is empty after dropping NaNs. Skipping outlier layer.")
-            else:
-                fig3 = px.scatter_mapbox(
-                    outlier_excel,
-                    lat='area_lat',
-                    lon='area_lon',
-                    size='Transaction Count',
-                    color='Average Meter Sale Price',
-                    hover_name='area_name_en',
-                    hover_data={
-                        'Transaction Count': True,
-                        'Average Meter Sale Price': ':.2f',
-                        'area_lat': False,
-                        'area_lon': False
-                    },
-                    color_continuous_scale='Reds',
-                    size_max=30,
-                    opacity=0.4,
-                    zoom=9
-                )
 
-                for trace in fig3.data:
-                    trace.name = "Outlier data"
-                    trace.legendgroup = "Outlier data"
-                    trace.showlegend = True
-                    figs.add_trace(trace)
+        if missing_cols:
+            st.error(f"❌ Missing columns in Outlier Data: {missing_cols}")
+        else:
+            st.markdown("#### ✅ Sample of Outlier Data (Top 5 rows)")
+            st.dataframe(outlier_excel.head())
+
+            # Check for NaN lat/lon
+            null_lat = outlier_excel['area_lat'].isna().sum()
+            null_lon = outlier_excel['area_lon'].isna().sum()
+            st.info(f"ℹ️ NaN values - area_lat: {null_lat}, area_lon: {null_lon}")
+
+            # Drop rows with missing lat/lon
+            outlier_excel = outlier_excel.dropna(subset=['area_lat', 'area_lon'])
+
+            # Show count after cleaning
+            st.success(f"✅ Outlier rows after dropping NaNs: {len(outlier_excel)}")
+
+            try:
+                # Convert lat/lon to numeric
+                outlier_excel['area_lat'] = pd.to_numeric(outlier_excel['area_lat'], errors='coerce')
+                outlier_excel['area_lon'] = pd.to_numeric(outlier_excel['area_lon'], errors='coerce')
+
+                # Drop rows again in case conversion caused NaNs
+                outlier_excel = outlier_excel.dropna(subset=['area_lat', 'area_lon'])
+
+                if outlier_excel.empty:
+                    st.warning("⚠️ Outlier data is empty after cleaning. Skipping outlier map layer.")
+                else:
+                    fig3 = px.scatter_mapbox(
+                        outlier_excel,
+                        lat='area_lat',
+                        lon='area_lon',
+                        size='Transaction Count',
+                        color='Average Meter Sale Price',
+                        hover_name='area_name_en',
+                        hover_data={
+                            'Transaction Count': True,
+                            'Average Meter Sale Price': ':.2f',
+                            'area_lat': False,
+                            'area_lon': False
+                        },
+                        color_continuous_scale='Reds',
+                        size_max=30,
+                        opacity=0.4,
+                        zoom=9
+                    )
+
+                    for trace in fig3.data:
+                        trace.name = "Outlier data"
+                        trace.legendgroup = "Outlier data"
+                        trace.showlegend = True
+                        figs.add_trace(trace)
+
+            except Exception as e:
+                st.exception(f"🔥 Exception while preparing outlier layer: {e}")
 
         # Final layout update
         figs.update_layout(
