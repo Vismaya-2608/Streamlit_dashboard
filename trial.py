@@ -372,10 +372,10 @@ if sidebar_option == "Bivariate Analysis":
     
 
     # Step 1: Dropdown selector at the top
-    cat_cols = [
+    cat_cols = [ "instance_year",
         "trans_group_en", "property_type_en", "property_sub_type_en", "property_usage_en", 
         "nearest_metro_en","nearest_landmark_en","nearest_mall_en", "room_en", "reg_type_en", 
-        "procedure_name_en", "instance_year"
+        "procedure_name_en"
     ]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
     # Step 3: Read the Excel for box plot data
@@ -409,7 +409,7 @@ if sidebar_option == "Bivariate Analysis":
             fig.add_trace(go.Bar(
                 x=df1[category_col],
                 y=df1['nRecords'],
-                name=f'{labels[0]} - nRecords',
+                name=f'nRecords ({labels[0]})',
                 opacity=0.6
             ), secondary_y=False)
 
@@ -417,14 +417,14 @@ if sidebar_option == "Bivariate Analysis":
                 x=df1[category_col],
                 y=df1[target_col],
                 mode='lines+markers',
-                name=f'{labels[0]} - Avg Price'
+                name=f'Avg Price ({labels[0]})'
             ), secondary_y=True)
 
             # Second DataFrame
             fig.add_trace(go.Bar(
                 x=df2[category_col],
                 y=df2['nRecords'],
-                name=f'{labels[1]} - nRecords',
+                name=f'nRecords ({labels[1]})',
                 opacity=0.6
             ), secondary_y=False)
 
@@ -432,7 +432,7 @@ if sidebar_option == "Bivariate Analysis":
                 x=df2[category_col],
                 y=df2[target_col],
                 mode='lines+markers',
-                name=f'{labels[1]} - Avg Price'
+                name=f'Avg Price ({labels[0]})'
             ), secondary_y=True)
 
             # Layout
