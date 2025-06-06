@@ -598,6 +598,7 @@ if sidebar_option == "Price Prediction Model":
 # --- View 6: Geo Graphical Analysis ---
 if sidebar_option == "Geo Graphical Analysis":
     st.subheader("Dubai Area-wise Bubble Map")
+    sub_tabs = st.tabs(["Average Meter Sale Price"])
     
     df_excel = pd.read_excel("new_tdf.xlsx")
     units_excel = pd.read_excel("units_20.xlsx")
