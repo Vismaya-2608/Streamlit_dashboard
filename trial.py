@@ -379,20 +379,8 @@ if sidebar_option == "Bivariate Analysis":
     ]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
 
-    # Step 2: Define HTML plot file map
-    plot_map = {
-        "trans_group_en":  "meter_sale_price&trans_group_en_plot.html",
-        "property_type_en":  "meter_sale_price&property_type_en_plot.html",
-        "property_sub_type_en": "meter_sale_price&property_sub_type_en_plot.html",
-        "property_usage_en": "meter_sale_price&property_usage_en_plot.html",
-        "nearest_metro_en": "meter_sale_price&nearest_metro_en_plot.html",
-        "nearest_landmark_en": "meter_sale_price&nearest_landmark_en_plot.html",
-        "nearest_mall_en": "meter_sale_price&nearest_mall_en_plot.html",
-        "room_en": "meter_sale_price&rooms_en_plot.html",
-        "reg_type_en": "meter_sale_price&reg_type_en_plot.html",
-        "procedure_name_en": "meter_sale_price&procedure_name_en_plot.html",
-        "instance_year": "average_meter_sale_price_comparison_data_model.html"
-    }
+    
+
 
     # Step 3: Read the Excel for box plot data
     try:
@@ -412,12 +400,102 @@ if sidebar_option == "Bivariate Analysis":
     col1, col2 = st.columns(2)
 
     with col1:
-        plot_file = plot_map[cat]
-        if os.path.exists(plot_file):
-            with open(plot_file, "r", encoding="utf-8") as f:
-                components.html(f.read(), height=400, scrolling=True)
+
+        # Function to create overlay plot for a single sheet
+        def plot_avg_price_and_count_overlay(df1, df2, category_col, labels=("Raw data", "Data for model")):
+            """
+            Returns a Plotly figure showing average meter sale price and record count overlay for two DataFrames.
+            """
+            target_col = "Avg_meter_sale_price"
+
+            fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+            # First DataFrame
+            fig.add_trace(go.Bar(
+                x=df1[category_col],
+                y=df1['nRecords'],
+                name=f'{labels[0]} - nRecords',
+                opacity=0.6
+            ), secondary_y=False)
+
+            fig.add_trace(go.Scatter(
+                x=df1[category_col],
+                y=df1[target_col],
+                mode='lines+markers',
+                name=f'{labels[0]} - Avg Price'
+            ), secondary_y=True)
+
+        # Second DataFrame
+        fig.add_trace(go.Bar(
+            x=df2[category_col],
+            y=df2['nRecords'],
+            name=f'{labels[1]} - nRecords',
+            opacity=0.6
+            ), secondary_y=False)
+
+            fig.add_trace(go.Scatter(
+                x=df2[category_col],
+                y=df2[target_col],
+                mode='lines+markers',
+                name=f'{labels[1]} - Avg Price'
+            ), secondary_y=True)
+
+            # Layout
+            fig.update_layout(
+                title=f'nRecords & Avg Price by {category_col}',
+                xaxis_title=category_col,
+                yaxis=dict(title='nRecords'),
+                yaxis2=dict(title='Average Meter Sale Price', overlaying='y', side='right'),
+                legend=dict(x=1.1, y=1.0),
+                hovermode='x unified',
+                barmode='group'
+            )
+
+            return fig
+
+        # Function to process all sheets and display in Streamlit
+        def generate_all_overlay_plots(file1, file2):
+            """
+            Reads two Excel files and displays overlay plots in Streamlit for common sheets.
+            """
+            try:
+                raw_excel = pd.read_excel(file1, sheet_name=None)
+                model_excel = pd.read_excel(file2, sheet_name=None)
+
+                common_sheets = set(raw_excel.keys()) & set(model_excel.keys())
+
+                if not common_sheets:
+                    st.warning("No matching sheets found between the two files.")
+                    return
+
+                for sheet_name in common_sheets:
+                    st.subheader(f"📊 Sheet: {sheet_name}")
+                    df1 = raw_excel[sheet_name]
+                    df2 = model_excel[sheet_name]
+
+                    if len(df1.columns) > 0:
+                        category_col = df1.columns[0]
+                        fig = plot_avg_price_and_count_overlay(df1, df2, category_col)
+                        st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.warning(f"⚠️ Skipping sheet '{sheet_name}': No columns found.")
+
+            except FileNotFoundError:
+                st.error("❌ One of the Excel files was not found.")
+            except Exception as e:
+                st.error(f"❌ An error occurred: {e}")
+
+        # === Streamlit UI ===
+        st.title("📈 Overlay Comparison: Raw vs Model Data")
+
+        # File uploader (optional if running locally with predefined path)
+        file1 = "description_raw.xlsx"
+        file2 = "description_units20.xlsx"
+        # Run analysis
+        if file1 and file2:
+            generate_all_overlay_plots(file1, file2)
         else:
-            st.warning(f"{plot_file} not found.")
+            st.info("Please upload both Excel files to begin.")
 
     with col2:
         def plot_boxplot_per_category(df, cat_col):
