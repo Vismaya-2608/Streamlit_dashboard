@@ -441,7 +441,7 @@ if sidebar_option == "Bivariate Analysis":
                 xaxis_title=category_col,
                 yaxis=dict(title='nRecords'),
                 yaxis2=dict(title='Average Meter Sale Price', overlaying='y', side='right'),
-                legend=dict(x=0.1, y=1.1),
+                legend=dict(x=0, y=1.2),
                 hovermode='x unified',
                 barmode='group'
             )
