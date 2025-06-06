@@ -467,7 +467,7 @@ model_perfomance =  "Model_performance.xlsx"
 html_lr = "predicted_vs_actual_linear.html"
 html_dt = "predicted_vs_actual_decision_tree.html"
 html_xgb = "predicted_vs_actual_XGB_regressor.html"
-html_comparision = "model_performance_comparison (1).html"
+html_comparision = "model_perfor_comparision.html"
 
 # Load Excel file with caching
 @st.cache_data
