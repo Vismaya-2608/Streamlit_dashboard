@@ -606,7 +606,6 @@ if sidebar_option == "Geo Graphical Analysis":
 
     # Create the single tab
     with st.tab("Average Meter Sale Price"):
-
         figs = px.scatter_mapbox(
             df_excel,
             lat='area_lat',
@@ -625,14 +624,12 @@ if sidebar_option == "Geo Graphical Analysis":
             zoom=9,
             title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
         )
-
         for trace in figs.data:
             trace.name = "Raw data"
             trace.legendgroup = "Raw data"
             trace.showlegend = True
-
-        # Add filtered data (e.g., >= 2020)
-        fig2 = px.scatter_mapbox(
+            # Add filtered data (e.g., >= 2020)
+            fig2 = px.scatter_mapbox(
             units_excel,
             lat='area_lat',
             lon='area_lon',
