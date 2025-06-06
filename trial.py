@@ -505,8 +505,9 @@ if sidebar_option == "Bivariate Analysis":
                 title=f"Box Plot by {cat_col}",
                 yaxis_title="Meter Sale Price",
                 boxmode='group',
-                xaxis_title=cat_col
-            )
+                xaxis_title=cat_col,
+                    xaxis=dict(tickangle=45,automargin=True
+            ))
             return fig
 
         box_plot = plot_boxplot_per_category(df, df.columns[0])
