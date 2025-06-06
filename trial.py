@@ -455,13 +455,9 @@ if sidebar_option == "Bivariate Analysis":
                 raw_excel = pd.read_excel(file1, sheet_name=None)
                 model_excel = pd.read_excel(file2, sheet_name=None)
 
-                common_sheets = sorted(set(raw_excel.keys()) & set(model_excel.keys()))
+                #common_sheets = sorted(set(raw_excel.keys()) & set(model_excel.keys()))
 
-                if not common_sheets:
-                    st.warning("⚠️ No matching sheets found between the two files.")
-                else:
-                    # Sheet selector
-                    if  selected_sheet in common_sheets:
+                if selected_sheet:
                         # Load data from the selected sheet
                         df1 = raw_excel[selected_sheet]
                         df2 = model_excel[selected_sheet]
