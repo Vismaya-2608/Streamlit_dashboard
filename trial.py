@@ -598,14 +598,16 @@ if sidebar_option == "Price Prediction Model":
 # --- View 6: Geo Graphical Analysis ---
 if sidebar_option == "Geo Graphical Analysis":
     st.subheader("Dubai Area-wise Bubble Map")
-    
+
+    # Load Excel files
     df_excel = pd.read_excel("new_tdf.xlsx")
     units_excel = pd.read_excel("units_20.xlsx")
     outlier_excel = pd.read_excel("outliers.xlsx")
-    tab1, = st.tabs(["Average Meter Sale Price"])# Replace with your actual outlier dataset
 
-    # Create the single tab
+    tab1, = st.tabs(["Average Meter Sale Price"])
+
     with tab1:
+        # Initial base layer (Raw Data)
         figs = px.scatter_mapbox(
             df_excel,
             lat='area_lat',
@@ -630,7 +632,7 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.legendgroup = "Raw data"
             trace.showlegend = True
 
-        # Add filtered data (e.g., >= 2020)
+        # Filtered Data (>= 2020)
         fig2 = px.scatter_mapbox(
             units_excel,
             lat='area_lat',
@@ -656,32 +658,42 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.showlegend = True
             figs.add_trace(trace)
 
-        # Add outlier data
-        fig3 = px.scatter_mapbox(
-            outlier_excel,
-            lat='area_lat',
-            lon='area_lon',
-            size='Transaction Count',
-            color='Average Meter Sale Price',
-            hover_name='area_name_en',
-            hover_data={
-                'Transaction Count': True,
-                'Average Meter Sale Price': ':.2f',
-                'area_lat': False,
-                'area_lon': False
-            },
-            color_continuous_scale='Reds',
-            size_max=30,
-            opacity=0.4,
-            zoom=9
-        )
+        # Outlier Data Layer — With Checks
+        required_cols = ['area_lat', 'area_lon', 'Transaction Count', 'Average Meter Sale Price']
+        missing_cols = [col for col in required_cols if col not in outlier_excel.columns]
+        if missing_cols:
+            st.error(f"Missing columns in Outlier Data: {missing_cols}")
+        else:
+            outlier_excel = outlier_excel.dropna(subset=['area_lat', 'area_lon'])
+            if outlier_excel.empty:
+                st.warning("Outlier data is empty after dropping NaNs. Skipping outlier layer.")
+            else:
+                fig3 = px.scatter_mapbox(
+                    outlier_excel,
+                    lat='area_lat',
+                    lon='area_lon',
+                    size='Transaction Count',
+                    color='Average Meter Sale Price',
+                    hover_name='area_name_en',
+                    hover_data={
+                        'Transaction Count': True,
+                        'Average Meter Sale Price': ':.2f',
+                        'area_lat': False,
+                        'area_lon': False
+                    },
+                    color_continuous_scale='Reds',
+                    size_max=30,
+                    opacity=0.4,
+                    zoom=9
+                )
 
-        for trace in fig3.data:
-            trace.name = "Outlier data"
-            trace.legendgroup = "Outlier data"
-            trace.showlegend = True
-            figs.add_trace(trace)
+                for trace in fig3.data:
+                    trace.name = "Outlier data"
+                    trace.legendgroup = "Outlier data"
+                    trace.showlegend = True
+                    figs.add_trace(trace)
 
+        # Final layout update
         figs.update_layout(
             mapbox_style='open-street-map',
             margin={"r": 0, "t": 40, "l": 0, "b": 0},
@@ -695,7 +707,6 @@ if sidebar_option == "Geo Graphical Analysis":
         )
 
         st.plotly_chart(figs, use_container_width=True)
-
 
     
 
