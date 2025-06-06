@@ -601,10 +601,11 @@ if sidebar_option == "Geo Graphical Analysis":
     
     df_excel = pd.read_excel("new_tdf.xlsx")
     units_excel = pd.read_excel("units_20.xlsx")
-    outlier_excel = pd.read_excel("outliers.xlsx")# Replace with your actual outlier dataset
+    outlier_excel = pd.read_excel("outliers.xlsx")
+    tab1, = st.tabs(["Average Meter Sale Price"])# Replace with your actual outlier dataset
 
     # Create the single tab
-    with st.tab("Average Meter Sale Price"):
+    with tab1:
         figs = px.scatter_mapbox(
             df_excel,
             lat='area_lat',
