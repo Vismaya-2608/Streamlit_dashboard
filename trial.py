@@ -448,8 +448,8 @@ if sidebar_option == "Bivariate Analysis":
 
             return fig
             
-            file1 = "file_path"
-            file2 = "file_path"
+            file1 = "description_raw.xlsx"
+            file2 = "description_units20.xlsx"
 
             if file1 and file2:
                 raw_excel = pd.read_excel(file1, sheet_name=None)
