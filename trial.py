@@ -628,7 +628,7 @@ if sidebar_option == "Geo Graphical Analysis":
 
         for trace in figs.data:
             trace.name = "Raw data"
-            trace.legendgroup = "Raw data"
+            trace.legendgroup = "Raw data(1996-2025)"
             trace.showlegend = True
 
         # Add filtered data (e.g., >= 2020)
@@ -645,15 +645,15 @@ if sidebar_option == "Geo Graphical Analysis":
                 'area_lat': False,
                 'area_lon': False
             },
-            color_continuous_scale='Viridis',
+            color_continuous_scale='Hot',
             size_max=30,
-            opacity=0.6,
+            opacity=0.8,
             zoom=9
         )
 
         for trace in fig2.data:
             trace.name = "Data >= 2020"
-            trace.legendgroup = "Data >= 2020"
+            trace.legendgroup = "Model_Data"
             trace.showlegend = True
             figs.add_trace(trace)
 
@@ -671,15 +671,15 @@ if sidebar_option == "Geo Graphical Analysis":
                 'area_lat': False,
                 'area_lon': False
             },
-            color_continuous_scale='Reds',
+            color_continuous_scale='Hot',
             size_max=30,
-            opacity=0.4,
+            opacity=0.8,
             zoom=9
         )
 
         for trace in fig3.data:
             trace.name = "Outlier data"
-            trace.legendgroup = "Outlier data"
+            trace.legendgroup = "Non_Model_Data"
             trace.showlegend = True
             figs.add_trace(trace)
 
