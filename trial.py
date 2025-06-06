@@ -627,7 +627,7 @@ if sidebar_option == "Geo Graphical Analysis":
         )
 
         for trace in figs.data:
-            trace.name = "Raw data"
+            trace.name = "Raw data(1996-2025)"
             trace.legendgroup = "Raw data(1996-2025)"
             trace.showlegend = True
 
@@ -652,7 +652,7 @@ if sidebar_option == "Geo Graphical Analysis":
         )
 
         for trace in fig2.data:
-            trace.name = "Data >= 2020"
+            trace.name = "Model_Data"
             trace.legendgroup = "Model_Data"
             trace.showlegend = True
             figs.add_trace(trace)
@@ -678,7 +678,7 @@ if sidebar_option == "Geo Graphical Analysis":
         )
 
         for trace in fig3.data:
-            trace.name = "Outlier data"
+            trace.name = "Non_Model_Data"
             trace.legendgroup = "Non_Model_Data"
             trace.showlegend = True
             figs.add_trace(trace)
