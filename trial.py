@@ -455,25 +455,25 @@ if sidebar_option == "Bivariate Analysis":
                 raw_excel = pd.read_excel(file1, sheet_name=None)
                 model_excel = pd.read_excel(file2, sheet_name=None)
 
-            common_sheets = sorted(set(raw_excel.keys()) & set(model_excel.keys()))
+                common_sheets = sorted(set(raw_excel.keys()) & set(model_excel.keys()))
 
-            if not common_sheets:
-                st.warning("⚠️ No matching sheets found between the two files.")
+                if not common_sheets:
+                    st.warning("⚠️ No matching sheets found between the two files.")
+                else:
+                    # Sheet selector
+                    if common_sheets in selected_sheet:
+                        # Load data from the selected sheet
+                        df1 = raw_excel[selected_sheet]
+                        df2 = model_excel[selected_sheet]
+
+                        if len(df1.columns) > 0:
+                            category_col = df1.columns[0]
+                            fig = plot_avg_price_and_count_overlay(df1, df2, category_col)
+                            st.plotly_chart(fig, use_container_width=True)
+                        else:
+                            st.warning(f"⚠️ Sheet '{selected_sheet}' has no columns to plot.")
             else:
-                # Sheet selector
-                if common_sheets in selected_sheet:
-                    # Load data from the selected sheet
-                    df1 = raw_excel[selected_sheet]
-                    df2 = model_excel[selected_sheet]
-
-                    if len(df1.columns) > 0:
-                        category_col = df1.columns[0]
-                        fig = plot_avg_price_and_count_overlay(df1, df2, category_col)
-                        st.plotly_chart(fig, use_container_width=True)
-                    else:
-                        st.warning(f"⚠️ Sheet '{selected_sheet}' has no columns to plot.")
-        else:
-            st.info("Upload both Excel files to continue.")
+                st.info("Upload both Excel files to continue.")
 
 
     with col2:
