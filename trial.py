@@ -461,7 +461,7 @@ if sidebar_option == "Bivariate Analysis":
                     st.warning("⚠️ No matching sheets found between the two files.")
                 else:
                     # Sheet selector
-                    if common_sheets in selected_sheet:
+                    if  selected_sheet in common_sheets:
                         # Load data from the selected sheet
                         df1 = raw_excel[selected_sheet]
                         df2 = model_excel[selected_sheet]
