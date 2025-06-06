@@ -484,8 +484,8 @@ if sidebar_option == "Bivariate Analysis":
         st.title("📈 Overlay Comparison: Raw vs Model Data")
 
         # File uploader (optional if running locally with predefined path)
-        file1 = "file_path"
-        file2 = "file_path"
+        file1 = "description_raw.xlsx"
+        file2 = "description_units20.xlsx"
         # Run analysis
         if file1 and file2:
             generate_all_overlay_plots(file1, file2)
