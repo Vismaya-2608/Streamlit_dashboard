@@ -545,6 +545,9 @@ if sidebar_option == "Bivariate Analysis":
             # Load the raw description data from the corresponding sheet
             description_data = pd.read_excel("table_stats_bivariate.xlsx", sheet_name=cat)
             description_data['Avg_meter_sale_price'] = description_data['Avg_meter_sale_price'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else x)
+            description_data['q1'] = description_data['q1'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else x)
+            description_data['Median'] = description_data['Median'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else x)
+            description_data['q3'] = description_data['q3'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else x)
             #st.subheader(f"Raw Description Table - {cat}")
             st.dataframe(description_data, use_container_width=True)
         except Exception as e:
