@@ -514,6 +514,7 @@ if sidebar_option == "Bivariate Analysis":
                 boxmode='group',
                 xaxis_title=cat_col,
                     xaxis=dict(tickangle=45,automargin=True
+                               showlegend=False 
             ))
             return fig
 
