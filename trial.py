@@ -479,48 +479,39 @@ if sidebar_option == "Bivariate Analysis":
                 st.info("Upload both Excel files to continue.")
 
 
-    with col2:
-        def plot_boxplot_per_category(df, cat_col):
-            required_cols = {'min', '25%', '50%', '75%', 'max'}
-            if not required_cols.issubset(df.columns):
-                st.warning("DataFrame missing required quantile columns.")
-                return None
+   with col2:
+       def plot_boxplot_per_category(df, cat_col, value_col):
+           if cat_col not in df.columns or value_col not in df.columns:
+               st.warning("Required columns not found in DataFrame.")
+               return None
 
-            fig = go.Figure()
-            for _, row in df.iterrows():
-                category = row[cat_col]
-                q1 = row['25%']
-                median = row['50%']
-                q3 = row['75%']
-                min_val = row['min']
-                max_val = row['max']
-                iqr = q3 - q1
-                lower_fence = max(min_val, q1 - 1.5 * iqr)
-                upper_fence = min(max_val, q3 + 1.5 * iqr)
+           fig = go.Figure()
+           categories = df[cat_col].unique()
 
-                fig.add_trace(go.Box(
-                    name=str(category),
-                    q1=[q1],
-                    median=[median],
-                    q3=[q3],
-                    lowerfence=[lower_fence],
-                    upperfence=[upper_fence],
-                    boxpoints=False
-                ))
+           for category in categories:
+               values = df[df[cat_col] == category][value_col].dropna()
+               if len(values) == 0:
+                   continue
 
-            fig.update_layout(
-                title=f"Box Plot by {cat_col}",
-                yaxis_title="Meter Sale Price",
-                boxmode='group',
-                xaxis_title=cat_col,
-                xaxis=dict(tickangle=45,automargin=True),
-                showlegend=False 
-            )
-            return fig
+               fig.add_trace(go.Box(
+                   y=values,
+                   name=str(category),
+                   boxpoints='outliers'  # show outliers; use 'all' to show all points
+               ))
 
-        box_plot = plot_boxplot_per_category(df, df.columns[0])
-        if box_plot:
-            st.plotly_chart(box_plot, use_container_width=True)
+           fig.update_layout(
+               title=f"Box Plot by {cat_col}",
+               yaxis_title=value_col.replace('_', ' ').title(),
+               xaxis_title=cat_col,
+               xaxis=dict(tickangle=45, automargin=True),
+               showlegend=False
+           )
+           return fig
+
+    # Example usage
+    box_plot = plot_boxplot_per_category(df, cat_col='property_type_en', value_col='meter_sale_price')
+    if box_plot:
+        st.plotly_chart(box_plot, use_container_width=True)
 
 # --- View 5: Price Prediction Model ---
 # Define file paths
