@@ -520,8 +520,7 @@ if sidebar_option == "Bivariate Analysis":
         box_plot = plot_boxplot_per_category(df, df.columns[0])
         if box_plot:
             st.plotly_chart(box_plot, use_container_width=True)
-
-    # Example usage
+            # Example usage
     box_plot = plot_boxplot_per_category(df, cat_col='property_type_en', value_col='meter_sale_price')
     if box_plot:
         st.plotly_chart(box_plot, use_container_width=True)
