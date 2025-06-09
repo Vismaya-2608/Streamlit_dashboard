@@ -528,7 +528,6 @@ if sidebar_option == "Bivariate Analysis":
                     lowerfence=[lower_fence],
                     upperfence=[upper_fence],
                     boxpoints=False,
-                    showlegend=False  # Disable legend
                 ))
 
             fig.update_layout(
@@ -537,7 +536,6 @@ if sidebar_option == "Bivariate Analysis":
                 boxmode='group',
                 xaxis_title=cat_col,
                 xaxis=dict(tickangle=45, automargin=True),  # Label rotation
-                showlegend=False  # Remove legend area
             )
             return fig
 
