@@ -370,7 +370,7 @@ if sidebar_option == "Univariate Analysis":
 if sidebar_option == "Bivariate Analysis":
     st.markdown("""
     -Raw Data(1966-2025)
-    -Model_Data(Data Considered after 2020)
+        -Model_Data(Data Considered after 2020)
     """)
 
     
