@@ -516,6 +516,9 @@ if sidebar_option == "Bivariate Analysis":
                     xaxis=dict(tickangle=45,automargin=True
             ))
             return fig
+        box_plot = plot_boxplot_per_category(df, df.columns[0])
+        if box_plot:
+            st.plotly_chart(box_plot, use_container_width=True)
 
 
 # --- View 5: Price Prediction Model ---
