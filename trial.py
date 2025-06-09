@@ -543,7 +543,7 @@ if sidebar_option == "Bivariate Analysis":
     with main_tabs[0]:
         try:
             # Load the raw description data from the corresponding sheet
-            description_data = pd.read_excel("description_raw.xlsx", sheet_name=cat)
+            description_data = pd.read_excel("table_stats_bivariate.xlsx", sheet_name=cat)
             #st.subheader(f"Raw Description Table - {cat}")
             st.dataframe(description_data, use_container_width=True)
         except Exception as e:
