@@ -10,6 +10,17 @@ import numpy as np
 
 # --- Page Config ---
 st.set_page_config(layout="wide")
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        header, footer {
+            visibility: hidden;
+        }
+    </style>
+""", unsafe_allow_html=True)
 st.sidebar.title("🔍 FlipOse-RE-Analytics")
 
 # --- File Paths ---
