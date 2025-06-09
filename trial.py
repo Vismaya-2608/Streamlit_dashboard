@@ -404,23 +404,22 @@ if sidebar_option == "Bivariate Analysis":
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
     main_tabs = st.tabs([ "Table","charts"])
     with main_tabs[0]:
-    
-    # Step 3: Read the Excel for box plot data
-    try:
-        cat_plot_path = "original_df_description_tables.xlsx"
-        xls = pd.ExcelFile(cat_plot_path)
-        sheet_names = xls.sheet_names
-        selected_sheet = sheet_names[cat_cols.index(cat)]  # Optional: auto match sheet to cat
-        df = pd.read_excel(xls, sheet_name=selected_sheet)
-    except FileNotFoundError:
-        st.error(f"Excel file not found: {cat_plot_path}")
-        st.stop()
-    except Exception as e:
-        st.error(f"Error loading Excel sheet: {e}")
-        st.stop()
+        # Step 3: Read the Excel for box plot data
+        try:
+            cat_plot_path = "original_df_description_tables.xlsx"
+            xls = pd.ExcelFile(cat_plot_path)
+            sheet_names = xls.sheet_names
+            selected_sheet = sheet_names[cat_cols.index(cat)]  # Optional: auto match sheet to cat
+            df = pd.read_excel(xls, sheet_name=selected_sheet)
+        except FileNotFoundError:
+            st.error(f"Excel file not found: {cat_plot_path}")
+            st.stop()
+        except Exception as e:
+            st.error(f"Error loading Excel sheet: {e}")
+            st.stop()
 
-    # Step 4: Display two columns
-    col1, col2 = st.columns(2)
+        # Step 4: Display two columns
+        col1, col2 = st.columns(2)
 
     with col1:
         # Function to create overlay plot for a single sheet
