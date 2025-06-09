@@ -479,34 +479,34 @@ if sidebar_option == "Bivariate Analysis":
                 st.info("Upload both Excel files to continue.")
 
 
-   with col2:
-       def plot_boxplot_per_category(df, cat_col, value_col):
-           if cat_col not in df.columns or value_col not in df.columns:
-               st.warning("Required columns not found in DataFrame.")
-               return None
+    with col2:
+        def plot_boxplot_per_category(df, cat_col, value_col):
+            if cat_col not in df.columns or value_col not in df.columns:
+                st.warning("Required columns not found in DataFrame.")
+                return None
 
-           fig = go.Figure()
-           categories = df[cat_col].unique()
+            fig = go.Figure()
+            categories = df[cat_col].unique()
 
-           for category in categories:
-               values = df[df[cat_col] == category][value_col].dropna()
-               if len(values) == 0:
-                   continue
+            for category in categories:
+                values = df[df[cat_col] == category][value_col].dropna()
+                if len(values) == 0:
+                    continue
 
-               fig.add_trace(go.Box(
-                   y=values,
-                   name=str(category),
-                   boxpoints='outliers'  # show outliers; use 'all' to show all points
-               ))
+                fig.add_trace(go.Box(
+                    y=values,
+                    name=str(category),
+                    boxpoints='outliers'  # show outliers; use 'all' to show all points
+                ))
 
-           fig.update_layout(
-               title=f"Box Plot by {cat_col}",
-               yaxis_title=value_col.replace('_', ' ').title(),
-               xaxis_title=cat_col,
-               xaxis=dict(tickangle=45, automargin=True),
-               showlegend=False
-           )
-           return fig
+            fig.update_layout(
+                title=f"Box Plot by {cat_col}",
+                yaxis_title=value_col.replace('_', ' ').title(),
+                xaxis_title=cat_col,
+                xaxis=dict(tickangle=45, automargin=True),
+                showlegend=False
+            )
+            return fig
 
     # Example usage
     box_plot = plot_boxplot_per_category(df, cat_col='property_type_en', value_col='meter_sale_price')
