@@ -461,7 +461,7 @@ if sidebar_option == "Bivariate Analysis":
                 x=df2[category_col],
                 y=df2[target_col],
                 mode='lines+markers',
-                name=f'Avg Price ({labels[0]})'
+                name=f'Avg Price ({labels[1]})'
             ), secondary_y=True)
 
             # Layout
