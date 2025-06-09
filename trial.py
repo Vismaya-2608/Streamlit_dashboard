@@ -426,7 +426,7 @@ if sidebar_option == "Bivariate Analysis":
 
     with col1:
         # Function to create overlay plot for a single sheet
-        def plot_avg_price_and_count_overlay(df1, df2, category_col, labels=("Raw data", "Data for model")):
+        def plot_avg_price_and_count_overlay(df1, df2, category_col, labels=("Raw data", "Model_Data")):
             """
             Returns a Plotly figure showing average meter sale price and record count overlay for two DataFrames.
             """
