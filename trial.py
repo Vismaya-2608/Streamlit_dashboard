@@ -403,7 +403,7 @@ if sidebar_option == "Bivariate Analysis":
     ]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
     main_tabs = st.tabs([ "Table","charts"])
-    with main_tabs[0]:
+    with main_tabs[1]:
         # Step 3: Read the Excel for box plot data
         try:
             cat_plot_path = "original_df_description_tables.xlsx"
@@ -539,6 +539,20 @@ if sidebar_option == "Bivariate Analysis":
         box_plot = plot_boxplot_per_category(df, df.columns[0])
         if box_plot:
             st.plotly_chart(box_plot, use_container_width=True)
+            
+    with main_tabs[0]:
+        excel_file_path = "description_raw.xlsx"
+        xls = pd.ExcelFile(excel_file_path)
+        sheet_names = xls.sheet_names  
+        if selected_cat_col:
+            df = pd.read_excel(xls, sheet_name=selected_cat_col)
+            st.subheader(f"Data from sheet: {selected_cat_col}")
+            st.dataframe(df, use_container_width=True)
+
+        
+        
+        
+        
 # --- View 5: Price Prediction Model ---
 # Define file paths
 EXCEL_PATH = "All_model_output.xlsx"
