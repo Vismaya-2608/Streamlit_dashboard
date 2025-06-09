@@ -521,13 +521,14 @@ if sidebar_option == "Bivariate Analysis":
                 upper_fence = min(max_val, q3 + 1.5 * iqr)
 
                 fig.add_trace(go.Box(
-                    name=str(category),
+                    name=str(category),  # Label on x-axis
                     q1=[q1],
                     median=[median],
                     q3=[q3],
                     lowerfence=[lower_fence],
                     upperfence=[upper_fence],
-                    boxpoints=False
+                    boxpoints=False,
+                    showlegend=False  # Disable legend
                 ))
 
             fig.update_layout(
@@ -535,14 +536,14 @@ if sidebar_option == "Bivariate Analysis":
                 yaxis_title="Meter Sale Price",
                 boxmode='group',
                 xaxis_title=cat_col,
-                    xaxis=dict(tickangle=45,automargin=True
-            ))
+                xaxis=dict(tickangle=45, automargin=True),  # Label rotation
+                showlegend=False  # Remove legend area
+            )
             return fig
+
         box_plot = plot_boxplot_per_category(df, df.columns[0])
         if box_plot:
             st.plotly_chart(box_plot, use_container_width=True)
-
-
 # --- View 5: Price Prediction Model ---
 # Define file paths
 EXCEL_PATH = "All_model_output.xlsx"
