@@ -395,11 +395,6 @@ if sidebar_option == "Bivariate Analysis":
        - Raw Data (1966–2025)
        - Model Data (Data Considered after 2020)
     """)
-
-
-
-    
-
     # Step 1: Dropdown selector at the top
     cat_cols = [
         "trans_group_en", "property_type_en", "property_sub_type_en", "property_usage_en", 
@@ -407,6 +402,9 @@ if sidebar_option == "Bivariate Analysis":
         "procedure_name_en","instance_year"
     ]
     cat = st.selectbox("nRecords and Avg_Meter_Sale_Price (Dirham) by:", cat_cols)
+    main_tabs = st.tabs([ "Table","charts"])
+    with main_tabs[0]:
+    
     # Step 3: Read the Excel for box plot data
     try:
         cat_plot_path = "original_df_description_tables.xlsx"
