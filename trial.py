@@ -544,7 +544,7 @@ if sidebar_option == "Bivariate Analysis":
         try:
             # Load the raw description data from the corresponding sheet
             description_data = pd.read_excel("description_raw.xlsx", sheet_name=cat)
-            st.subheader(f"Raw Description Table - {cat}")
+            #st.subheader(f"Raw Description Table - {cat}")
             st.dataframe(description_data, use_container_width=True)
         except Exception as e:
             st.error(f"Failed to load data for table view: {e}")
