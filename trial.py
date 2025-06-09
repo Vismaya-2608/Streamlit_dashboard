@@ -541,13 +541,14 @@ if sidebar_option == "Bivariate Analysis":
             st.plotly_chart(box_plot, use_container_width=True)
             
     with main_tabs[0]:
-        excel_file_path = "description_raw.xlsx"
-        xls = pd.ExcelFile(excel_file_path)
-        sheet_names = xls.sheet_names  
-        if selected_cat_col:
-            df = pd.read_excel(xls, sheet_name=selected_cat_col)
-            st.subheader(f"Data from sheet: {selected_cat_col}")
-            st.dataframe(df, use_container_width=True)
+        try:
+            # Load the raw description data from the corresponding sheet
+            description_data = pd.read_excel("description_raw.xlsx", sheet_name=cat)
+            st.subheader(f"Raw Description Table - {cat}")
+            st.dataframe(description_data, use_container_width=True)
+        except Exception as e:
+            st.error(f"Failed to load data for table view: {e}")
+
 
         
         
