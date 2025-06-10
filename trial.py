@@ -77,7 +77,7 @@ sidebar_option = st.sidebar.radio("Choose View", [
 # --- View 1: Data Summary ---
 if sidebar_option == "Data Summary":
     st.subheader("📄 Transactions Data")
-    tab1, tab2 = st.tabs(["Preview", "Summary"])
+    tab1, tab2, tab3 = st.tabs(["Preview", "Summary","Notes"])
     with tab1:
         sample_df = pd.read_csv(sample)
         st.markdown("--> Repeated columns i.e Arabic and Id columns are dropped from Data")
@@ -105,6 +105,12 @@ if sidebar_option == "Data Summary":
         summary_df.rename(columns={'No_of_units': 'Num_of_Unique_values'}, inplace=True)
         summary_df = summary_df.drop(columns = ["S.no", "Level"])
         st.dataframe(summary_df)
+
+    with tab3:
+        notes = "notes.xlsx"
+        notes_df = pd.read_excel(notes)
+        st.dataframe(notes_df)
+        
 
 # --- View 2: Pareto Analysis ---
 elif sidebar_option == "Pareto Analysis":
