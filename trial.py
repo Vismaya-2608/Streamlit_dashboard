@@ -235,9 +235,8 @@ elif sidebar_option == "Pareto Analysis":
 
 
     with tab3:
-        col1, col2 = st.columns(2)
 
-        with col2:
+     
             df = ABC_summary
             fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -275,7 +274,7 @@ elif sidebar_option == "Pareto Analysis":
 
             st.plotly_chart(fig)
 
-        with col1:
+       
             st.markdown("ABC Table")
             ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
             ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
