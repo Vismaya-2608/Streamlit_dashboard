@@ -226,7 +226,7 @@ elif sidebar_option == "Pareto Analysis":
             title_text='Pareto Analysis by Area',
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             hovermode='x unified',
-            height=800,
+            height=600,
             barmode='group'
         )
 
