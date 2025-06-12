@@ -370,7 +370,7 @@ if sidebar_option == "Univariate Analysis":
                     #st.markdown(f"### Barchart for `{cat}`")
                     fig = px.bar(
                         df_bar,
-                        x= df.loc[0],
+                        x= selected_bar.loc[0],
                         y="nRecords",
                         #labels={"meter_sale_price": "meter_sale_price", "nRecords": "Number of Records"},
                         title=f"Distribution of {cat.replace('_', ' ').title()}",
