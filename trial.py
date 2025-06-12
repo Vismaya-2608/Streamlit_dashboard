@@ -332,7 +332,7 @@ if sidebar_option == "Univariate Analysis":
             # Mapping for bar chart Excel files (inside tab for clarity)
             plot_bar = {
                 "meter_sale_price": "bin_df_manual.xlsx",
-                "procedure_area": "bin_procedure_area.xlsx"
+                "procedure_area": "bin_df_Procedure_area_manual.xlsx"
             }
 
             selected_bar = plot_bar.get(cat)
