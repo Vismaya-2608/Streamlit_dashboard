@@ -310,7 +310,7 @@ if sidebar_option == "Univariate Analysis":
 
         # 1️⃣ TABLE TAB
         with sub_tabs[0]:
-            # Mapping for table Excel files (multiple files per category)
+            # Define mapping of category to list of files
             table_files = {
                 "meter_sale_price": [
                     "meter_sale_price_table_final.xlsx",
@@ -321,16 +321,23 @@ if sidebar_option == "Univariate Analysis":
                     "bin_df_Procedure_area_manual.xlsx"
                 ]
             }
+
+            # Get the selected category (ensure 'cat' is assigned earlier in your code)
             selected_tables = table_files.get(cat)
+
             if selected_tables:
                 for table_file in selected_tables:
                     try:
-                        df = pd.read_excel(table_files)
-                        if table_file in ["bin_df_manual.xlsx", "bin_df_Procedure_area_manual.xlsx"]:
-                            if "nRecords" in df.columns:
-                                df["nRecords"] = df["nRecords"].apply(lambda x: "{:,}".format(x) if pd.notnull(x) else x)
-                                st.markdown(f"#### Displaying: `{table_file}`")
-                                st.dataframe(df, use_container_width=True)
+                        df = pd.read_excel(table_file)
+
+                        # Apply comma formatting ONLY to bin files
+                        if "bin_df" in table_file and "nRecords" in df.columns:
+                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,}")
+
+                        # Display the table
+                        st.markdown(f"#### Displaying: `{table_file}`")
+                        st.dataframe(df, use_container_width=True)
+
                     except FileNotFoundError:
                         st.error(f"File not found: {table_file}")
                     except Exception as e:
