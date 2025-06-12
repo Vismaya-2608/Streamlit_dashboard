@@ -235,6 +235,18 @@ elif sidebar_option == "Pareto Analysis":
 
 
     with tab3:
+        st.markdown("ABC Table")
+        ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
+        ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
+        ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+        ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+        ABC_summary['%Records '] = ABC_summary['%Records '].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+        ABC_summary['Cum%_Records'] = ABC_summary['Cum%_Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+        ABC_summary['Cum%_Areas'] = ABC_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+        ABC_summary.index = range(1, len(ABC_summary) + 1)
+        st.dataframe(ABC_summary, use_container_width=True)
+
+        
         df = ABC_summary
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         fig.add_trace(
@@ -264,16 +276,6 @@ elif sidebar_option == "Pareto Analysis":
             hovermode='x unified'
         )
         st.plotly_chart(fig)
-        st.markdown("ABC Table")
-        ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
-        ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
-        ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-        ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-        ABC_summary['%Records '] = ABC_summary['%Records '].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-        ABC_summary['Cum%_Records'] = ABC_summary['Cum%_Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-        ABC_summary['Cum%_Areas'] = ABC_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
-        ABC_summary.index = range(1, len(ABC_summary) + 1)
-        st.dataframe(ABC_summary, use_container_width=True)
         
 # --- View 3: Univariate Analysis  ---
 if sidebar_option == "Univariate Analysis":
