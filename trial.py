@@ -723,7 +723,7 @@ if sidebar_option == "Geo Graphical Analysis":
             title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
         )
 
-        for trace in fig2.data:
+        for trace in figs.data:
             trace.name = "Model_Data"
             trace.legendgroup = "Model_Data"
             trace.showlegend = True
@@ -749,7 +749,7 @@ if sidebar_option == "Geo Graphical Analysis":
             zoom=9,
         )
 
-        for trace in figs.data:
+        for trace in fig2.data:
             trace.name = "Raw data"
             trace.legendgroup = "Raw data"
             trace.showlegend = True
