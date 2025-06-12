@@ -403,7 +403,7 @@ if sidebar_option == "Univariate Analysis":
                 if selected_image:
                     try:
                         # Display image with automatic scaling to container width
-                        st.image(selected_image, caption=f"Image for {cat}", width=600)
+                        st.image(selected_image, caption=f"Image for {cat}", width=400)
                     except FileNotFoundError:
                         st.error(f"Image not found: {selected_image}")
                     except Exception as e:
