@@ -387,11 +387,6 @@ if sidebar_option == "Univariate Analysis":
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
     
-    note = "notes.xlsx"
-    note_df = pd.read_excel(note)
-    st.markdown("Data Explaination")
-    st.dataframe(note_df)
-    
     # Step 1: Dropdown selector at the top
     cat_cols = [
         "trans_group_en", "property_type_en", "property_sub_type_en", "property_usage_en", 
