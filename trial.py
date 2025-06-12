@@ -335,7 +335,7 @@ if sidebar_option == "Univariate Analysis":
                             df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,}")
 
                         # Display the table
-                        st.markdown(f"#### Displaying: `{table_file}`")
+                        #st.markdown(f"#### Displaying: `{table_file}`")
                         st.dataframe(df, use_container_width=True)
 
                     except FileNotFoundError:
