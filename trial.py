@@ -702,30 +702,6 @@ if sidebar_option == "Geo Graphical Analysis":
     # Create the single tab
     with tab1:
 
-        figs = px.scatter_mapbox(
-            df_excel,
-            lat='area_lat',
-            lon='area_lon',
-            size='Transaction Count',
-            color='Average Meter Sale Price',
-            hover_name='area_name_en',
-            hover_data={
-                'Transaction Count': True,
-                'Average Meter Sale Price': ':.2f',
-                'area_lat': False,
-                'area_lon': False
-            },
-            color_continuous_scale='Hot',
-            size_max=30,
-            zoom=9,
-            title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
-        )
-
-        for trace in figs.data:
-            trace.name = "Raw data(1996-2025)"
-            trace.legendgroup = "Raw data(1996-2025)"
-            trace.showlegend = True
-
         # Add filtered data (e.g., >= 2020)
         fig2 = px.scatter_mapbox(
             units_excel,
@@ -744,6 +720,7 @@ if sidebar_option == "Geo Graphical Analysis":
             size_max=30,
             opacity=0.8,
             zoom=9
+            title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
         )
 
         for trace in fig2.data:
@@ -751,6 +728,30 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.legendgroup = "Model_Data"
             trace.showlegend = True
             figs.add_trace(trace)
+
+        # Add filtered data (e.g., >= 2020)
+        figs = px.scatter_mapbox(
+            df_excel,
+            lat='area_lat',
+            lon='area_lon',
+            size='Transaction Count',
+            color='Average Meter Sale Price',
+            hover_name='area_name_en',
+            hover_data={
+                'Transaction Count': True,
+                'Average Meter Sale Price': ':.2f',
+                'area_lat': False,
+                'area_lon': False
+            },
+            color_continuous_scale='Hot',
+            size_max=30,
+            zoom=9,
+        )
+
+        for trace in figs.data:
+            trace.name = "Raw data(1996-2025)"
+            trace.legendgroup = "Raw data(1996-2025)"
+            trace.showlegend = True
 
         # Add outlier data
         fig3 = px.scatter_mapbox(
