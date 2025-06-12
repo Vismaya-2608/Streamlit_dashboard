@@ -309,25 +309,30 @@ if sidebar_option == "Univariate Analysis":
         sub_tabs = st.tabs(["Table", "Histogram", "Boxplot"])
 
         # 1️⃣ TABLE TAB
-        with sub_tabs[0]:  
-            # Mapping for table Excel files (inside tab for clarity)
+        with sub_tabs[0]:
+            # Mapping for table Excel files (multiple files per category)
             table_files = {
-                "meter_sale_price": "meter_sale_price_table_final.xlsx",
-                "procedure_area": "procedure_area_table_final.xlsx"
-                "meter_sale_price": "bin_df_manual.xlsx"
-                "procedure_area": "bin_df_Procedure_area_manual.xlsx"
+                "meter_sale_price": [
+                    "meter_sale_price_table_final.xlsx",
+                    "bin_df_manual.xlsx"
+                ],
+                "procedure_area": [
+                    "procedure_area_table_final.xlsx",
+                    "bin_df_Procedure_area_manual.xlsx"
+                ]
             }
+            selected_tables = table_files.get(cat)
+            if selected_tables:
+                for table_file in selected_tables:
+                    try:
+                        df = pd.read_excel(table_file)
+                        st.markdown(f"#### Displaying: `{table_file}`")
+                        st.dataframe(df, use_container_width=True)
+                    except FileNotFoundError:
+                        st.error(f"File not found: {table_file}")
+                    except Exception as e:
+                        st.error(f"Error reading `{table_file}`: {e}")
 
-            selected_table = table_files.get(cat)
-            if selected_table:
-                try:
-                    df = pd.read_excel(selected_table)
-                    #st.markdown(f"### Table for `{cat}`")
-                    st.dataframe(df, use_container_width=True)
-                except FileNotFoundError:
-                    st.error(f"File not found: {selected_table}")
-                except Exception as e:
-                    st.error(f"Error reading table data: {e}")
 
         # 2️⃣ BARCHART TAB
         with sub_tabs[1]:
