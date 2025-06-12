@@ -388,9 +388,9 @@ if sidebar_option == "Univariate Analysis":
 if sidebar_option == "Bivariate Analysis":
     
     note = "notes.xlsx"
-    note_df = pd.read_excel(notes)
+    note_df = pd.read_excel(note)
     st.markdown("Data Explaination")
-    st.dataframe(notes_df)
+    st.dataframe(note_df)
     
     # Step 1: Dropdown selector at the top
     cat_cols = [
