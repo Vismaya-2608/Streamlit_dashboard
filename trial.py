@@ -326,7 +326,7 @@ if sidebar_option == "Univariate Analysis":
                 for table_file in selected_tables:
                     try:
                         df = pd.read_excel(table_file)
-                        st.markdown(f"#### Displaying: `{table_file}`")
+                        #st.markdown(f"#### Displaying: `{table_file}`")
                         st.dataframe(df, use_container_width=True)
                     except FileNotFoundError:
                         st.error(f"File not found: {table_file}")
