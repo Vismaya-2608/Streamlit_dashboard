@@ -238,12 +238,21 @@ elif sidebar_option == "Pareto Analysis":
         st.markdown("ABC Table")
         ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
         ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
+
         ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
         ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         ABC_summary['%Records '] = ABC_summary['%Records '].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         ABC_summary['Cum%_Records'] = ABC_summary['Cum%_Records'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
         ABC_summary['Cum%_Areas'] = ABC_summary['Cum%_Areas'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
+
         ABC_summary.index = range(1, len(ABC_summary) + 1)
+
+        # Swap the columns
+        cols = list(ABC_summary.columns)
+        i, j = cols.index('Cum%_Records'), cols.index('Cum%_Areas')
+        cols[i], cols[j] = cols[j], cols[i]
+        ABC_summary = ABC_summary[cols]
+
         st.dataframe(ABC_summary, use_container_width=True)
 
         
