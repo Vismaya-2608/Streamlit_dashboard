@@ -258,12 +258,12 @@ elif sidebar_option == "Pareto Analysis":
                    hovertemplate='<b>%{x}</b><br>%Records: %{y:.2f}%<extra></extra>'),
             secondary_y=False)
         fig.add_trace(
-            go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_records'], mode='lines+markers',
+            go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_Records'], mode='lines+markers',
                        marker_color='green',
                        hovertemplate='<b>%{x}</b><br>Cum% Records: %{y:.2f}%<extra></extra>'),
             secondary_y=True)
         fig.add_trace(
-            go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_areas'], mode='lines+markers',
+            go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_Areas'], mode='lines+markers',
                        marker_color='darkorange',
                        hovertemplate='<b>%{x}</b><br>Cum% Areas: %{y:.2f}%<extra></extra>'),
             secondary_y=True)
