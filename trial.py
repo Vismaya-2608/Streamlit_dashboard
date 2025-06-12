@@ -538,6 +538,10 @@ if sidebar_option == "Bivariate Analysis":
             st.plotly_chart(box_plot, use_container_width=True)
             
     with main_tabs[0]:
+        note = "notes.xlsx"
+        note_df = pd.read_excel(note)
+        st.markdown("Data Explaination")
+        st.dataframe(note_df)
         try:
             # Load the raw description data from the corresponding sheet
             description_data = pd.read_excel("table_stats_bivariate.xlsx", sheet_name=cat)
