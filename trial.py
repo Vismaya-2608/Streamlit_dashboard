@@ -381,42 +381,42 @@ if sidebar_option == "Univariate Analysis":
                     st.error(f"Error creating bar chart: {e}")
 
         with sub_tabs[2]:
-        # Mapping for boxplot HTML files
-        plot_box = {
-            "meter_sale_price": "meter_sale_price_with_boxplot.html",
-            "procedure_area": "procedure_area_with_boxplot.html"
-        }
+            # Mapping for boxplot HTML files
+            plot_box = {
+                "meter_sale_price": "meter_sale_price_with_boxplot.html",
+                "procedure_area": "procedure_area_with_boxplot.html"
+            }
 
-        # Mapping for corresponding PNG images
-        plot_images = {
-            "meter_sale_price": "boxplot_meter_sale_price_raw.png",
-            "procedure_area": "boxplot_procedure_area_raw.png"
-        }
+            # Mapping for corresponding PNG images
+            plot_images = {
+                "meter_sale_price": "boxplot_meter_sale_price_raw.png",
+                "procedure_area": "boxplot_procedure_area_raw.png"
+            }
 
-        selected_file = plot_box.get(cat)
-        selected_image = plot_images.get(cat)
+            selected_file = plot_box.get(cat)
+            selected_image = plot_images.get(cat)
 
-        col1, col2 = st.columns(2)
+            col1, col2 = st.columns(2)
 
-        with col1:
-            if selected_image:
-                try:
-                    st.image(selected_image, caption=f"Image for {cat}", use_column_width=True)
-                except FileNotFoundError:
-                    st.error(f"Image not found: {selected_image}")
-                except Exception as e:
-                    st.error(f"Error loading image: {e}")
+            with col1:
+                if selected_image:
+                    try:
+                        st.image(selected_image, caption=f"Image for {cat}", use_column_width=True)
+                    except FileNotFoundError:
+                        st.error(f"Image not found: {selected_image}")
+                    except Exception as e:
+                        st.error(f"Error loading image: {e}")
 
-        with col2:
-            if selected_file:
-                try:
-                    with open(selected_file, "r") as file:
-                        html_content = file.read()
-                        components.html(html_content, height=500, width=800, scrolling=True)
-                except FileNotFoundError:
-                    st.error(f"File not found: {selected_file}")
-                except Exception as e:
-                    st.error(f"Error loading boxplot HTML: {e}")
+            with col2:
+                if selected_file:
+                    try:
+                        with open(selected_file, "r") as file:
+                            html_content = file.read()
+                            components.html(html_content, height=500, width=800, scrolling=True)
+                    except FileNotFoundError:
+                        st.error(f"File not found: {selected_file}")
+                    except Exception as e:
+                        st.error(f"Error loading boxplot HTML: {e}")
         
                     
 # --- View 3: Bivariate Analysis  ---
