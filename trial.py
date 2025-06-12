@@ -401,7 +401,7 @@ if sidebar_option == "Univariate Analysis":
             with col1:
                 if selected_image:
                     try:
-                        st.image(selected_image, caption=f"Image for {cat}", use_container_width=True)
+                        st.image(selected_image, caption=f"Image for {cat}", use_container_width=False)
                     except FileNotFoundError:
                         st.error(f"Image not found: {selected_image}")
                     except Exception as e:
