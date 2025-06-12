@@ -460,7 +460,7 @@ if sidebar_option == "Bivariate Analysis":
 
             # Layout
             fig.update_layout(
-                title=f'nRecords & Avg Price by {category_col}',
+                title=(f'nRecords & Avg Price'),
                 xaxis_title=category_col,
                 yaxis=dict(title='nRecords'),
                 yaxis2=dict(title='Average Meter Sale Price', overlaying='y', side='right'),
@@ -525,7 +525,7 @@ if sidebar_option == "Bivariate Analysis":
                 ))
 
             fig.update_layout(
-                title=f"Box Plot by {cat_col}",
+                title=("Distribution of meter_sale_price"),
                 yaxis_title="Meter Sale Price",
                 boxmode='group',
                 xaxis_title=cat_col,
