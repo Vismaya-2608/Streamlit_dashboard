@@ -389,8 +389,8 @@ if sidebar_option == "Univariate Analysis":
 
             # Mapping for corresponding PNG images
             plot_images = {
-                "meter_sale_price": "meter_sale_price_image.png",
-                "procedure_area": "procedure_area_image.png"
+                "meter_sale_price": "boxplot_meter_sale_price_raw.png",
+                "procedure_area": "boxplot_procedure_area_raw.png"
             }
 
             selected_file = plot_box.get(cat)
