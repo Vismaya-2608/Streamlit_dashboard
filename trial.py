@@ -386,11 +386,12 @@ if sidebar_option == "Univariate Analysis":
                     
 # --- View 3: Bivariate Analysis  ---
 if sidebar_option == "Bivariate Analysis":
-    st.markdown("""
-    - Data Considered as 
-       - Raw Data (1966–2025)
-       - Model Data (Data Considered after 2020)
-    """)
+    
+    note = "notes.xlsx"
+    note_df = pd.read_excel(notes)
+    st.markdown("Data Explaination")
+    st.dataframe(notes_df)
+    
     # Step 1: Dropdown selector at the top
     cat_cols = [
         "trans_group_en", "property_type_en", "property_sub_type_en", "property_usage_en", 
