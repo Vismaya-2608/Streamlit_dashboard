@@ -795,6 +795,15 @@ if sidebar_option == "Geo Graphical Analysis":
         )
 
         st.plotly_chart(figs, use_container_width=True)
+        st.markdown(
+            """
+            <div style="text-align: center; font-size: 15px; margin-top: 10px;">
+                <b>Size of bubble</b> = Number of Transactions &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+                <b>Colour of bubble</b> = Average Meter Sale Price
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     
 
 
