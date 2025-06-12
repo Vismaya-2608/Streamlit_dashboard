@@ -380,7 +380,7 @@ if sidebar_option == "Univariate Analysis":
 
                     # Optional: customize layout
                     fig.update_layout(
-                        xaxis_title="meter_sale_price",
+                        #xaxis_title="meter_sale_price",
                         yaxis_title="Number of Records",
                         bargap=0,  # Adjust space between bars
                         height=500
