@@ -331,7 +331,7 @@ if sidebar_option == "Univariate Analysis":
         with sub_tabs[1]:
             # Mapping for bar chart Excel files (inside tab for clarity)
             plot_bar = {
-                "meter_sale_price": "bin_meter_sale_price.xlsx",
+                "meter_sale_price": "bin_df_manual.xlsx",
                 "procedure_area": "bin_procedure_area.xlsx"
             }
 
@@ -344,7 +344,7 @@ if sidebar_option == "Univariate Analysis":
                         df_bar,
                         x="Bin_Range",
                         y="nRecords",
-                        labels={"Bin_Range": "Bin Range", "nRecords": "Number of Records"},
+                        labels={"Bin_Range": "meter_sale_price", "nRecords": "Number of Records"},
                         title=f"Distribution of {cat.replace('_', ' ').title()}",
                         text_auto=True)
                     # Add black border and control bar width
@@ -352,7 +352,7 @@ if sidebar_option == "Univariate Analysis":
 
                     # Optional: customize layout
                     fig.update_layout(
-                        xaxis_title="Bin Range",
+                        xaxis_title="meter_sale_price",
                         yaxis_title="Number of Records",
                         bargap=0,  # Adjust space between bars
                         height=500
