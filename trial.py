@@ -325,7 +325,7 @@ if sidebar_option == "Univariate Analysis":
             if selected_tables:
                 for table_file in selected_tables:
                     try:
-                        df = pd.read_excel(table_file)
+                        df = pd.read_excel(table_files)
                         if table_file in ["bin_df_manual.xlsx", "bin_df_Procedure_area_manual.xlsx"]:
                             if "nRecords" in df.columns:
                                 df["nRecords"] = df["nRecords"].apply(lambda x: "{:,}".format(x) if pd.notnull(x) else x)
