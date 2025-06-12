@@ -727,7 +727,7 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.name = "Model_Data"
             trace.legendgroup = "Model_Data"
             trace.showlegend = True
-            figs.add_trace(trace)
+            
 
         # Add filtered data (e.g., >= 2020)
         figs = px.scatter_mapbox(
@@ -752,6 +752,7 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.name = "Raw data(1996-2025)"
             trace.legendgroup = "Raw data(1996-2025)"
             trace.showlegend = True
+            figs.add_trace(trace)
 
         # Add outlier data
         fig3 = px.scatter_mapbox(
