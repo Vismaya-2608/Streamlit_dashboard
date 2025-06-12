@@ -718,7 +718,6 @@ if sidebar_option == "Geo Graphical Analysis":
             },
             color_continuous_scale='Hot',
             size_max=30,
-            opacity=0.8,
             zoom=9,
             title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
         )
@@ -746,6 +745,7 @@ if sidebar_option == "Geo Graphical Analysis":
             },
             color_continuous_scale='Hot',
             size_max=30,
+            opacity=0.8,
             zoom=9,
         )
 
@@ -772,7 +772,7 @@ if sidebar_option == "Geo Graphical Analysis":
             },
             color_continuous_scale='Hot',
             size_max=30,
-            opacity=0.8,
+            opacity=0.7,
             zoom=9
         )
 
