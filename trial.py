@@ -397,7 +397,7 @@ if sidebar_option == "Univariate Analysis":
             selected_image = plot_images.get(cat)
 
             # Adjusting columns: 2 for image (col1), 3 for boxplot (col2)
-            col1, col2 = st.columns([2, 3])
+            col1, col2 = st.columns([3, 2])
 
             with col1:
                 if selected_image:
