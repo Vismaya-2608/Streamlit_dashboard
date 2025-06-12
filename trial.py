@@ -753,6 +753,7 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.name = "Raw data"
             trace.legendgroup = "Raw data"
             trace.showlegend = True
+            figs.add_trace(trace)
             
 
         # Add outlier data
