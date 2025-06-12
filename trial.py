@@ -397,13 +397,13 @@ if sidebar_option == "Univariate Analysis":
             selected_image = plot_images.get(cat)
 
             # Adjusting columns: 2 for image (col1), 3 for boxplot (col2)
-            col1, col2 = st.columns([3, 2])
+            col1, col2 = st.columns([2, 3])
 
             with col1:
                 if selected_image:
                     try:
                         # Display image with automatic scaling to container width
-                        st.image(selected_image, caption=f"Image for {cat}", use_container_width=True)
+                        st.image(selected_image, caption=f"Image for {cat}", width=600))
                     except FileNotFoundError:
                         st.error(f"Image not found: {selected_image}")
                     except Exception as e:
