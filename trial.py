@@ -326,8 +326,11 @@ if sidebar_option == "Univariate Analysis":
                 for table_file in selected_tables:
                     try:
                         df = pd.read_excel(table_file)
-                        #st.markdown(f"#### Displaying: `{table_file}`")
-                        st.dataframe(df, use_container_width=True)
+                        if table_file in ["bin_df_manual.xlsx", "bin_df_Procedure_area_manual.xlsx"]:
+                            if "nRecords" in df.columns:
+                                df["nRecords"] = df["nRecords"].apply(lambda x: "{:,}".format(x) if pd.notnull(x) else x)
+                                st.markdown(f"#### Displaying: `{table_file}`")
+                                st.dataframe(df, use_container_width=True)
                     except FileNotFoundError:
                         st.error(f"File not found: {table_file}")
                     except Exception as e:
