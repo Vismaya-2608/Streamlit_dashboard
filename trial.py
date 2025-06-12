@@ -355,12 +355,12 @@ if sidebar_option == "Univariate Analysis":
                         st.error(f"Error reading `{table_file}`: {e}")
 
 
-        # 2️⃣ BARCHART TAB
+        # 2️⃣ HISTOGRAM TAB
         with sub_tabs[1]:
             # Mapping for bar chart Excel files (inside tab for clarity)
             plot_bar = {
                 "meter_sale_price": "bin_df_manual.xlsx",
-                "procedure_area": "bin_df_Procedure_area_manual.xlsx"
+                "procedure_area": "bin_df_Procedure_area_manual_xyz.xlsx"
             }
 
             selected_bar = plot_bar.get(cat)
@@ -370,9 +370,9 @@ if sidebar_option == "Univariate Analysis":
                     #st.markdown(f"### Barchart for `{cat}`")
                     fig = px.bar(
                         df_bar,
-                        x="meter_sale_price",
+                        x= df.loc[0],
                         y="nRecords",
-                        labels={"meter_sale_price": "meter_sale_price", "nRecords": "Number of Records"},
+                        #labels={"meter_sale_price": "meter_sale_price", "nRecords": "Number of Records"},
                         title=f"Distribution of {cat.replace('_', ' ').title()}",
                         text_auto=True)
                     # Add black border and control bar width
