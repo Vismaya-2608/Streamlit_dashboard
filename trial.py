@@ -703,7 +703,7 @@ if sidebar_option == "Geo Graphical Analysis":
     with tab1:
 
         # Add filtered data (e.g., >= 2020)
-        fig2 = px.scatter_mapbox(
+        figs = px.scatter_mapbox(
             units_excel,
             lat='area_lat',
             lon='area_lon',
@@ -727,10 +727,11 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.name = "Model_Data"
             trace.legendgroup = "Model_Data"
             trace.showlegend = True
+            figs.add_trace(trace)
             
 
         # Add filtered data (e.g., >= 2020)
-        figs = px.scatter_mapbox(
+        fig2 = px.scatter_mapbox(
             df_excel,
             lat='area_lat',
             lon='area_lon',
@@ -749,10 +750,10 @@ if sidebar_option == "Geo Graphical Analysis":
         )
 
         for trace in figs.data:
-            trace.name = "Raw data(1996-2025)"
-            trace.legendgroup = "Raw data(1996-2025)"
+            trace.name = "Raw data"
+            trace.legendgroup = "Raw data"
             trace.showlegend = True
-            figs.add_trace(trace)
+            
 
         # Add outlier data
         fig3 = px.scatter_mapbox(
