@@ -727,7 +727,7 @@ if sidebar_option == "Geo Graphical Analysis":
             trace.name = "Model_Data"
             trace.legendgroup = "Model_Data"
             trace.showlegend = True
-            figs.add_trace(trace)
+            
             
 
         # Add filtered data (e.g., >= 2020)
