@@ -721,7 +721,7 @@ if sidebar_option == "Price Prediction Model":
                 for sheet_name in area_sheets:
                     df = area_sheets[sheet_name]
                     if 'MAPE' in df.columns:
-                        df['MAPE'] = df['MAPE'] * 100
+                        df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
                     area_sheets[sheet_name] = df  # Update back in dict
 
                 # Create tabs and display
