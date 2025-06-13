@@ -692,24 +692,29 @@ if sidebar_option == "Price Prediction Model":
 
     # === Tab 3: Area & Sector Sheets ===
     with main_tabs[0]:
-        if os.path.exists(EXCEL_PATH):
-            sheet_data_main = load_excel(EXCEL_PATH)
             
         Over_all, sector_tab,area_tab = st.tabs(["Over All","Sector wise","Area wise"])
         with Over_all:
-            #st.subheader("📍 Prediction Models Over All")
-            if os.path.exists(EXCEL_PATH):
-                sheet_data = load_excel(EXCEL_PATH)
-                perf_tabs = st.tabs(list(sheet_data.keys()))
-                for tab, (sheet_name, df) in zip(perf_tabs, sheet_data.items()):
+            abc = "Over_all_output.xlsx"
+            overall_sheets = pd.read_excel(abc, sheet_name=None)
+            if overall_sheets:
+                # Process each sheet
+                for sheet_name in overall_sheets:
+                    df = overall_sheets[sheet_name]
+                    # Format 'MAPE' as percentage string
+                    if 'MAPE' in df.columns:
+                        df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
+                        # Format 'nObservations' with commas
+                        if 'nObservations' in df.columns:
+                            df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,}" if pd.notnull(x) else x)
+                            overall_sheets[sheet_name] = df  # Update in dictionary
+                            # Display each sheet in a tab
+                overall_tabs = st.tabs(list(sector_sheets.keys()))
+                for tab, (sheet_name, df) in zip(overall_tabs, overall_sheets.items()):
                     with tab:
-                        df = df.round(2)
-                        if 'nRecords' in df.columns:
-                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                        df.index = range(1, len(df) + 1)
                         st.dataframe(df, use_container_width=True)
-            else:
-                st.error(f"Model performance file not found at: {model_perfomance}")
+            
+           
         with sector_tab:
             pqr = "sector_name_Output.xlsx"
 
