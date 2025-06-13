@@ -642,16 +642,18 @@ if sidebar_option == "Price Prediction Model":
     
     # === Tab 1: Prediction Model Visuals ===
     with main_tabs[1]:
-        if os.path.exists(model_perfomance):
-            xl = pd.ExcelFile(model_perfomance)
+        if os.path.exists(EXCEL_PATH):
+            xl = pd.ExcelFile(EXCEL_PATH)
             sheet_names = xl.sheet_names
 
         if len(sheet_names) >= 2:
-            second_sheet_name = sheet_names[1]  # Index 1 = second sheet
-            df = xl.parse(sheet_name=second_sheet_name)
+            first_sheet_name = sheet_names[0]  # Index 1 = second sheet
+            df = xl.parse(sheet_name=first_sheet_name)
             df = df.round(2)
-            if 'nRecords' in df.columns:
-                df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+            if 'nObservations' in df.columns:
+                df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+                if 'MAPE' in df.columns:
+                    df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
             df.index = range(1, len(df) + 1)
 
             st.subheader(f"📊 {second_sheet_name}")
