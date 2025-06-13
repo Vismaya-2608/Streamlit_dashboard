@@ -732,15 +732,17 @@ if sidebar_option == "Price Prediction Model":
         
         with sector_tab:
             pqr = "sector_name_Output.xlsx"
-            sector_sheets = pd.read.excel(pqr, sheet_name=None)
-           
+
+            # Read all sheets from the Excel file
+            sector_sheets = pd.read_excel(pqr, sheet_name=None)
+
             if sector_sheets:
-                for sheet_name in sector_sheets:
-                    df = sector_sheets[sheet_name]
-                    sector_tabs = st.tabs(list(sector_sheets.keys()))
-                    for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
-                        with tab:
-                            st.dataframe(df, use_container_width=True)
+                # Create one tab per sheet
+                sector_tabs = st.tabs(list(sector_sheets.keys()))
+
+                for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
+                    with tab:
+                        st.dataframe(df, use_container_width=True)
                     
                 
 
