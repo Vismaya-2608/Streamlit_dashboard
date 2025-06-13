@@ -732,20 +732,17 @@ if sidebar_option == "Price Prediction Model":
         
         with sector_tab:
             pqr = "sector_name_Output.xlsx"
-            sector_sheets = {name: df for name, df in pqr.items()}
-            # Subtabs for Sector
+            sector_sheets = pd.read.excel(pqr, sheet_name=None)
+           
             if sector_sheets:
-                #st.subheader("🏗️ Prediction Model by Sector")
-                sector_tabs = st.tabs(list(sector_sheets.keys()))
-                for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
-                    with tab:
-                        #df = df.round(2)
-                        #if 'nRecords' in df.columns:
-                            #df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                        #df.index = range(1, len(df) + 1)
-                        st.dataframe(df, use_container_width=True)
-            else:
-                st.error(f"Excel file not found at: {EXCEL_PATH}")
+                for sheet_name in sector_sheets:
+                    df = sector_sheets[sheet_name]
+                    sector_tabs = st.tabs(list(sector_sheets.keys()))
+                    for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
+                        with tab:
+                            st.dataframe(df, use_container_width=True)
+                    
+                
 
 # --- View 6: Geo Graphical Analysis ---
 if sidebar_option == "Geo Graphical Analysis":
