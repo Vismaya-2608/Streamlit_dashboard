@@ -109,10 +109,9 @@ if sidebar_option == "Data Summary":
     with tab3:
         notes = "notes.xlsx"
         notes_df = pd.read_excel(notes)
-        st.dataframe(notes_df)
-        if "nRecords" in notes_df in df.columns:
-            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,}")
-        
+        if 'nRecords' in notes_df.columns:
+            notes_df['nRecords'] = notes_df['nRecords'].apply(lambda x: f"{x:,}" if pd.notnull(x) else x)
+            st.dataframe(notes_df)
         
 
 # --- View 2: Pareto Analysis ---
