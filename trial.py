@@ -695,7 +695,7 @@ if sidebar_option == "Price Prediction Model":
         if os.path.exists(EXCEL_PATH):
             sheet_data_main = load_excel(EXCEL_PATH)
             
-        Over_all, area_tab,sector_tab = st.tabs(["Over All","Area wise","Sector wise"])
+        Over_all, sector_tab,area_tab = st.tabs(["Over All","Sector wise","Area wise"])
         with Over_all:
             #st.subheader("📍 Prediction Models Over All")
             if os.path.exists(EXCEL_PATH):
