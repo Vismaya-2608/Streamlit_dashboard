@@ -710,6 +710,20 @@ if sidebar_option == "Price Prediction Model":
                         st.dataframe(df, use_container_width=True)
             else:
                 st.error(f"Model performance file not found at: {model_perfomance}")
+        with sector_tab:
+            bullshit = "sector_name_Output.xlsx"
+
+            # Read all sheets from the Excel file
+            sector_sheets = pd.read_excel(bullshit, sheet_name=None)
+
+            if sector_sheets:
+                # Create one tab per sheet
+                sector_tabs = st.tabs(list(sector_sheets.keys()))
+
+                for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
+                    with tab:
+                        st.dataframe(df, use_container_width=True)
+        
         with area_tab:
             xyz = "Area_name_output.xlsx"
 
@@ -727,20 +741,6 @@ if sidebar_option == "Price Prediction Model":
                 # Create tabs and display
                 area_tabs = st.tabs(list(area_sheets.keys()))
                 for tab, (sheet_name, df) in zip(area_tabs, area_sheets.items()):
-                    with tab:
-                        st.dataframe(df, use_container_width=True)
-        
-        with sector_tab:
-            bullshit = "sector_name_Output.xlsx"
-
-            # Read all sheets from the Excel file
-            sector_sheets = pd.read_excel(bullshit, sheet_name=None)
-
-            if sector_sheets:
-                # Create one tab per sheet
-                sector_tabs = st.tabs(list(sector_sheets.keys()))
-
-                for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
                     with tab:
                         st.dataframe(df, use_container_width=True)
                     
