@@ -709,7 +709,7 @@ if sidebar_option == "Price Prediction Model":
                             df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,}" if pd.notnull(x) else x)
                             overall_sheets[sheet_name] = df  # Update in dictionary
                             # Display each sheet in a tab
-                overall_tabs = st.tabs(list(sector_sheets.keys()))
+                overall_tabs = st.tabs(list(overall_sheets.keys()))
                 for tab, (sheet_name, df) in zip(overall_tabs, overall_sheets.items()):
                     with tab:
                         st.dataframe(df, use_container_width=True)
