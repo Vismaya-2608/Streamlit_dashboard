@@ -697,9 +697,9 @@ if sidebar_option == "Price Prediction Model":
             
         Over_all, area_tab,sector_tab = st.tabs(["Over All","Area wise","Sector wise"])
         with Over_all:
-            st.subheader("📍 Prediction Models Over All")
-            if os.path.exists(model_perfomance):
-                sheet_data = load_excel(model_perfomance)
+            #st.subheader("📍 Prediction Models Over All")
+            if os.path.exists(EXCEL_PATH):
+                sheet_data = load_excel(EXCEL_PATH)
                 perf_tabs = st.tabs(list(sheet_data.keys()))
                 for tab, (sheet_name, df) in zip(perf_tabs, sheet_data.items()):
                     with tab:
@@ -711,31 +711,33 @@ if sidebar_option == "Price Prediction Model":
             else:
                 st.error(f"Model performance file not found at: {model_perfomance}")
         with area_tab:
-            area_sheets = {name: df for name, df in sheet_data_main.items() if "area" in name.lower()}
+            xyz = "Area_name_output.xlsx"
+            area_sheets = {name: df for name, df in xyz.items()}
             
             # Subtabs for Area
             if area_sheets:
-                st.subheader("📍 Prediction Model by Area")
+                #st.subheader("📍 Prediction Model by Area")
                 area_tabs = st.tabs(list(area_sheets.keys()))
                 for tab, (sheet_name, df) in zip(area_tabs, area_sheets.items()):
                     with tab:
                         df = df.round(2)
-                        if 'nRecords' in df.columns:
-                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                        df.index = range(1, len(df) + 1)
+                        #if 'nRecords' in df.columns:
+                            #df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+                        #df.index = range(1, len(df) + 1)
                         st.dataframe(df, use_container_width=True)    
         with sector_tab:
-            sector_sheets = {name: df for name, df in sheet_data_main.items() if "sector" in name.lower()}
+            pqr = "sector_name_Output.xlsx"
+            sector_sheets = {name: df for name, df in pqr.items()}
             # Subtabs for Sector
             if sector_sheets:
-                st.subheader("🏗️ Prediction Model by Sector")
+                #st.subheader("🏗️ Prediction Model by Sector")
                 sector_tabs = st.tabs(list(sector_sheets.keys()))
                 for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
                     with tab:
-                        df = df.round(2)
-                        if 'nRecords' in df.columns:
-                            df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                        df.index = range(1, len(df) + 1)
+                        #df = df.round(2)
+                        #if 'nRecords' in df.columns:
+                            #df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
+                        #df.index = range(1, len(df) + 1)
                         st.dataframe(df, use_container_width=True)
             else:
                 st.error(f"Excel file not found at: {EXCEL_PATH}")
