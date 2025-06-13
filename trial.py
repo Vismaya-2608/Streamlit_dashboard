@@ -240,6 +240,7 @@ elif sidebar_option == "Pareto Analysis":
         st.markdown("ABC Table")
         ABC_summary.rename(columns={'Cum%_records': 'Cum%_Records'}, inplace=True)
         ABC_summary.rename(columns={'Cum%_areas': 'Cum%_Areas'}, inplace=True)
+        ABC_summary.rename(columns={'Group_name': 'Group'}, inplace=True)
 
         ABC_summary['nRecords'] = ABC_summary['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
         ABC_summary['%Area'] = ABC_summary['%Area'].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else x)
