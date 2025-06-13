@@ -717,14 +717,21 @@ if sidebar_option == "Price Prediction Model":
             sector_sheets = pd.read_excel(pqr, sheet_name=None)
 
             if sector_sheets:
-                # Convert MAPE column to percentage with % symbol
+                # Process each sheet
                 for sheet_name in sector_sheets:
                     df = sector_sheets[sheet_name]
+            
+                    # Format 'MAPE' as percentage string
                     if 'MAPE' in df.columns:
                         df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
+
+                    # Format 'nObservations' with commas
+                    if 'nObservations' in df.columns:
+                        df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,}" if pd.notnull(x) else x)
+
                     sector_sheets[sheet_name] = df  # Update in dictionary
 
-                # Create tabs and display each sheet
+                # Display each sheet in a tab
                 sector_tabs = st.tabs(list(sector_sheets.keys()))
                 for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
                     with tab:
