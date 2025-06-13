@@ -711,15 +711,21 @@ if sidebar_option == "Price Prediction Model":
             else:
                 st.error(f"Model performance file not found at: {model_perfomance}")
         with sector_tab:
-            bullshit = "sector_name_Output.xlsx"
+            pqr = "sector_name_Output.xlsx"
 
-            # Read all sheets from the Excel file
-            sector_sheets = pd.read_excel(bullshit, sheet_name=None)
+            # Read all sheets
+            sector_sheets = pd.read_excel(pqr, sheet_name=None)
 
             if sector_sheets:
-                # Create one tab per sheet
-                sector_tabs = st.tabs(list(sector_sheets.keys()))
+                # Convert MAPE column to percentage with % symbol
+                for sheet_name in sector_sheets:
+                    df = sector_sheets[sheet_name]
+                    if 'MAPE' in df.columns:
+                        df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
+                    sector_sheets[sheet_name] = df  # Update in dictionary
 
+                # Create tabs and display each sheet
+                sector_tabs = st.tabs(list(sector_sheets.keys()))
                 for tab, (sheet_name, df) in zip(sector_tabs, sector_sheets.items()):
                     with tab:
                         st.dataframe(df, use_container_width=True)
