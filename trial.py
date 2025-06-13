@@ -262,24 +262,24 @@ elif sidebar_option == "Pareto Analysis":
         df = ABC_summary
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         fig.add_trace(
-            go.Bar(name='%Area', x=df['Group_name'], y=df['%Area'], marker_color='skyblue',
+            go.Bar(name='%Area', x=df['Group'], y=df['%Area'], marker_color='skyblue',
                    hovertemplate='<b>%{x}</b><br>%Area: %{y:.2f}%<extra></extra>'),
             secondary_y=False)
         fig.add_trace(
-            go.Bar(name='%Records', x=df['Group_name'], y=df['%Records '], marker_color='lightcoral',
+            go.Bar(name='%Records', x=df['Group'], y=df['%Records '], marker_color='lightcoral',
                    hovertemplate='<b>%{x}</b><br>%Records: %{y:.2f}%<extra></extra>'),
             secondary_y=False)
         fig.add_trace(
-            go.Scatter(name='Cum%_records', x=df['Group_name'], y=df['Cum%_Records'], mode='lines+markers',
+            go.Scatter(name='Cum%_records', x=df['Group'], y=df['Cum%_Records'], mode='lines+markers',
                        marker_color='green',
                        hovertemplate='<b>%{x}</b><br>Cum% Records: %{y:.2f}%<extra></extra>'),
             secondary_y=True)
         fig.add_trace(
-            go.Scatter(name='Cum%_areas', x=df['Group_name'], y=df['Cum%_Areas'], mode='lines+markers',
+            go.Scatter(name='Cum%_areas', x=df['Group'], y=df['Cum%_Areas'], mode='lines+markers',
                        marker_color='darkorange',
                        hovertemplate='<b>%{x}</b><br>Cum% Areas: %{y:.2f}%<extra></extra>'),
             secondary_y=True)
-        fig.update_xaxes(title_text='Group_name')
+        fig.update_xaxes(title_text='Group')
         fig.update_yaxes(title_text='Counts (%Area, %Records)', secondary_y=False)
         fig.update_yaxes(title_text='Cumulative Percentage', secondary_y=True)
         fig.update_layout(
