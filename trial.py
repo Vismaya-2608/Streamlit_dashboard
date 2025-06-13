@@ -642,8 +642,8 @@ if sidebar_option == "Price Prediction Model":
     
     # === Tab 1: Prediction Model Visuals ===
     with main_tabs[1]:
-        if os.path.exists(EXCEL_PATH):
-            xl = pd.ExcelFile(EXCEL_PATH)
+        if os.path.exists(model_perfomance):
+            xl = pd.ExcelFile(model_perfomance)
             sheet_names = xl.sheet_names
 
         if len(sheet_names) >= 2:
