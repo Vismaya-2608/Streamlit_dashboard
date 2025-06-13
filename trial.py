@@ -712,19 +712,18 @@ if sidebar_option == "Price Prediction Model":
                 st.error(f"Model performance file not found at: {model_perfomance}")
         with area_tab:
             xyz = "Area_name_output.xlsx"
-            area_sheets = {name: df for name, df in xyz.items()}
-            
-            # Subtabs for Area
+
+            # Read all sheets from the Excel file
+            area_sheets = pd.read_excel(xyz, sheet_name=None)
+
             if area_sheets:
-                #st.subheader("📍 Prediction Model by Area")
+                # Create one tab per sheet
                 area_tabs = st.tabs(list(area_sheets.keys()))
+
                 for tab, (sheet_name, df) in zip(area_tabs, area_sheets.items()):
                     with tab:
-                        df = df.round(2)
-                        #if 'nRecords' in df.columns:
-                            #df['nRecords'] = df['nRecords'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
-                        #df.index = range(1, len(df) + 1)
-                        st.dataframe(df, use_container_width=True)    
+                        st.dataframe(df, use_container_width=True)
+        
         with sector_tab:
             pqr = "sector_name_Output.xlsx"
             sector_sheets = {name: df for name, df in pqr.items()}
