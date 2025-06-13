@@ -656,7 +656,7 @@ if sidebar_option == "Price Prediction Model":
                     df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
             df.index = range(1, len(df) + 1)
 
-            st.subheader(f"📊 {second_sheet_name}")
+            st.subheader(f"📊 {first_sheet_name}")
             st.dataframe(df, use_container_width=True)
         else:
             st.warning("The Excel file has less than 2 sheets.")
