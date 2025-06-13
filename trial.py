@@ -713,13 +713,19 @@ if sidebar_option == "Price Prediction Model":
         with area_tab:
             xyz = "Area_name_output.xlsx"
 
-            # Read all sheets from the Excel file
+            # Read all sheets
             area_sheets = pd.read_excel(xyz, sheet_name=None)
 
             if area_sheets:
-                # Create one tab per sheet
-                area_tabs = st.tabs(list(area_sheets.keys()))
+                # Convert MAPE column to percentage in each sheet (if exists)
+                for sheet_name in area_sheets:
+                    df = area_sheets[sheet_name]
+                    if 'MAPE' in df.columns:
+                        df['MAPE'] = df['MAPE'] * 100
+                    area_sheets[sheet_name] = df  # Update back in dict
 
+                # Create tabs and display
+                area_tabs = st.tabs(list(area_sheets.keys()))
                 for tab, (sheet_name, df) in zip(area_tabs, area_sheets.items()):
                     with tab:
                         st.dataframe(df, use_container_width=True)
