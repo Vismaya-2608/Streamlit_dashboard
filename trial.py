@@ -607,7 +607,7 @@ if sidebar_option == "Bivariate Analysis":
         
 # --- View 5: Price Prediction Model ---
 # Define file paths
-EXCEL_PATH = "All_model_output.xlsx"
+EXCEL_PATH = "Over_all_output.xlsx"
 model_perfomance =  "Model_performance.xlsx"
 html_lr = "predicted_vs_actual_linear.html"
 html_dt = "predicted_vs_actual_decision_tree.html"
@@ -642,8 +642,8 @@ if sidebar_option == "Price Prediction Model":
     
     # === Tab 1: Prediction Model Visuals ===
     with main_tabs[1]:
-        if os.path.exists(model_perfomance):
-            xl = pd.ExcelFile(model_perfomance)
+        if os.path.exists(EXCEL_PATH):
+            xl = pd.ExcelFile(EXCEL_PATH)
             sheet_names = xl.sheet_names
 
         if len(sheet_names) >= 2:
