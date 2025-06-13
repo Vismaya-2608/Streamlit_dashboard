@@ -769,7 +769,7 @@ if sidebar_option == "Geo Graphical Analysis":
             color_continuous_scale='Hot',
             size_max=30,
             zoom=9,
-            title="Dubai Area-wise Average Meter Sale Price and Transaction Count"
+            title="Dubai Area-wise Average Meter Sale Price(Dirham) and Transaction Count"
         )
 
         for trace in figs.data:
@@ -847,7 +847,7 @@ if sidebar_option == "Geo Graphical Analysis":
         st.plotly_chart(figs, use_container_width=True)
         st.markdown(
             """
-            <div style="text-align: center; font-size: 15px; margin-top: 10px;">
+            <div style="text-align: left; font-size: 15px; margin-top: 10px;">
                 <b>Size of bubble</b> = Number of Transactions &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
                 <b>Colour of bubble</b> = Average Meter Sale Price
             </div>
