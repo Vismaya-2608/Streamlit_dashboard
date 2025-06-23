@@ -9,7 +9,7 @@ import numpy as np
 
 
 # --- Page Config ---
-st.set_page_config(layout="wide")
+
 st.markdown("""
     <style>
     [data-testid ="collapsedControl"]{
