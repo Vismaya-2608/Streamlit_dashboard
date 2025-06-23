@@ -65,6 +65,7 @@ st.sidebar.success("All data loaded, 🔍 Explore the Dash Board")
 df_area_plot_stats = load_excel(area_stats_path)
 
 # --- Sidebar Navigation ---
+st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 sidebar_option = st.sidebar.radio("Choose View", [
     "Data Summary",
     "Pareto Analysis",
