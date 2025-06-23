@@ -74,6 +74,8 @@ sidebar_option = st.sidebar.radio("Choose View", [
     "Price Prediction Model"
 ])
 
+st.write(f"You selected: {sidebar_option}")
+
 # --- View 1: Data Summary ---
 if sidebar_option == "Data Summary":
     st.subheader("📄 Transactions Data")
