@@ -12,13 +12,17 @@ import numpy as np
 st.set_page_config(layout="wide")
 st.markdown("""
     <style>
-        .block-container {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-        header, footer {
-            visibility: hidden;
-        }
+    [data-testid ="collapsedControl"]{
+    position: fixed;
+    top: 500px;
+    left: 50px;
+    z-index: 200;
+    }
+    .block-container {
+    padding-top: 2.5rem;
+    padding-bottom: 1rem;
+    }
+        
     </style>
 """, unsafe_allow_html=True)
 st.sidebar.title("🔍 FlipOse-RE-Analytics")
