@@ -732,7 +732,7 @@ if sidebar_option == "Price Prediction Model":
                         st.dataframe(df, use_container_width=True)
         
         with area_tab:
-            xyz = "area_wise_file.xlsx"
+            xyz = "area_wise_file_final.xlsx"
 
             # Read all sheets
             area_sheets = pd.read_excel(xyz, sheet_name=None)
