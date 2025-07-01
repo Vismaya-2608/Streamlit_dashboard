@@ -603,7 +603,7 @@ if sidebar_option == "Bivariate Analysis":
         
 # --- View 5: Price Prediction Model ---
 # Define file paths
-EXCEL_PATH = "Over_all_output.xlsx"
+EXCEL_PATH = "Over_all_output_final.xlsx"
 model_perfomance =  "Model_performance.xlsx"
 html_lr = "predicted_vs_actual_linear.html"
 html_dt = "predicted_vs_actual_decision_tree.html"
@@ -640,22 +640,15 @@ if sidebar_option == "Price Prediction Model":
     with main_tabs[1]:
         if os.path.exists(EXCEL_PATH):
             xl = pd.ExcelFile(EXCEL_PATH)
-            sheet_names = xl.sheet_names
-
-        if len(sheet_names) >= 2:
-            first_sheet_name = sheet_names[0]  # Index 1 = second sheet
-            df = xl.parse(sheet_name=first_sheet_name)
-            df = df.round(2)
             if 'nObservations' in df.columns:
                 df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else x)
                 if 'MAPE' in df.columns:
                     df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
-            df.index = range(1, len(df) + 1)
-
-            st.subheader(f"📊 {first_sheet_name}")
-            st.dataframe(df, use_container_width=True)
-        else:
-            st.warning("The Excel file has less than 2 sheets.")
+                    df.index = range(1, len(df) + 1)
+                    st.subheader(f"📊 {first_sheet_name}")
+                    st.dataframe(df, use_container_width=True)
+                else:
+                    st.warning("The Excel file has less than 2 sheets.")
             
         st.subheader("🔍 Overall Comparison Report")
         if os.path.exists(html_comparision):
@@ -693,7 +686,7 @@ if sidebar_option == "Price Prediction Model":
             
         Over_all, sector_tab,area_tab = st.tabs(["Over All","Sector wise","Area wise"])
         with Over_all:
-            abc = "Over_all_output.xlsx"
+            abc = "Over_all_output_final.xlsx"
             overall_sheets = pd.read_excel(abc, sheet_name=None)
             if overall_sheets:
                 # Process each sheet
