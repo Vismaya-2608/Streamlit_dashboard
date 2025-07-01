@@ -692,25 +692,25 @@ if sidebar_option == "Price Prediction Model":
     with main_tabs[0]:
             
         Over_all, sector_tab,area_tab = st.tabs(["Over All","Sector wise","Area wise"])
-         with Over_all:
-             abc = "Over_all_output_final.xlsx"
-             overall_sheets = pd.read_excel(abc, sheet_name=None)
-             if overall_sheets:
-                 # Process each sheet
-                 for sheet_name in overall_sheets:
-                     df = overall_sheets[sheet_name]
-                     # Format 'MAPE' as percentage string
-                     if 'MAPE' in df.columns:
-                         df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
-                         # Format 'nObservations' with commas
-                         if 'nObservations' in df.columns:
-                             df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,}" if pd.notnull(x) else x)
-                             overall_sheets[sheet_name] = df  # Update in dictionary
-                             # Display each sheet in a tab
-                 overall_tabs = st.tabs(list(overall_sheets.keys()))
-                 for tab, (sheet_name, df) in zip(overall_tabs, overall_sheets.items()):
-                     with tab:
-                         st.dataframe(df, use_container_width=True)
+        with Over_all:
+            abc = "Over_all_output_final.xlsx"
+            overall_sheets = pd.read_excel(abc, sheet_name=None)
+            if overall_sheets:
+                # Process each sheet
+                for sheet_name in overall_sheets:
+                    df = overall_sheets[sheet_name]
+                    # Format 'MAPE' as percentage string
+                    if 'MAPE' in df.columns:
+                        df['MAPE'] = df['MAPE'].apply(lambda x: f"{x * 100:.2f}%" if pd.notnull(x) else x)
+                        # Format 'nObservations' with commas
+                        if 'nObservations' in df.columns:
+                            df['nObservations'] = df['nObservations'].apply(lambda x: f"{x:,}" if pd.notnull(x) else x)
+                            overall_sheets[sheet_name] = df  # Update in dictionary
+                            # Display each sheet in a tab
+                overall_tabs = st.tabs(list(overall_sheets.keys()))
+                for tab, (sheet_name, df) in zip(overall_tabs, overall_sheets.items()):
+                    with tab:
+                        st.dataframe(df, use_container_width=True)
             
            
         with sector_tab:
